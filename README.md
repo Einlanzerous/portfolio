@@ -24,7 +24,8 @@ the `portfolio-slice` skill (`.claude/skills/portfolio-slice/`) interviews
 the owner about one system, collects real screens into
 `public/systems/<slug>/`, and wires the entry. Architecture maps come from
 each repo's own `docs/architecture.archify.json` — the file the estate wiki
-also renders — via `bun run archify`.
+also renders — rendered on the box by `bun run archify` and committed as a
+snapshot (see `CLAUDE.md` § Architecture maps).
 
 ## Deploy
 

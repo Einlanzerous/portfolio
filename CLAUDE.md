@@ -68,6 +68,44 @@ login.
    deep links into a private repo are dead on a public page; the wiki
    carries the evidenced render. Authoring a map is that repo's work.
 
+## Architecture maps
+
+The dossier's **Archify HLA** tab frames `public/systems/<slug>/archify.html`.
+
+- **Source of truth is the owning repo's `docs/architecture.archify.json`** —
+  the file the estate wiki renders onto that repo's page (SERV-159).
+  Authoring or fixing a map is that repo's work; nothing here edits an IR.
+- **Rendered on the box, never in CI.** `bun run archify [slug…]`
+  (`scripts/render-archify.ts`) uses construct-server's vendored archify
+  (`ARCHIFY_DIR`, default `~/construct-server/wiki/vendor/archify`; 2.16.0 at
+  the time of writing) — the portfolio does not vendor a second copy. The
+  output is a committed snapshot refreshed by a slice; a stale map is a
+  slice's job, not a build failure. `archify.src.json` beside it says which
+  repo, path and revision it was rendered from, where the IR was read
+  (`local` checkout or `github`), the archify version and the quality
+  profile that passed.
+- **Evidence is stripped on purpose** (invariant 5). The script deletes every
+  `components[].sources` and `meta.repository` in memory before rendering.
+  archify refuses to render evidenced IR without `--repo-root` and a git
+  object store at the pinned revision, and even a verified render would put
+  `SRC` deep links into a private repo on a public page. The wiki carries
+  the evidenced render.
+- **Quality profile.** The IR's own `meta.quality_profile` is tried first and
+  `standard` is the fallback when it exits non-zero; the renderer's
+  diagnostics are printed either way and belong in the PR body. The failing
+  check is the IR author's to fix (switchyard: SWY-470).
+- **Embedding.** `?embed=1` (chrome off, body sized to the frame),
+  `?theme=dark|light` (overrides `localStorage` and `prefers-color-scheme`)
+  and `#view=<chapter-id>` (guided views) are **undocumented template
+  parameters** of archify's output — they live in `assets/template.html`,
+  not in `references/`. Pan/zoom is `contentWindow.Archify.view.{zoomIn,
+  zoomOut,reset}` (same origin); there is no wheel listener and `?embed=1`
+  hides archify's own nav, so `Dossier.vue` supplies the buttons. The output
+  has no `.sy` element: `SysScreen` targets `body` with `fit="contain"`. The
+  Google Fonts link in the output stays (the site already loads Google
+  Fonts). **Re-verify all of this when construct-server bumps the vendored
+  version.**
+
 ## Testing
 
 `bun run test` runs the data-file guard (`src/data/systems.test.ts`). There
