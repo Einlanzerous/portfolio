@@ -54,7 +54,7 @@ function pip(e: Event, i: number) { e.stopPropagation(); emit('go', i) }
 </template>
 
 <style scoped>
-.hero { position: relative; display: flex; flex-direction: column; height: 680px; overflow: hidden; color: #141311; transition: background .45s; }
+.hero { position: relative; display: flex; flex-direction: column; height: 730px; overflow: hidden; color: #141311; transition: background .45s; }
 .top { display: grid; grid-template-columns: minmax(0, 1fr); padding: clamp(28px, 3.4vw, 48px) clamp(20px, 4vw, 56px) 0; align-items: start; }
 .copy { position: relative; z-index: 2; min-width: 0; max-width: min(520px, 36vw); display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
 .serial { font: 500 12px 'Geist Mono'; letter-spacing: .14em; text-transform: uppercase; }
