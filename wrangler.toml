@@ -4,15 +4,6 @@
 name = "portfolio"
 compatibility_date = "2026-09-01"
 
-[assets]
-directory = "./dist"
-# A one-page site: an unknown path is a 404, not index.html.
-not_found_handling = "none"
-# Screens and maps are referenced as `/systems/<slug>/<page>.html` from the
-# page and iframed with query strings; the default `auto-trailing-slash`
-# answered each with a 307 to the extensionless path first. Serve as-is.
-html_handling = "none"
-
 # Public hostname on the estate's zone (FOLIO-9). A Workers custom domain:
 # wrangler attaches it through the Workers domains API on deploy, and
 # Cloudflare creates the proxied DNS record and the certificate itself. The
@@ -20,3 +11,17 @@ html_handling = "none"
 # "Edit Cloudflare Workers" template, scoped to this account and to the
 # zerogravity.industries zone (FOLIO-8). No tunnel, no Access — public by design.
 routes = [{ pattern = "portfolio.zerogravity.industries", custom_domain = true }]
+# Keep the workers.dev hostname too; naming a route turns it off by default.
+workers_dev = true
+
+[assets]
+directory = "./dist"
+# `html_handling = "none"` serves every file at its exact path (no 307 to an
+# extensionless twin for the iframed screens) — but it also stops `/` from
+# mapping to index.html, so the fallback has to do that. Unknown paths get the
+# page instead of a 404; the data-file guard keeps the page's own links honest.
+not_found_handling = "single-page-application"
+# Screens and maps are referenced as `/systems/<slug>/<page>.html` from the
+# page and iframed with query strings; the default `auto-trailing-slash`
+# answered each with a 307 to the extensionless path first. Serve as-is.
+html_handling = "none"
