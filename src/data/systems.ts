@@ -46,7 +46,10 @@ export const systems: System[] = [
     blurb: 'A credential vault daemon behind the ZGI services, with an admin console in the Switchyard theme.',
     surfaces: 'Daemon · Admin console', design: 'Shares the Switchyard theme',
     features: [
-      { title: 'Admin console', line: 'Credentials and the services that use them, in one place.', screen: { src: 'systems/switchyard/signet-admin.html', t: 0 } },
+      { title: 'Admin console', line: 'Credentials per project, as a blind mirror: metadata and version hash, never the value.', screen: { src: 'systems/switchyard/signet-credentials.html', t: 0 },
+        explainer: 'Switchyard shows the vault without holding it. The console lists every credential a project owns with its version hash, scope and sync targets, and the plaintext is never returned to the browser. Rotate and add-target are requests to the Signet daemon, which seals the new version and pushes it out.' },
+      { title: 'Secret detail', line: 'One secret: blind value, sync-target reconciliation, and its own hash chain.', screen: { src: 'systems/switchyard/signet-credentials.html', t: 1 },
+        explainer: 'Each secret carries its fan-out: which GitHub Actions secrets and env files hold which version, whether they are in sync, and a drift that was re-sealed on the last reconcile. Below it sits an append-only, hash-linked audit chain of rotations, so a credential can show its own history without ever showing its value.' },
     ],
   },
   { name: 'Construct Server', group: 'Platform', h: 180, pending: true },
