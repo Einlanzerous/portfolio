@@ -1,0 +1,50 @@
+/* ============================================================
+   SWITCHYARD — planning layer · the roster editor (SWY-384).
+   Extends planning.css + delivery.css (.rcard .kv .tg .fld .btn
+   .av .gchip .hmono); loads after planning-docket.css.
+
+   One component, three mounts: PlanRosterEditor.vue — the plan
+   rail (per-plan roster), Settings → System (the global
+   default), Setup → Automations (the project default). This
+   file adds only the editor rows (.rre — .pre is taken by delivery.css) and the inherit state; chrome
+   comes from the shipped primitives.
+
+   Colour contract unchanged: coral = a human is needed, --warn
+   amber = advisory, steel = machine fact. "human only" renders
+   as the .hmono chip the supersede card already wears.
+   ============================================================ */
+
+/* ---- editor rows ---- */
+.rre{display:flex;flex-direction:column;gap:8px}
+.rre-row{display:grid;grid-template-columns:26px minmax(0,1fr) 126px 60px 26px;gap:9px;align-items:center;padding:7px 9px;border:1px solid var(--line-soft);border-radius:9px;background:var(--surface-2)}
+.rre-row .nm{font-size:12.5px;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rre-row .nm .sub{display:block;font-size:10.5px;color:var(--text-4)}
+.rre-role{height:26px;display:flex;align-items:center;padding:0 8px;border:1px solid var(--line);border-radius:7px;background:var(--surface-1);font-family:var(--mono);font-size:10.5px;color:var(--text-3);overflow:hidden;white-space:nowrap}
+.rre-role.ph{color:var(--text-4);font-style:italic}
+.rre-req{display:flex;flex-direction:column;align-items:center;gap:3px}
+.rre-req .lb{font-family:var(--mono);font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-4)}
+.rre-x{width:24px;height:24px;display:grid;place-items:center;border:1px solid transparent;border-radius:7px;color:var(--text-4);cursor:pointer}
+.rre-x:hover{color:var(--warn);border-color:var(--line);background:var(--surface-1)}
+.rre-x svg{width:13px;height:13px}
+
+/* ---- the add-reviewer picker ---- */
+.rre-add{display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px dashed var(--line);border-radius:9px;color:var(--text-4);font-size:12px;cursor:pointer}
+.rre-add:hover{color:var(--text-2);border-color:var(--text-4)}
+.rre-add svg{width:14px;height:14px;flex:none}
+.rre-menu{border:1px solid var(--line);border-radius:10px;background:var(--surface-2);box-shadow:var(--shadow-card);overflow:hidden}
+.rre-menu .mi{display:flex;align-items:center;gap:8px;padding:7px 10px;font-size:12px;color:var(--text-2);cursor:pointer}
+.rre-menu .mi:hover{background:var(--surface-1)}
+.rre-menu .mi .sub{margin-left:auto;font-family:var(--mono);font-size:9.5px;color:var(--text-4)}
+.rre-menu .foot{padding:6px 10px;font-size:10px;line-height:1.5;color:var(--text-4);border-top:1px solid var(--line-soft)}
+
+/* ---- save bar ---- */
+.rre-save{display:flex;align-items:flex-start;gap:9px;margin-top:5px}
+.rre-save .hint{font-size:10.5px;color:var(--text-4);line-height:1.5;max-width:34ch}
+.rre-save .sp{margin-left:auto;display:flex;gap:8px}
+
+/* ---- the inherit state (Setup → Automations, no own rows) ---- */
+.inh{display:flex;flex-direction:column;gap:8px;padding:11px 12px;border:1px dashed var(--line);border-radius:10px}
+.inh .lb{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-4)}
+.inh .row{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--text-2)}
+.inh .row .sub{font-size:10.5px;color:var(--text-4)}
+

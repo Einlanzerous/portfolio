@@ -1,0 +1,878 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Switchyard — Plan as PR</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="theme.css" />
+<link rel="stylesheet" href="delivery.css" />
+<link rel="stylesheet" href="planning.css" />
+<link rel="stylesheet" href="planning-rulings.css" />
+<link rel="stylesheet" href="planning-docket.css" />
+<link rel="stylesheet" href="planning-roster.css" />
+<link rel="stylesheet" href="planning-checks.css" />
+<style>body{margin:0;background:#17181b;font-family:var(--sans);color:var(--text)}button,input,textarea,select{font-family:inherit}.stagewrap{position:relative;width:1780px;margin:44px auto 80px}.frame-label{position:absolute;top:-30px;left:2px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;color:#8a8b90;text-transform:uppercase}.frame-label b{color:#d8d9dd;font-weight:600}.frame-label i{font-style:normal;text-transform:none;letter-spacing:0;color:#75767c}</style>
+</head>
+<body>
+<div class="stagewrap">
+
+<div style="position:absolute;left:0;top:0;width:1500px">
+<div style="font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:14px">Switchyard · Planning layer</div>
+<div style="font-family:var(--sans);color:#d8d9dd;font-size:26px;font-weight:700;letter-spacing:-.02em">The plan is a pull request</div>
+<div style="font-family:var(--sans);color:#8a8b90;font-size:13.5px;line-height:1.65;margin-top:10px;max-width:104ch">An agent opens a plan against a ticket. People read it, comment on any section, argue in one shared thread, and either approve it or send it back. Nothing is built until a human merges the plan — and the plan covers the whole change, not the visible part of it: schema, migration phases, API contract, toggles, observability, rollback. The UI work is listed last on purpose.</div>
+</div>
+
+<!-- ============================================================ 01 ============================================================ -->
+<div class="frame" style="left:0;top:186px;width:1720px;height:4462px">
+<div class="frame-label"><b>01 · Plan PR — under review</b> &nbsp;<i>the whole change in one reviewable document; comments anchor to sections, the argument stays in one thread</i></div>
+<div class="sy" style="height:100%">
+<aside class="side">
+<div class="brand"><span class="brand-mark"><img src="sy-mark.svg" alt="" /></span><div class="brand-name"><span>Switch</span><span>Yard</span></div></div>
+<nav class="nav">
+<div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Dashboard</div>
+<div class="nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 8h18M3 8l2-4h14l2 4M3 8v10a2 2 0 002 2h14a2 2 0 002-2V8M8 12h8"/></svg>Tickets</div>
+<div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="5" height="16" rx="1"/><rect x="10" y="4" width="5" height="11" rx="1"/><rect x="17" y="4" width="4" height="16" rx="1"/></svg>Boards</div>
+<div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>Projects</div>
+<div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5v7M9 7l3 3 3-3"/><path d="M4.5 12.5h15v5.5a1 1 0 01-1 1h-13a1 1 0 01-1-1z"/><path d="M3 21.5h18"/><path d="M7.5 19v2M16.5 19v2"/></svg>Delivery</div>
+<div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12h4l2 6 4-14 2 8h6"/></svg>LLM Insights</div>
+<div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M13 3L4 14h6l-1 7 9-11h-6z"/></svg>Automations</div>
+<div class="nav-label">Admin</div>
+<div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="14" r="4"/><path d="M12 11l7-7 2.5 2.5-1.6 1.6 1.6 1.6-2.5 2.5-1.6-1.6-1.6 1.6"/></svg>Credentials</div>
+<div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3.2"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/></svg>Settings</div>
+<div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12h4l2-5 3 10 2-7 2 2h5"/></svg>Health</div>
+</nav>
+<div class="side-foot">v3.7.0</div>
+</aside>
+<div class="main" style="position:relative">
+<div class="topbar"><div class="search"><span class="kbd">Ctrl K</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>Search services, versions, tickets…</div><div class="topbar-right"><div class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0"/></svg></div><span class="av lg" style="background:#c65a4a">M</span></div></div>
+<div class="content" style="overflow:hidden;padding-bottom:96px">
+
+<div class="thead">
+<div class="r1"><span class="key">SWY-418</span><span class="pstate await"><i></i>Awaiting approval</span><span class="chip mono">lyceum</span><span class="chip mono">ingest</span><div class="sp"><span>opens 5 tickets · 3 services</span><span class="divider-v"></span><span class="key">PRJ-lyceum</span></div></div>
+<h1>Per-tenant ingest quotas</h1>
+<div class="sub">One tenant sent 40k events/min for 11 minutes and every other tenant's ingest p99 went 180ms → 4.2s. There is no per-tenant ceiling anywhere in the path; the only lever today is scaling consumers after the fact. This plan adds one.</div>
+</div>
+
+<div class="stats" style="margin-bottom:18px">
+<div class="st"><div class="k">Wall time</div><div class="v">26m</div><div class="s">since triage</div></div>
+<div class="st"><div class="k">Human touch</div><div class="v">4m</div><div class="s">2 reviewers · 3 comments</div></div>
+<div class="st agentv"><div class="k">Agent turns</div><div class="v">14</div><div class="s">planner only · 3 revisions</div></div>
+<div class="st"><div class="k">Cost</div><div class="v">¢312</div><div class="s">tokens + CI</div></div>
+<div class="st hot"><div class="k">Blast radius</div><div class="v">3</div><div class="s">services · 1 migration</div></div>
+</div>
+
+<div class="pl-wrap">
+<!-- ---------------- plan document ---------------- -->
+<div class="pdoc">
+<div class="pdoc-h"><span class="lb">Plan PR</span><span class="br">plan/swy-418</span><span class="revs" style="margin-left:10px"><span class="rev">rev 1</span><span class="rev">rev 2</span><span class="rev on new">rev 3</span></span><div class="sp"><span class="who">agent/sy-planner</span><span>·</span><span>claude-sonnet-4.6</span><span>·</span><span>9 min ago</span></div></div>
+<div class="pdoc-b">
+
+<div class="psec">
+<div class="psec-h"><h2>Problem statement</h2><div class="sp"><span class="cbtn has"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><b>1</b> resolved</span></div></div>
+<div class="prose">
+<p>Between 09:12 and 09:23 UTC on 4 Aug, tenant <code>argosy-eu</code> replayed a backlog at ~40k events/min against <code>POST /v1/ingest</code>. The shared consumer pool saturated; ingest p99 for the other 811 tenants rose from 180ms to 4.2s and 14k events were shed by the queue's overflow policy. Nobody was paged — the SLO is per-service, not per-tenant.</p>
+<p>There is no admission control in the path. <b>Rate limiting exists only at Traefik, per-IP</b>, which a single tenant with one egress address defeats trivially. Capacity is the only lever we have, and it is the slowest one.</p>
+<p>Fixing this is a backend change end to end: a limits table, a hot-path check, a new response contract, and a way to turn all of it off. The console work is one settings panel.</p>
+</div>
+<div class="thr settled">
+<div class="cm"><span class="av sm" style="background:#4a6ec6">K</span><div><div class="hd"><span class="nm">K. Park</span><span class="ts">14m</span><div class="sp"><span class="resolved"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M4 12l5 5L20 6"/></svg>Resolved</span></div></div><div class="bod"><div class="quoted">the SLO is per-service, not per-tenant</div><p>Is that the real bug? If we had a per-tenant SLO we'd have been paged in minute two and could have throttled by hand.</p></div></div></div>
+<div class="cm ag"><span class="av sm sq">SP</span><div><div class="hd"><span class="nm">sy-planner</span><span class="ts">12m</span></div><div class="bod"><p>Both are true, but they fail differently. A per-tenant SLO pages a human 11 minutes into the incident; a quota rejects at the edge in 40µs and pages nobody. I've added the per-tenant alert to <span class="mention">Observability</span> and left the SLO redefinition out of scope — it's <span class="mention tk">SWY-421</span>, and it's cheap once the per-tenant counters exist.</p></div></div></div>
+</div>
+</div>
+
+<div class="psec">
+<div class="psec-h"><h2>Approach</h2><span class="tag">chosen of 3</span><div class="sp"><span class="cbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Comment</span></div></div>
+<div class="prose">
+<ul>
+<li><b>Token bucket in Redis</b>, keyed <code>quota:{tenant}:{minute}</code>, checked in the ingest handler before the payload is parsed. One <code>INCR</code> + <code>EXPIRE</code> pipelined; measured 40µs p99 against the existing <code>redis</code> instance.</li>
+<li><b>Limits live in Postgres</b> (<code>tenant_quota</code>), loaded into a 30s process-local cache. Postgres is the source of truth so the admin API and the console edit one thing; Redis holds only counters and is disposable.</li>
+<li><b>Reject with 429 + <code>Retry-After</code></b> and a <code>X-Quota-Remaining</code> header on every response, so a well-behaved client self-throttles before it is rejected.</li>
+<li><b>Shadow mode first.</b> The enforcing path ships off. For two weeks we count what <i>would</i> have been rejected, per tenant, and only then flip enforcement per tenant.</li>
+</ul>
+<p>Rejected: Traefik middleware (no tenant identity at that layer), and consumer-side fair scheduling (fixes latency distribution but still accepts unbounded work — <span class="mention tk">SWY-425</span> keeps the idea alive).</p>
+</div>
+</div>
+
+<div class="psec">
+<div class="psec-h"><h2>Schema &amp; migration</h2><span class="tag">backend</span><div class="sp"><span class="gchip warn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 16.5v.5M10.3 3.9L2.4 18a2 2 0 001.7 3h15.8a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg>needs judgement</span><span class="cbtn has"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><b>2</b></span></div></div>
+<div class="bc mig">
+<div class="bc-h"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg></span><div class="t">Migration<span class="m">20260806_tenant_quota.sql</span></div><div class="sp"><span class="gchip warn">expand / contract</span><span class="gchip pass">reversible to step 3</span></div></div>
+<div class="bc-b">
+<p class="lead">Four phases, three of them reversible. The contract phase — dropping <code>legacy_rate_limits</code> — is deliberately <b>not</b> in this plan; it is <span class="mention tk">SWY-423</span>, scheduled after two clean weeks.</p>
+<div class="bcgrid">
+<div class="c"><div class="k">Tables touched</div><div class="v mono">2 new · 1 altered</div></div>
+<div class="c"><div class="k">Rows rewritten</div><div class="v mono">0</div></div>
+<div class="c"><div class="k">Lock taken</div><div class="v ok">none — index built CONCURRENTLY</div></div>
+<div class="c"><div class="k">Est. duration</div><div class="v mono">~6m on prod volume</div></div>
+</div>
+<div class="phases">
+<div class="ph"><span class="n">1</span><span class="t"><b>Expand</b> — create <code>tenant_quota</code>, <code>tenant_quota_audit</code>; add <code>ingest_events.tenant_id</code> index <code>CONCURRENTLY</code></span><span class="sp"><span class="age">~6m</span><span class="gchip pass">reversible</span></span></div>
+<div class="ph"><span class="n">2</span><span class="t"><b>Backfill</b> — one row per tenant, limit seeded from p95 of the last 30d (812 rows, idempotent, resumable)</span><span class="sp"><span class="age">~2s</span><span class="gchip pass">reversible</span></span></div>
+<div class="ph"><span class="n">3</span><span class="t"><b>Read path</b> — handler reads the new table behind <code>ingest.quota.shadow</code>; old code untouched</span><span class="sp"><span class="age">deploy</span><span class="gchip pass">reversible</span></span></div>
+<div class="ph"><span class="n">4</span><span class="t"><b>Contract</b> — drop <code>legacy_rate_limits</code> and its writer <span class="mention tk">SWY-423</span></span><span class="sp"><span class="gchip warn">not in this plan</span></span></div>
+</div>
+</div>
+</div>
+<div class="thr live">
+<div class="cm"><span class="av sm" style="background:#3f7a5f">R</span><div><div class="hd"><span class="nm">R. Diaz</span><span class="ts">7m</span><div class="sp"><span class="mini">Reply</span><span class="mini"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M4 12l5 5L20 6"/></svg>Resolve</span></div></div><div class="bod"><div class="quoted">add <code>ingest_events.tenant_id</code> index CONCURRENTLY</div><p><code>ingest_events</code> is 2.4M rows and takes writes continuously. CONCURRENTLY still needs a brief ShareUpdateExclusive at both ends, and if it fails it leaves an <code>INVALID</code> index behind. Who notices that?</p></div></div></div>
+<div class="cm ag"><span class="av sm sq">SP</span><div><div class="hd"><span class="nm">sy-planner</span><span class="ts">5m</span><span class="agent-tag" style="margin-left:2px">rev 3</span></div><div class="bod"><p>Fair. Revised: phase 1 runs from the maintenance window job (02:00–04:00 UTC, writes still allowed), and the post-migration check now asserts <code>pg_index.indisvalid</code> and fails the deploy if it is false — an invalid index is a red gate, not a silent one. Added as acceptance criterion 5 and to the pre-flight on the promote gate.</p></div></div></div>
+<div class="thr-f"><span class="av sm" style="background:#c65a4a">M</span><span class="inp">Reply… <span style="opacity:.7">@sy-planner to make it revise the plan</span></span></div>
+</div>
+</div>
+
+<div class="psec">
+<div class="psec-h"><h2>API surface</h2><span class="tag">backend</span><div class="sp"><span class="cbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Comment</span></div></div>
+<table class="ptbl">
+<thead><tr><th style="width:290px">Endpoint</th><th>Change</th><th style="width:132px">Contract</th><th style="width:184px">Consumers</th></tr></thead>
+<tbody>
+<tr><td class="mono">POST /v1/ingest</td><td>May now answer <b>429</b> with <code>Retry-After</code>; adds <code>X-Quota-Remaining</code> to every 2xx</td><td><span class="gchip warn">behavioural</span></td><td>4 SDKs · argosy · purser</td></tr>
+<tr><td class="mono">GET /v1/tenants/{id}/quota</td><td>New — current limit, window usage, shadow rejects</td><td><span class="gchip pass">additive</span></td><td>console</td></tr>
+<tr><td class="mono">PUT /v1/admin/quota/{id}</td><td>New — set limit + burst; requires <code>deployer</code>; writes an audit row</td><td><span class="gchip pass">additive</span></td><td>console · runbook</td></tr>
+<tr><td class="mono">GET /v1/ingest/stats</td><td>Response gains <code>quota</code> object; existing fields unchanged</td><td><span class="gchip pass">additive</span></td><td>grafana</td></tr>
+</tbody>
+</table>
+<div class="prose" style="margin-top:11px"><p>Only the first row is a real decision: a 429 is new behaviour for clients that today only ever see 200 or 500. Our four SDKs retry on 429 already; <b>two known direct-HTTP tenants do not</b>. That is why enforcement is per-tenant and opt-in rather than global — see Rollout.</p></div>
+</div>
+
+<div class="psec">
+<div class="psec-h"><h2>Feature toggles</h2><span class="tag">backend</span><div class="sp"><span class="cbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Comment</span></div></div>
+<div class="bc tog">
+<div class="bc-h"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h11a5 5 0 010 10H4"/><circle cx="15" cy="12" r="3"/></svg></span><div class="t">2 new toggles<span class="m">both carry a removal ticket</span></div><div class="sp"><span class="gchip pass">kill switch present</span></div></div>
+<div class="bc-b">
+<div class="tgrow"><div><div class="kk">ingest.quota.shadow</div><div class="dd">Count what would be rejected. No request is ever refused.</div></div><div class="env"><span class="lb">dev</span><span class="tg on"><i></i></span></div><div class="env"><span class="lb">prod</span><span class="tg on"><i></i></span></div><div><span class="tref">removes in SWY-424</span></div></div>
+<div class="tgrow"><div><div class="kk">ingest.quota.enforce</div><div class="dd">Actually return 429. Per-tenant allowlist, starts empty. <b style="color:var(--text-2)">This is the kill switch</b> — off restores today's behaviour with no deploy.</div></div><div class="env"><span class="lb">dev</span><span class="tg on hot"><i></i></span></div><div class="env"><span class="lb">prod</span><span class="tg"><i></i></span></div><div><span class="tref">removes in SWY-424</span></div></div>
+</div>
+</div>
+</div>
+
+<div class="psec">
+<div class="psec-h"><h2>Rollout &amp; reversibility</h2><div class="sp"><span class="cbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Comment</span></div></div>
+<div class="prose"><p>Promotion to prod ships <b>code, not behaviour</b>. The sequence after promote is deliberate and each step is undone by the step above it:</p></div>
+<div class="bc data">
+<div class="bc-b" style="padding-top:11px">
+<div class="phases">
+<div class="ph"><span class="n">1</span><span class="t">Promote to prod with both toggles off → dead code, zero behaviour change</span><span class="sp"><span class="gchip pass">revert: promote v2.4.1</span></span></div>
+<div class="ph"><span class="n">2</span><span class="t">Enable <code>shadow</code> globally → counters and per-tenant alerts, still zero rejections</span><span class="sp"><span class="gchip pass">revert: flag off, instant</span></span></div>
+<div class="ph"><span class="n">3</span><span class="t">After 14d of shadow data, enable <code>enforce</code> for <b>argosy-eu</b> only</span><span class="sp"><span class="gchip pass">revert: flag off, instant</span></span></div>
+<div class="ph"><span class="n">4</span><span class="t">Widen the allowlist a tenant at a time; the two direct-HTTP tenants get a written heads-up first</span><span class="sp"><span class="gchip warn">manual gate</span></span></div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="psec">
+<div class="psec-h"><h2>Observability</h2><span class="tag">backend</span><div class="sp"><span class="cbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Comment</span></div></div>
+<div class="bc obs">
+<div class="bc-h"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12h4l2 6 4-14 2 8h6"/></svg></span><div class="t">3 metrics · 2 alerts · 1 dashboard row</div><div class="sp"><span class="gchip pend">ships with phase 3</span></div></div>
+<div class="bc-b" style="padding-top:11px">
+<div class="prose"><ul>
+<li><code>lyceum_quota_rejects_total{tenant,mode}</code> — counter, <code>mode</code> is <code>shadow</code> or <code>enforce</code>. The whole rollout decision reads off this one series.</li>
+<li><code>lyceum_quota_usage_ratio{tenant}</code> — gauge, drives the console panel and the "approaching limit" nudge.</li>
+<li><code>lyceum_quota_check_seconds</code> — histogram; the hot-path budget is 200µs p99 and criterion 3 asserts it.</li>
+<li><b>Alert · shadow pressure</b> — any tenant over its limit for 10m while in shadow → ticket to the tenant's owner, not a page.</li>
+<li><b>Alert · check latency</b> — <code>check_seconds</code> p99 &gt; 1ms for 5m → page. This is the one that means "we made ingest worse."</li>
+</ul></div>
+</div>
+</div>
+</div>
+
+<div class="psec">
+<div class="psec-h"><h2>Console work</h2><span class="tag">frontend · 12% of the change</span><div class="sp"><span class="cbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Comment</span></div></div>
+<div class="prose">
+<ul>
+<li><b>Settings › Quotas</b> — one table, 812 rows, tenant / limit / burst / 7d peak / mode. Inline edit for <code>deployer</code>, everyone else reads. Writes go through <code>PUT /v1/admin/quota</code> and land in the audit table.</li>
+<li><b>Ingest health card</b> gains a rejects sparkline; a tenant in enforce mode with rejects &gt; 0 shows the coral edge bar.</li>
+<li>No new components. The table is <code>DataTable</code>, the mode switch is the existing flag toggle, the sparkline is the delivery-layer one.</li>
+</ul>
+</div>
+</div>
+
+<div class="psec">
+<div class="psec-h"><h2>Acceptance criteria</h2><div class="sp"><span class="chip mono" style="height:20px;font-size:10px">2 / 6 already provable</span><span class="cbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Comment</span></div></div>
+<div class="ck on"><span class="bx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></span><span>A tenant over its limit receives 429 with a <code>Retry-After</code> that a retrying SDK honours; no other tenant's p99 moves.</span><span class="mt">load test</span></div>
+<div class="ck on"><span class="bx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></span><span>With both toggles off, ingest behaviour is byte-identical to v2.4.1 — same status codes, same headers.</span><span class="mt">contract test</span></div>
+<div class="ck"><span class="bx"></span><span>Quota check adds &lt; 200µs at p99 to the ingest hot path, measured over 1h of production-shaped traffic.</span><span class="mt">benchmark</span></div>
+<div class="ck"><span class="bx"></span><span>Migration applies and rolls back cleanly against a prod-sized snapshot, twice, with no <code>INVALID</code> index left behind.</span><span class="mt">migration CI</span></div>
+<div class="ck"><span class="bx"></span><span>Post-migration check fails the deploy if <code>pg_index.indisvalid</code> is false. <span style="color:var(--accent-2)">Added in rev 3 from R. Diaz's comment.</span></span><span class="mt">pre-flight</span></div>
+<div class="ck"><span class="bx"></span><span>Limits are editable in the console by <code>deployer</code> only, and every write leaves an audit row naming the actor.</span><span class="mt">e2e</span></div>
+</div>
+
+<div class="psec">
+<div class="psec-h"><h2>Tradeoffs</h2><div class="sp"><span class="cbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Comment</span></div></div>
+<table class="ptbl">
+<thead><tr><th style="width:300px">Decision</th><th style="width:150px">Chosen</th><th>Tradeoff accepted</th></tr></thead>
+<tbody>
+<tr><td>Redis counters vs. in-process counters</td><td class="pick">Redis</td><td>One network hop on the hot path (40µs measured); in exchange the limit is real across all 12 ingest pods instead of 12× the limit</td></tr>
+<tr><td>Reject at the edge vs. fair-share the consumers</td><td class="pick">reject</td><td>A noisy tenant loses data it could have queued; the alternative protects latency but not the queue, and is a much larger change</td></tr>
+<tr><td>Postgres as source of truth vs. Redis-only</td><td class="pick">Postgres</td><td>30s of staleness after a limit edit; in exchange a Redis flush costs us counters, not configuration</td></tr>
+<tr><td>Global enforcement vs. per-tenant allowlist</td><td class="pick">allowlist</td><td>Slower to full coverage and one more piece of state to clean up; two direct-HTTP tenants would otherwise start failing without warning</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="psec">
+<div class="psec-h"><h2>Out of scope</h2><div class="sp"><span class="cbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Comment</span></div></div>
+<div class="prose"><ul>
+<li>Per-tenant SLOs and the paging rules that follow from them — <span class="mention tk">SWY-421</span></li>
+<li>Dropping <code>legacy_rate_limits</code> and its writer — <span class="mention tk">SWY-423</span>, after two clean weeks</li>
+<li>Fair scheduling inside the consumer pool — <span class="mention tk">SWY-425</span>, still worth doing</li>
+<li>Billing on top of quota counters. Tempting, adjacent, and a different plan.</li>
+</ul></div>
+</div>
+
+<div class="psec">
+<div class="psec-h"><h2>Work breakdown</h2><span class="tag">opens on approve</span><div class="sp"><span class="chip mono" style="height:20px;font-size:10px">5 tickets · est. ¢1.40</span></div></div>
+<div style="border:1px solid var(--line);border-radius:9px;background:var(--surface-1);overflow:hidden">
+<div class="wb"><span class="n">1</span><span class="key">SWY-419</span><div><div class="ti">Migration + <code style="font-family:var(--mono);font-size:11.5px">tenant_quota</code> schema</div><div class="sub">no dependencies · runs in the maintenance window</div></div><span class="chip mono" style="height:20px;font-size:10px">lyceum</span><div style="display:flex;align-items:center;gap:7px"><span class="av sm sq">CC</span><span style="font-size:11.5px;color:var(--text-3)">claude-code</span></div><div class="rt"><span class="gchip pass">revertible</span></div></div>
+<div class="wb"><span class="n">2</span><span class="key">SWY-420</span><div><div class="ti">Quota check in the ingest hot path + shadow counters</div><div class="sub"><span class="dep-arrow">after SWY-419</span></div></div><span class="chip mono" style="height:20px;font-size:10px">lyceum</span><div style="display:flex;align-items:center;gap:7px"><span class="av sm sq">CC</span><span style="font-size:11.5px;color:var(--text-3)">claude-code</span></div><div class="rt"><span class="gchip pass">revertible</span></div></div>
+<div class="wb"><span class="n">3</span><span class="key">SWY-422</span><div><div class="ti">Admin + read API, audit rows, <code style="font-family:var(--mono);font-size:11.5px">deployer</code> scope</div><div class="sub"><span class="dep-arrow">after SWY-419</span> · parallel with 2</div></div><span class="chip mono" style="height:20px;font-size:10px">lyceum</span><div style="display:flex;align-items:center;gap:7px"><span class="av sm sq">CC</span><span style="font-size:11.5px;color:var(--text-3)">claude-code</span></div><div class="rt"><span class="gchip pass">revertible</span></div></div>
+<div class="wb"><span class="n">4</span><span class="key">SWY-426</span><div><div class="ti">Metrics, dashboard row, two alert rules</div><div class="sub"><span class="dep-arrow">after SWY-420</span></div></div><span class="chip mono" style="height:20px;font-size:10px">grafana</span><div style="display:flex;align-items:center;gap:7px"><span class="av sm sq">CC</span><span style="font-size:11.5px;color:var(--text-3)">claude-code</span></div><div class="rt"><span class="gchip pass">revertible</span></div></div>
+<div class="wb"><span class="n">5</span><span class="key">SWY-427</span><div><div class="ti">Settings › Quotas panel + ingest health sparkline</div><div class="sub"><span class="dep-arrow">after SWY-422</span></div></div><span class="chip mono" style="height:20px;font-size:10px">switchyard-client</span><div style="display:flex;align-items:center;gap:7px"><span class="av sm sq">CC</span><span style="font-size:11.5px;color:var(--text-3)">claude-code</span></div><div class="rt"><span class="gchip pass">revertible</span></div></div>
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- ---------------- rail ---------------- -->
+<div style="display:flex;flex-direction:column;gap:14px">
+<div class="rcard">
+<div class="rh"><span class="t">Plan authorship</span><div class="sp"><span class="agent-tag">agent</span></div></div>
+<div class="kv"><span class="k">Planner</span><span class="v mono">agent/sy-planner</span></div>
+<div class="kv"><span class="k">Runner</span><span class="v mono">claude-code · container</span></div>
+<div class="kv"><span class="k">Model</span><span class="v mono">claude-sonnet-4.6</span></div>
+<div class="kv"><span class="k">Revisions</span><span class="v">3 · last 9 min ago</span></div>
+<div class="kv"><span class="k">Sources read</span><span class="v">14 files · 2 incidents · 1 dashboard</span></div>
+</div>
+<div class="rcard">
+<div class="rh"><span class="t">Checks</span><div class="sp"><span class="gchip pass">1 / 1</span></div></div>
+<div class="chk">
+<div class="chk-row"><span class="chk-ic ok">✓</span><span class="nm">plan-review<span class="sub">rev 3 · completed 2 min after submit</span></span><span class="gchip pass">success</span></div>
+<div class="chk-sum">No blocking holes. Two advisory threads opened on <b>§ Schema</b> and <b>§ Rollout</b> — resolve or argue, nothing bounced. <a href="#">run ↗</a></div>
+</div>
+</div>
+<div class="rcard">
+<div class="rh"><span class="t">Review</span><div class="sp"><span class="pstate await"><i></i>1 of 2</span></div></div>
+<div style="display:flex;flex-direction:column;gap:9px">
+<div style="display:flex;align-items:center;gap:9px"><span class="av sm" style="background:#3f7a5f">R</span><div style="flex:1;min-width:0"><div style="font-size:12.5px;color:var(--text)">R. Diaz</div><div style="font-size:11px;color:var(--text-4)">backend owner · required</div></div><span class="gchip warn">changes asked</span></div>
+<div style="display:flex;align-items:center;gap:9px"><span class="av sm" style="background:#4a6ec6">K</span><div style="flex:1;min-width:0"><div style="font-size:12.5px;color:var(--text)">K. Park</div><div style="font-size:11px;color:var(--text-4)">data · optional</div></div><span class="gchip pass">approved rev 2</span></div>
+<div style="display:flex;align-items:center;gap:9px"><span class="av sm" style="background:#c65a4a">M</span><div style="flex:1;min-width:0"><div style="font-size:12.5px;color:var(--text)">magos</div><div style="font-size:11px;color:var(--text-4)">deployer · required</div></div><span class="gchip pend">reading</span></div>
+</div>
+</div>
+<div class="disc" style="height:1180px">
+<div class="disc-h"><span class="lb">Discussion</span><div class="sp"><span class="chip mono" style="height:20px;font-size:10px">9</span><span class="key">SWY-418</span></div></div>
+<div class="disc-b">
+<div class="daymark"><span>4 Aug · after the incident</span></div>
+<div class="msg ag"><span class="av sm sq">SP</span><div><div class="hd"><span class="nm">sy-planner</span><span class="ts">31m</span></div><div class="bod"><p>Plan PR opened against <span class="mention tk">SWY-418</span> from incident <span class="mention tk">INC-2093</span>. Five tickets, one migration, two toggles. The migration is the only part that needs a window.</p></div></div></div>
+<div class="msg"><span class="av sm" style="background:#4a6ec6">K</span><div><div class="hd"><span class="nm">K. Park</span><span class="ts">24m</span></div><div class="bod"><p>Seeding limits from p95 of the last 30d bakes in the bad month. <span class="mention ag">@sy-planner</span> can you use the median of weekly p95s instead?</p></div></div></div>
+<div class="msg ag"><span class="av sm sq">SP</span><div><div class="hd"><span class="nm">sy-planner</span><span class="ts">22m</span></div><div class="bod"><p>Done in rev 2 — median of the four weekly p95s, floor of 500/min so tiny tenants aren't clipped. Backfill is idempotent so re-seeding later costs nothing.</p></div></div></div>
+<div class="msg"><span class="av sm" style="background:#4a6ec6">K</span><div><div class="hd"><span class="nm">K. Park</span><span class="ts">21m</span></div><div class="bod"><p>Good. Approving rev 2 from the data side.</p></div></div></div>
+<div class="sysmsg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 12l5 5L20 6"/></svg><span><b>K. Park</b> approved rev 2 · <span style="color:var(--text-4)">superseded by rev 3</span></span></div>
+<div class="msg"><span class="av sm" style="background:#3f7a5f">R</span><div><div class="hd"><span class="nm">R. Diaz</span><span class="ts">7m</span></div><div class="bod"><p>Left a comment on <b>Schema &amp; migration</b> — the CONCURRENTLY index on <code>ingest_events</code> worries me more than the quota logic does.</p></div></div></div>
+<div class="msg ag"><span class="av sm sq">SP</span><div><div class="hd"><span class="nm">sy-planner</span><span class="ts">5m</span></div><div class="bod"><p>Addressed in rev 3: maintenance window + an <code>indisvalid</code> assertion wired into the promote gate's pre-flight. Diff is two lines in the migration section and one new acceptance criterion.</p></div></div></div>
+<div class="msg"><span class="av sm" style="background:#c65a4a">M</span><div><div class="hd"><span class="nm">magos</span><span class="ts">3m</span></div><div class="bod"><p>Do the two direct-HTTP tenants know a 429 is coming? I don't want to find out from support.</p></div></div></div>
+<div class="msg ag"><span class="av sm sq">SP</span><div><div class="hd"><span class="nm">sy-planner</span><span class="ts">2m</span></div><div class="bod"><p>They can't be surprised by promotion — enforce ships off and the allowlist starts empty. Step 4 of Rollout is a manual gate for exactly this. I can open a heads-up ticket against <span class="mention tk">PRJ-support</span> now if you want it tracked.</p></div></div></div>
+<div class="thinking"><span class="dots"><i></i><i></i><i></i></span><span>sy-planner is reading Rollout · turn 15</span></div>
+<div style="flex:1"></div>
+</div>
+<div class="disc-f">
+<div class="cbox"><span class="ph">Message the thread… <span style="opacity:.75">@ to mention</span></span><span class="send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 19V5M5 12l7-7 7 7"/></svg></span></div>
+<div class="chints"><span class="h"><b>@sy-planner</b> revises the plan</span><span class="h"><b>@person</b> notifies</span><span class="h" style="margin-left:auto">Everything here lands on the ticket</span></div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="actionbar">
+<div style="display:flex;align-items:center;gap:9px"><span class="av sm" style="background:#3f7a5f">R</span><span class="av sm" style="background:#4a6ec6">K</span><span class="av sm" style="background:#c65a4a">M</span></div>
+<div class="note"><b style="color:var(--text)">Approving opens 5 tickets and dispatches SWY-419.</b><br />It does not deploy anything — promotion is still a separate gate, and both toggles ship off.</div>
+<div class="sp"><button class="btn btn-ghost">View rev 2 → 3 diff</button><button class="btn">Request changes</button><button class="btn btn-primary" style="height:34px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 12l5 5L20 6"/></svg>Approve plan</button></div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ============================================================ 02 ============================================================ -->
+<div class="frame" style="left:0;top:4888px;width:1250px;height:1010px;background:var(--surface-1)">
+<div class="frame-label"><b>02 · The thread is the record</b> &nbsp;<i>one shared conversation per ticket — ask once, everyone sees the answer</i></div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;height:100%">
+<div style="padding:22px;border-right:1px solid var(--line-soft);display:flex;flex-direction:column;gap:12px">
+<div class="mlab" style="margin:0">a · asking the planner</div>
+<div class="disc" style="flex:1;min-height:0">
+<div class="disc-h"><span class="lb">Discussion</span><div class="sp"><span class="key">SWY-418</span></div></div>
+<div class="disc-b">
+<div class="msg"><span class="av sm" style="background:#c65a4a">M</span><div><div class="hd"><span class="nm">magos</span><span class="ts">now</span></div><div class="bod"><p><span class="mention ag">@sy-planner</span> what happens to events we reject — are they lost or does the SDK buffer them?</p></div></div></div>
+<div class="thinking"><span class="dots"><i></i><i></i><i></i></span><span>sy-planner is reading sdk/retry.ts · turn 16</span></div>
+<div style="flex:1"></div>
+</div>
+<div class="disc-f"><div class="cbox"><span class="ph">Message the thread…</span><span class="send off"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 19V5M5 12l7-7 7 7"/></svg></span></div><div class="chints"><span class="h">A mention wakes the planner container</span></div></div>
+</div>
+<div style="font-size:11.5px;line-height:1.6;color:var(--text-4)">Mentioning the planner is the only way to spend tokens from this box. Human-to-human messages cost nothing and wake nobody.</div>
+</div>
+<div style="padding:22px;border-right:1px solid var(--line-soft);display:flex;flex-direction:column;gap:12px">
+<div class="mlab" style="margin:0">b · the answer, on the record</div>
+<div class="disc" style="flex:1;min-height:0">
+<div class="disc-h"><span class="lb">Discussion</span><div class="sp"><span class="key">SWY-418</span></div></div>
+<div class="disc-b">
+<div class="msg"><span class="av sm" style="background:#c65a4a">M</span><div><div class="hd"><span class="nm">magos</span><span class="ts">2m</span></div><div class="bod"><p><span class="mention ag">@sy-planner</span> what happens to events we reject — are they lost or does the SDK buffer them?</p></div></div></div>
+<div class="msg ag"><span class="av sm sq">SP</span><div><div class="hd"><span class="nm">sy-planner</span><span class="ts">1m</span></div><div class="bod"><p>Buffered, then lost. <code>sdk/retry.ts</code> holds up to 10k events or 60s and honours <code>Retry-After</code>; past either bound it drops oldest-first and increments <code>sdk_dropped_total</code>.</p><p>Direct-HTTP tenants have no such buffer, which is the second reason enforcement is per-tenant.</p></div></div></div>
+<div class="sysmsg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><span>Answer pinned to <b>Rollout &amp; reversibility</b> by magos</span></div>
+<div class="msg"><span class="av sm" style="background:#3f7a5f">R</span><div><div class="hd"><span class="nm">R. Diaz</span><span class="ts">40s</span></div><div class="bod"><p>Was about to ask the same thing. 👍</p></div></div></div>
+<div style="flex:1"></div>
+</div>
+<div class="disc-f"><div class="cbox"><span class="ph">Message the thread…</span><span class="send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 19V5M5 12l7-7 7 7"/></svg></span></div><div class="chints"><span class="h">Pinned answers appear beside the section they explain</span></div></div>
+</div>
+<div style="font-size:11.5px;line-height:1.6;color:var(--text-4)">The question was asked once. The next person to wonder finds the answer instead of re-running the planner — which is the entire reason this lives on the ticket and not in anyone's chat client.</div>
+</div>
+<div style="padding:22px;display:flex;flex-direction:column;gap:12px">
+<div class="mlab" style="margin:0">c · nothing to discuss yet</div>
+<div class="disc" style="flex:1;min-height:0">
+<div class="disc-h"><span class="lb">Discussion</span><div class="sp"><span class="key">SWY-431</span></div></div>
+<div class="disc-b" style="justify-content:center">
+<div class="empty" style="border:none;background:none;padding:20px 10px">
+<div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+<h3>No discussion yet</h3>
+<p>The planner posts here when it opens a plan. Until then this is a good place to leave context it would otherwise have to guess at.</p>
+<div class="steps" style="max-width:100%">
+<div class="st"><span class="n">@</span>Mention <b style="color:var(--text);font-weight:600;margin-left:4px">&nbsp;sy-planner</b>&nbsp;to make it re-read the ticket</div>
+<div class="st"><span class="n">↑</span>Anything posted here is context for the next revision</div>
+</div>
+</div>
+<div style="flex:1"></div>
+</div>
+<div class="disc-f"><div class="cbox"><span class="ph">Message the thread…</span><span class="send off"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 19V5M5 12l7-7 7 7"/></svg></span></div><div class="chints"><span class="h">Visible to everyone with ticket access</span></div></div>
+</div>
+<div style="font-size:11.5px;line-height:1.6;color:var(--text-4)">An empty thread should teach, not apologise. It is also where a human can pre-load constraints before the first plan is drafted.</div>
+</div>
+</div>
+</div>
+
+<!-- ============================================================ 03 ============================================================ -->
+<div class="frame" style="left:0;top:6078px;width:1250px;height:566px;background:var(--surface-1)">
+<div class="frame-label"><b>03 · rev 2 → rev 3</b> &nbsp;<i>a plan revision is a force-push: what changed, and which comment caused it</i></div>
+<div style="padding:26px 30px;height:100%;box-sizing:border-box;display:flex;flex-direction:column;gap:16px">
+<div style="display:flex;align-items:center;gap:12px">
+<div><div style="font-size:16px;font-weight:600">Changes since your last review</div><div style="font-size:12px;color:var(--text-3);margin-top:3px">2 sections · 1 new criterion · nothing removed from scope</div></div>
+<div style="margin-left:auto;display:flex;align-items:center;gap:9px"><span class="revs"><span class="rev">rev 1</span><span class="rev on">rev 2</span><span class="dep-arrow">→</span><span class="rev on new">rev 3</span></span><button class="btn btn-ghost">Full plan</button></div>
+</div>
+<div class="difgrp">
+<div class="gh"><b>Schema &amp; migration</b><span class="tag" style="font-family:var(--mono);font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:var(--text-4);border:1px solid var(--line);border-radius:4px;padding:1px 5px">phase 1</span><span class="why"><span class="av sm" style="background:#3f7a5f">R</span>from R. Diaz's comment</span></div>
+<div class="dline del"><span class="s">−</span><span>Phase 1 · Expand — create <code style="font-family:var(--mono)">tenant_quota</code>, <code style="font-family:var(--mono)">tenant_quota_audit</code>; add <code style="font-family:var(--mono)">ingest_events.tenant_id</code> index CONCURRENTLY. Runs with the deploy.</span></div>
+<div class="dline add"><span class="s">+</span><span>Phase 1 · Expand — …index CONCURRENTLY, <b>dispatched from the maintenance-window job (02:00–04:00 UTC). Writes stay open; the build is expected to take ~6m on prod volume.</b></span></div>
+<div class="dline add"><span class="s">+</span><span><b>Post-migration check asserts <code style="font-family:var(--mono)">pg_index.indisvalid</code>; a false result fails the deploy and shows red on the promote gate's pre-flight.</b></span></div>
+</div>
+<div class="difgrp">
+<div class="gh"><b>Acceptance criteria</b><span class="why"><span class="av sm" style="background:#3f7a5f">R</span>same comment</span></div>
+<div class="dline add"><span class="s">+</span><span>5 · Post-migration check fails the deploy if <code style="font-family:var(--mono)">pg_index.indisvalid</code> is false. <span style="color:var(--text-4)">— pre-flight</span></span></div>
+</div>
+<div class="difgrp">
+<div class="gh"><b>Problem statement</b><span class="why">planner, unprompted</span></div>
+<div class="dline add"><span class="s">+</span><span>Sentence naming the per-tenant SLO question and pointing it at <span class="mention tk">SWY-421</span> rather than absorbing it.</span></div>
+</div>
+<div style="margin-top:auto;display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:10px;background:var(--surface-2);border:1px solid var(--line)">
+<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="var(--warn)" stroke-width="1.8" style="flex:none"><path d="M12 8v5M12 16.5v.5"/><circle cx="12" cy="12" r="9"/></svg>
+<div style="font-size:12.5px;line-height:1.55;color:var(--text-2)"><b style="color:var(--text)">K. Park's approval was on rev 2 and no longer counts.</b> Approvals are pinned to a revision — the sections they touched both changed. Their comment thread stayed resolved.</div>
+<div style="margin-left:auto;display:flex;gap:9px"><button class="btn btn-ghost">Ask K. Park to re-review</button><button class="btn btn-primary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 12l5 5L20 6"/></svg>Approve rev 3</button></div>
+</div>
+</div>
+</div>
+
+<!-- ============================================================ 04 ============================================================ -->
+<div class="frame" style="left:0;top:6824px;width:1250px;height:890px;background:var(--surface-1)">
+<div class="frame-label"><b>04 · Backend callouts</b> &nbsp;<i>the four things a reviewer must not miss — each one says how far it can be un-done</i></div>
+<div style="padding:26px 30px;height:100%;box-sizing:border-box;overflow:hidden">
+<div style="font-size:12.5px;line-height:1.6;color:var(--text-3);max-width:96ch;margin-bottom:18px">Prose hides consequence. Anything that changes stored data, a wire contract, a runtime switch, or what we can see gets lifted out of the plan body into a card with the same four facts. A reviewer scanning only these cards still knows what they are agreeing to.</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+
+<div class="bc mig">
+<div class="bc-h"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg></span><div class="t">Migration<span class="m">20260806_tenant_quota.sql</span></div><div class="sp"><span class="gchip warn">window</span></div></div>
+<div class="bc-b">
+<p class="lead">Amber, always — a migration is the one thing a promote-rollback does not undo for you.</p>
+<div class="bcgrid" style="grid-template-columns:1fr 1fr">
+<div class="c"><div class="k">Reversible</div><div class="v ok">yes, to phase 3</div></div>
+<div class="c"><div class="k">Lock</div><div class="v ok">none</div></div>
+<div class="c"><div class="k">Rows rewritten</div><div class="v mono">0</div></div>
+<div class="c"><div class="k">Duration</div><div class="v mono">~6m</div></div>
+</div>
+</div>
+</div>
+
+<div class="bc tog">
+<div class="bc-h"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h11a5 5 0 010 10H4"/><circle cx="15" cy="12" r="3"/></svg></span><div class="t">Feature toggle<span class="m">ingest.quota.enforce</span></div><div class="sp"><span class="gchip pass">kill switch</span></div></div>
+<div class="bc-b">
+<p class="lead">Coral, because a toggle is where a human decides. Every new flag names its removal ticket in the plan or the plan does not pass review.</p>
+<div class="bcgrid" style="grid-template-columns:1fr 1fr">
+<div class="c"><div class="k">Ships as</div><div class="v">off in prod</div></div>
+<div class="c"><div class="k">Blast radius</div><div class="v">per-tenant allowlist</div></div>
+<div class="c"><div class="k">Revert</div><div class="v ok">flag off · instant</div></div>
+<div class="c"><div class="k">Removal</div><div class="v mono">SWY-424</div></div>
+</div>
+</div>
+</div>
+
+<div class="bc api">
+<div class="bc-h"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 5l-5 7 5 7M16 5l5 7-5 7"/></svg></span><div class="t">Contract change<span class="m">POST /v1/ingest</span></div><div class="sp"><span class="gchip warn">behavioural</span></div></div>
+<div class="bc-b">
+<p class="lead">Not a breaking change on paper — a new status code on an existing route. On paper is where outages come from, so consumers are enumerated by name.</p>
+<div class="bcgrid" style="grid-template-columns:1fr 1fr">
+<div class="c"><div class="k">Kind</div><div class="v">new 429 + headers</div></div>
+<div class="c"><div class="k">Consumers</div><div class="v">4 SDKs · 2 services</div></div>
+<div class="c"><div class="k">Handle it today</div><div class="v warn">4 of 6</div></div>
+<div class="c"><div class="k">Versioned</div><div class="v">no — same v1</div></div>
+</div>
+</div>
+</div>
+
+<div class="bc data">
+<div class="bc-h"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h16M4 12h16M4 18h10"/><circle cx="18" cy="18" r="3"/></svg></span><div class="t">Backfill<span class="m">seed_tenant_quota</span></div><div class="sp"><span class="gchip pass">idempotent</span></div></div>
+<div class="bc-b">
+<p class="lead">Steel, because no human decides anything here — it just has to be safe to run twice and safe to stop halfway.</p>
+<div class="bcgrid" style="grid-template-columns:1fr 1fr">
+<div class="c"><div class="k">Rows</div><div class="v mono">812</div></div>
+<div class="c"><div class="k">Resumable</div><div class="v ok">yes</div></div>
+<div class="c"><div class="k">Source</div><div class="v">median of 4 weekly p95</div></div>
+<div class="c"><div class="k">Re-runnable</div><div class="v ok">yes, any time</div></div>
+</div>
+</div>
+</div>
+
+</div>
+<div style="display:flex;align-items:center;gap:22px;margin-top:16px;padding:12px 16px;border-radius:9px;background:var(--surface-2);border:1px solid var(--line-soft);flex-wrap:wrap">
+<span style="font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-4)">Card colour</span>
+<span style="display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--text-3)"><i style="width:10px;height:10px;border-radius:3px;background:var(--warn-bg);border:1px solid var(--warn-line);display:block"></i>stored data changes shape</span>
+<span style="display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--text-3)"><i style="width:10px;height:10px;border-radius:3px;background:var(--accent-weak);border:1px solid var(--accent-line);display:block"></i>a person decides when</span>
+<span style="display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--text-3)"><i style="width:10px;height:10px;border-radius:3px;background:var(--st-progress-bg);border:1px solid rgba(100,160,214,.3);display:block"></i>someone else's code depends on it</span>
+<span style="display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--text-3)"><i style="width:10px;height:10px;border-radius:3px;background:var(--agent-bg);border:1px solid rgba(143,166,189,.3);display:block"></i>machine-only, must be re-runnable</span>
+</div>
+</div>
+</div>
+
+<!-- ============================================================ 05 ============================================================ -->
+<div class="frame" style="left:0;top:7894px;width:1250px;height:840px;background:var(--surface-1)">
+<div class="frame-label"><b>05 · Approve</b> &nbsp;<i>the merge: tickets open, the first one dispatches, and the runner is a choice</i></div>
+<div style="padding:26px 30px;height:100%;box-sizing:border-box;display:grid;grid-template-columns:1fr 400px;gap:20px">
+<div>
+<div style="font-size:16px;font-weight:600">Approve plan · SWY-418</div>
+<div style="font-size:12.5px;line-height:1.6;color:var(--text-3);margin-top:5px;margin-bottom:16px">Approval is the merge. Five tickets are created in dependency order, the first is dispatched immediately, and the rest wait for their parent to reach <b style="color:var(--text-2)">verified in dev</b>. No code reaches prod without the promote gate.</div>
+<div class="mlab">Opens now</div>
+<div style="border:1px solid var(--line);border-radius:9px;background:var(--surface-2);overflow:hidden">
+<div class="wb" style="grid-template-columns:26px 92px 1fr 120px 128px"><span class="n">1</span><span class="key">SWY-419</span><div><div class="ti">Migration + schema</div><div class="sub">dispatches on approve · maintenance window</div></div><span class="pstate draft"><i></i>queued</span><div class="rt"><span class="gchip run">dispatching</span></div></div>
+<div class="wb" style="grid-template-columns:26px 92px 1fr 120px 128px"><span class="n">2</span><span class="key">SWY-420</span><div><div class="ti">Hot-path check + shadow counters</div><div class="sub"><span class="dep-arrow">waits for SWY-419 verified in dev</span></div></div><span class="status-pill st-backlog" style="height:20px;font-size:10.5px">Backlog</span><div class="rt"><span class="gchip pend">blocked</span></div></div>
+<div class="wb" style="grid-template-columns:26px 92px 1fr 120px 128px"><span class="n">3</span><span class="key">SWY-422</span><div><div class="ti">Admin + read API</div><div class="sub"><span class="dep-arrow">waits for SWY-419</span> · parallel with 2</div></div><span class="status-pill st-backlog" style="height:20px;font-size:10.5px">Backlog</span><div class="rt"><span class="gchip pend">blocked</span></div></div>
+<div class="wb" style="grid-template-columns:26px 92px 1fr 120px 128px"><span class="n">4</span><span class="key">SWY-426</span><div><div class="ti">Metrics + alerts</div><div class="sub"><span class="dep-arrow">waits for SWY-420</span></div></div><span class="status-pill st-backlog" style="height:20px;font-size:10.5px">Backlog</span><div class="rt"><span class="gchip pend">blocked</span></div></div>
+<div class="wb" style="grid-template-columns:26px 92px 1fr 120px 128px"><span class="n">5</span><span class="key">SWY-427</span><div><div class="ti">Settings › Quotas panel</div><div class="sub"><span class="dep-arrow">waits for SWY-422</span></div></div><span class="status-pill st-backlog" style="height:20px;font-size:10.5px">Backlog</span><div class="rt"><span class="gchip pend">blocked</span></div></div>
+</div>
+<div class="mlab">Also happens</div>
+<div style="display:flex;flex-direction:column;gap:7px">
+<div class="pre ok" style="border:1px solid var(--line-soft);border-radius:8px;background:var(--surface-2)"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M4 12l5 5L20 6"/></svg></span><div class="bd"><div class="bt">Plan is frozen at rev 3 and attached to all five tickets</div><div class="bs">Each ticket links back to the section it implements; the plan itself becomes read-only and further discussion continues in the thread.</div></div></div>
+<div class="pre warn" style="border:1px solid var(--line-soft);border-radius:8px;background:var(--surface-2)"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 16.5v.5M10.3 3.9L2.4 18a2 2 0 001.7 3h15.8a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg></span><div class="bd"><div class="bt">Two toggles are created in the flag registry, off in prod</div><div class="bs">With removal ticket SWY-424 pre-filed, so neither can become permanent dead config.</div></div><div class="sp"><span class="gchip warn">review at 14d</span></div></div>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:14px">
+<div class="mlab" style="margin:0">Who executes this</div>
+<div class="runner">
+<div class="rn on"><div class="t"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9h4M7 13h7"/></svg>Container</div><div class="d">A claude-code session in an ephemeral container, one per ticket.</div><div class="st">default · in use</div></div>
+<div class="rn"><div class="t"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></svg>GH runner</div><div class="d">Self-hosted runner; same prompt, repo-native secrets.</div><div class="st">available</div></div>
+<div class="rn soon"><div class="t"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5"/></svg>gemma</div><div class="d">Local weights for planning-only work. Reads, never writes.</div><div class="st">not yet</div></div>
+</div>
+<div style="font-size:11.5px;line-height:1.6;color:var(--text-4)">The runner is per-plan, not per-install. A migration ticket can demand the GitHub runner because it needs a repo secret, while the console ticket runs in a container — the plan says which, and the plan is reviewable.</div>
+<div class="rcard" style="margin-top:auto">
+<div class="rh"><span class="t">Estimated</span><div class="sp"><span class="agent-tag">agent</span></div></div>
+<div class="kv"><span class="k">Turns</span><span class="v mono">~46 across 5 tickets</span></div>
+<div class="kv"><span class="k">Token + CI cost</span><span class="v mono">¢1.40</span></div>
+<div class="kv"><span class="k">Human gates left</span><span class="v">2 · promote, then enforce</span></div>
+</div>
+<div style="display:flex;gap:9px"><button class="btn" style="flex:1;justify-content:center">Cancel</button><button class="btn btn-primary" style="flex:1;justify-content:center;height:34px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 12l5 5L20 6"/></svg>Approve &amp; open 5</button></div>
+</div>
+</div>
+</div>
+
+<!-- ============================================================ 06 ============================================================ -->
+<div class="frame" style="left:0;top:8914px;width:1250px;height:516px;background:var(--surface-1)">
+<div class="frame-label"><b>06 · Plan states</b> &nbsp;<i>the header answers "is anyone waiting on me?" before you read a word</i></div>
+<div style="padding:26px 30px;display:flex;flex-direction:column;gap:11px">
+<div class="pdoc" style="box-shadow:none"><div class="pdoc-h"><span class="lb">Plan PR</span><span class="br">plan/swy-431</span><span class="pstate draft" style="margin-left:6px"><i></i>Drafting</span><div class="sp"><span class="who">agent/sy-planner</span><span>·</span><span>turn 6 · writing Acceptance criteria</span></div></div></div>
+<div class="pdoc" style="box-shadow:none;border-color:var(--accent-line)"><div class="pdoc-h"><span class="lb">Plan PR</span><span class="br">plan/swy-418</span><span class="revs" style="margin-left:6px"><span class="rev">rev 2</span><span class="rev on new">rev 3</span></span><span class="pstate await" style="margin-left:4px"><i></i>Awaiting approval</span><div class="sp"><span>2 required reviewers · 1 responded</span><span>·</span><span>9 min ago</span></div></div></div>
+<div class="pdoc" style="box-shadow:none;border-color:var(--warn-line)"><div class="pdoc-h"><span class="lb">Plan PR</span><span class="br">plan/swy-405</span><span class="pstate changes" style="margin-left:6px"><i></i>Changes requested</span><div class="sp"><span style="color:var(--warn)">3 unresolved threads</span><span>·</span><span>planner idle — waiting on a reply, not on tokens</span></div></div></div>
+<div class="pdoc" style="box-shadow:none;border-color:rgba(99,181,140,.34)"><div class="pdoc-h"><span class="lb">Plan PR</span><span class="br">plan/swy-390</span><span class="pstate appr" style="margin-left:6px"><i></i>Approved rev 4</span><div class="sp"><span>merged by magos · opened 6 tickets</span><span>·</span><span>read-only</span></div></div></div>
+<div class="pdoc" style="box-shadow:none;opacity:.62"><div class="pdoc-h"><span class="lb">Plan PR</span><span class="br">plan/swy-377</span><span class="pstate dead" style="margin-left:6px"><i></i>Superseded</span><div class="sp"><span>closed unmerged · replaced by plan/swy-390</span><span>·</span><span>kept for the argument, not the plan</span></div></div></div>
+<div class="pdoc" style="box-shadow:none;opacity:.62"><div class="pdoc-h"><span class="lb">Plan PR</span><span class="br">plan/swy-418</span><span class="pstate dead" style="margin-left:6px"><i></i>Superseded</span><div class="sp"><span>rev 3 stays approved</span><span>·</span><span style="color:var(--text-3)">“argosy-eu moved to a dedicated ingest pool”</span><span>·</span><span>waiting on rev 4</span></div></div></div>
+<div style="display:flex;flex-direction:column;gap:9px;margin-top:9px;padding:12px 14px;border:1px dashed var(--line);border-radius:10px">
+<span style="font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-4)">Check states · SWY-413/414 — the pass&#8217;s recorded look, and when the queue waits for it</span>
+<div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+<span style="display:inline-flex;align-items:center;gap:7px"><span class="chk-ic"><span class="dot"></span></span><span class="gchip pend">queued</span></span>
+<span style="display:inline-flex;align-items:center;gap:7px"><span class="chk-ic"><span class="spin"></span></span><span class="gchip run">in progress</span></span>
+<span class="gchip warn">stale · window ran out — back in your queue</span>
+<span style="display:inline-flex;align-items:center;gap:7px"><span class="chk-ic ok">✓</span><span class="gchip pass">success</span></span>
+<span class="gchip fail">failure · bounced through the review door</span>
+<span class="gchip pend">skipped</span>
+</div>
+<span style="font-size:11px;line-height:1.6;color:var(--text-4);max-width:110ch">Queued and in-progress hold the plan out of <b style="color:var(--text-3);font-weight:600">?awaiting=me</b> only while fresh — within <span style="font-family:var(--mono)">PLAN_CHECK_STALE_MINUTES</span> of the <em>revision&#8217;s</em> submitted_at, a clock no check writer can touch. Completed (either way), missing, and past-window all surface it. Failure is a labelled chip, never a bare ✗ — the bounce itself lands as an ordinary changes-requested row beside the roster.</span>
+</div>
+<div style="display:flex;align-items:center;gap:22px;margin-top:5px;font-size:11.5px;line-height:1.6;color:var(--text-4)"><span style="max-width:104ch">The last two are the same state and the same meaning — <b style="color:var(--text-3);font-weight:600">does not govern; discussion preserved</b>. One was withdrawn before it was ever approved; one was superseded after. Drawn together because the sub-copy is the only thing that tells you which, and it is the thing you need.</span></div>
+</div>
+</div>
+
+<!-- ============================================================ 07 ============================================================ -->
+<div class="frame" style="left:0;top:9610px;width:1250px;height:1046px;background:var(--surface-1)">
+<div class="frame-label"><b>07 · Supersede</b> &nbsp;<i>an approved plan is never re-opened — the approved revision stays approved and a human says why it no longer holds</i></div>
+<div style="padding:26px 30px;height:100%;box-sizing:border-box;overflow:hidden">
+<div style="font-size:12.5px;line-height:1.6;color:var(--text-3);max-width:100ch">Approval is a merge, and a merge is not undone. Superseding writes one state, requires a reason, and sends the ticket back to Planning — the loud door, and the only one. Nobody is waiting on anyone while a plan is superseded, so it is not coral: it is dead until the planner submits the next revision.</div>
+
+<div class="mlab">a · approved, at rest</div>
+<div>
+<div class="pdoc" style="box-shadow:none;border-color:rgba(99,181,140,.34);border-radius:12px 12px 0 0"><div class="pdoc-h" style="border-bottom:none"><span class="lb">Plan PR</span><span class="br">plan/swy-418</span><span class="pstate appr" style="margin-left:6px"><i></i>Approved · rev 3</span><div class="sp"><span>merged by magos · opened 5 tickets</span><span>·</span><span>read-only</span></div></div></div>
+<div class="abar" style="border-color:rgba(99,181,140,.34)">
+<div class="note"><b>rev 3 is the record of what was agreed.</b><br />Comments still land on the thread; the document itself no longer takes edits, and there is no re-open.</div>
+<div class="sp"><span class="hmono">human only</span><span class="mini">Supersede…</span></div>
+</div>
+</div>
+
+<div style="display:grid;grid-template-columns:452px 1fr;gap:18px;align-items:start;margin-top:16px">
+
+<div>
+<div class="mlab" style="margin-top:0">b · the dialog</div>
+<div class="rcard">
+<div class="rh"><span class="t">Supersede plan · SWY-418</span><div class="sp"><span class="hmono">human only</span></div></div>
+<div style="font-size:12px;line-height:1.6;color:var(--text-3);margin-bottom:13px">rev 3 stays approved as the record of what was agreed. The ticket returns to Planning. The next revision is reviewed against rev 3.</div>
+<div style="display:flex;flex-direction:column;gap:12px">
+<div class="fld"><span class="fl">Reason <em>required</em></span><div class="fi ta">what changed since we agreed this</div></div>
+<div class="fld"><span class="fl">Replaced by <span style="color:var(--text-4);letter-spacing:0;text-transform:none;font-size:10px">optional</span></span><div class="fi pick">another plan, if there is one<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div></div>
+</div>
+<div style="display:flex;align-items:center;gap:9px;margin-top:15px"><span style="font-size:11px;color:var(--text-4);line-height:1.5">Does not stop a running build.</span><div style="margin-left:auto;display:flex;gap:9px"><button class="btn">Cancel</button><button class="btn btn-warn">Supersede</button></div></div>
+</div>
+</div>
+
+<div>
+<div class="mlab" style="margin-top:0">c · superseded, no successor</div>
+<div>
+<div class="pdoc" style="box-shadow:none;border-radius:12px 12px 0 0">
+<div class="pdoc-h" style="border-bottom:none"><span class="lb">Plan PR</span><span class="br">plan/swy-418</span><span class="pstate dead" style="margin-left:6px"><i></i>Superseded</span><div class="sp"><span>by magos · 12 min ago</span><span>·</span><span>rev 3 stays approved</span></div></div>
+<div class="deadq" style="margin-top:13px">argosy-eu moved to a dedicated ingest pool on 12 Aug. The shared-pool ceiling this plan is built around is no longer the thing that protects anyone — <b>the limits have to be keyed by pool, not by tenant.</b></div>
+</div>
+<div class="abar">
+<div class="note"><b>rev 3 read-only · waiting on the planner for rev 4.</b><br />No verdict buttons: there is nothing for a human to decide until a revision exists.</div>
+</div>
+</div>
+<div class="disc" style="margin-top:12px;box-shadow:none">
+<div class="disc-b" style="padding:11px 15px 4px">
+<div class="sysmsg" style="margin-top:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M4 12h16M4 17h9"/><path d="M17 15l4 4M21 15l-4 4"/></svg><span><b>magos</b> superseded the plan — <span style="color:var(--text-4)">“argosy-eu moved to a dedicated ingest pool; limits have to be keyed by pool”</span></span></div>
+<div class="sysmsg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 12h13M12 7l5 5-5 5"/><path d="M20 5v14"/></svg><span>Ticket <b>SWY-418</b> moved back to <b>Planning</b> · 5 open child tickets left as they are</span></div>
+</div>
+<div class="disc-f"><div class="chints"><span class="h"><b>@sy-planner</b> asks for rev 4</span><span class="h" style="margin-left:auto">Nothing here dispatches</span></div></div>
+</div>
+</div>
+
+</div>
+
+<div class="mlab">d · rev 4 submitted after supersede</div>
+<div>
+<div class="pdoc" style="box-shadow:none;border-color:var(--accent-line);border-radius:12px 12px 0 0">
+<div class="pdoc-h"><span class="lb">Plan PR</span><span class="br">plan/swy-418</span><span class="revs" style="margin-left:8px"><span class="rev">rev 1</span><span class="rev">rev 2</span><span class="rev ok">rev 3<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></span><span class="rev on new">rev 4</span></span><span class="pstate await" style="margin-left:4px"><i></i>Awaiting approval</span><div class="sp"><span class="who">agent/sy-planner</span><span>·</span><span>2 min ago</span></div></div>
+<div style="padding:14px 18px 16px">
+<div class="difgrp" style="margin-bottom:11px">
+<div class="gh"><b>Changes since the approved plan (rev 3)</b><span class="tag" style="font-family:var(--mono);font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:var(--text-4);border:1px solid var(--line);border-radius:4px;padding:1px 5px">approach · schema</span><span class="why">from supersede: <span style="color:var(--text-3)">“keyed by pool, not by tenant”</span></span></div>
+<div class="dline del"><span class="s">−</span><span>Token bucket in Redis, keyed <code style="font-family:var(--mono)">quota:{tenant}:{minute}</code> — one ceiling per tenant across the shared consumer pool.</span></div>
+<div class="dline add"><span class="s">+</span><span>Token bucket in Redis, keyed <code style="font-family:var(--mono)">quota:{pool}:{tenant}:{minute}</code>. <b>A tenant on a dedicated pool is checked against that pool's own ceiling; the shared pool keeps the rev 3 behaviour.</b></span></div>
+<div class="dline add"><span class="s">+</span><span><b><code style="font-family:var(--mono)">tenant_quota.pool_id</code> added to the expand phase</b> — still phase 1, still no rows rewritten, still reversible to phase 3.</span></div>
+</div>
+<div style="display:flex;align-items:center;gap:14px;padding:12px 15px;border-radius:9px;background:var(--surface-2);border:1px solid var(--line)">
+<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="var(--warn)" stroke-width="1.8" style="flex:none"><path d="M12 8v5M12 16.5v.5"/><circle cx="12" cy="12" r="9"/></svg>
+<div style="font-size:12.5px;line-height:1.55;color:var(--text-2)"><b style="color:var(--text)">Both rev 3 approvals are voided.</b> R. Diaz and magos approved the revision that was superseded — the sections they signed off are the two that changed. rev 3 stays approved as a record; it just isn't the plan any more.</div>
+<div style="margin-left:auto;display:flex;gap:9px;flex:none"><span class="gchip warn">2 re-reviews needed</span></div>
+</div>
+</div>
+</div>
+<div class="abar" style="border-color:var(--accent-line)">
+<div style="display:flex;align-items:center;gap:9px"><span class="av sm" style="background:#3f7a5f">R</span><span class="av sm" style="background:#c65a4a">M</span></div>
+<div class="note"><b>Approving rev 4 re-opens the five tickets against the new plan.</b><br />SWY-419 has not shipped, so nothing needs unwinding — the migration is re-dispatched with the pool column included.</div>
+<div class="sp"><button class="btn btn-ghost">View rev 3 → 4 diff</button><button class="btn">Request changes</button><button class="btn btn-primary" style="height:34px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 12l5 5L20 6"/></svg>Approve rev 4</button></div>
+</div>
+</div>
+
+</div>
+</div>
+
+
+<!-- ============================================================ 08 ============================================================ -->
+<div class="frame" style="left:0;top:10840px;width:1250px;height:850px;background:var(--surface-1)">
+<div class="frame-label"><b>08 · Rulings — the decision points as data</b> &nbsp;<i>SWY-389 · named options, a human-only pick, and an approval that refuses while a live required ruling is unpicked</i></div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;height:100%">
+
+<div style="padding:22px;border-right:1px solid var(--line-soft);display:flex;flex-direction:column;gap:12px">
+<div class="mlab" style="margin:0">a · the rail card — nothing pre-selected</div>
+<div class="rcard">
+<div class="rh"><span class="t">Rulings</span><div class="sp"><span class="chip mono" style="height:20px;font-size:10px">1 / 2 picked</span></div></div>
+<div class="rul open">
+<div class="q"><span class="n">⚖ 0</span><span>Where does the pick live?</span></div>
+<span class="argued">argued in Schema &amp; migration</span>
+<div class="opts">
+<div class="op"><div class="t"><span class="c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></span>on the ruling row<span class="rec">recommended</span></div><div class="d">Pick-per-revision is automatic; a new revision simply arrives unpicked.</div></div>
+<div class="op"><div class="t"><span class="c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></span>a separate picks table</div><div class="d">Rulings stay immutable after submit.</div><div class="cq"><span>↳</span><span>staleness must then be computed</span></div></div>
+</div>
+</div>
+<div class="rul done">
+<div class="q"><span class="n">⚖ 1</span><span>Does an unpicked ruling block changes_requested?</span><span class="opt">optional</span></div>
+<div class="opts">
+<div class="op on"><div class="t"><span class="c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></span>no</div><div class="d">Only approval claims the decisions were made.</div></div>
+<div class="op"><div class="t"><span class="c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></span>yes</div><div class="d">Forces engagement; delays the fix loop.</div></div>
+</div>
+<div class="pickmeta">picked by <b style="color:var(--text-3);font-weight:500">magos</b> · 2m · re-pick until the approval lands</div>
+</div>
+</div>
+<div style="font-size:11.5px;line-height:1.6;color:var(--text-4)">The planner's recommendation is a <b style="color:var(--accent-2);font-weight:600">coral chip</b>, never a checked radio: nothing renders as answered until a human answered. Coral is the house contract — a person is needed — so the chip and the card edge say the same thing, and both settle green on the pick. Clicking the chip writes that pick, one click. Agents propose options and never choose one: the pick door 403s any agent token and has no MCP tool.</div>
+</div>
+
+<div style="padding:22px;border-right:1px solid var(--line-soft);display:flex;flex-direction:column;gap:12px">
+<div class="mlab" style="margin:0">b · gates are option-scoped — live · dormant · moot</div>
+<div class="rcard">
+<div class="rh"><span class="t">Rulings</span><div class="sp"><span class="chip mono" style="height:20px;font-size:10px">1 / 1 picked</span></div></div>
+<div class="rul done">
+<div class="q"><span class="n">⚖ 0</span><span>Which OpenAPI version does the pipeline pin?</span></div>
+<div class="opts">
+<div class="op"><div class="t"><span class="c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></span>3.1</div><div class="d">Proceed as recommended.</div></div>
+<div class="op on"><div class="t"><span class="c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></span>3.0</div><div class="d">Invert the ownership.</div></div>
+</div>
+<div class="pickmeta">picked by <b style="color:var(--text-3);font-weight:500">magos</b> · 1m</div>
+</div>
+<div class="rul off moot">
+<div class="q"><span class="n">⚖ 1</span><span class="tx">Under 3.1, which pipeline owns a shared type?</span></div>
+<div class="why">moot — ⚖ 0 = “3.0” resolved otherwise · unpickable, never blocks, not counted</div>
+</div>
+<div class="rul off">
+<div class="q"><span class="n">⚖ 2</span><span>Do the 41 vectors survive, or are they re-cut?</span></div>
+<div class="why">dormant — awaiting ⚖ 1 · unpickable until its gate is answered</div>
+</div>
+</div>
+<div style="font-size:11.5px;line-height:1.6;color:var(--text-4)">A gate names an <b style="color:var(--text-3)">option</b>, not just a ruling: the gated question is live only while the gate's pick <i>is</i> that option. Resolved the other way it goes <b style="color:var(--text-3)">moot</b> — struck, never leading a reader through a withdrawn option — and an unanswered gate leaves it <b style="color:var(--text-3)">dormant</b>. Gates chain, name earlier positions only, and neither state blocks approval — the refusal can never name a question nobody needs answered.</div>
+</div>
+
+<div style="padding:22px;display:flex;flex-direction:column;gap:12px">
+<div class="mlab" style="margin:0">c · the settling approval is refused — a banner, not a toast</div>
+<div class="rulban">
+<span class="g">⚖</span>
+<div style="min-width:0">
+<div class="hd">Rulings need a pick first</div>
+<div class="bod">approving this revision requires 1 ruling to be picked first — ⚖ 0 (Where does the pick live?) — a human picks in the plan rail</div>
+</div>
+</div>
+<div class="abar stack" style="border-radius:12px;border-top:1px solid var(--line)">
+<div class="note"><b>Approving is the merge.</b> It does not deploy anything — promotion is a separate gate.</div>
+<div class="row"><button class="btn">Request changes</button><button class="btn btn-primary" style="height:34px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 12l5 5L20 6"/></svg>Approve plan</button></div>
+</div>
+<div style="font-size:11.5px;line-height:1.6;color:var(--text-4)">Coral, the plan-required guard's contract: nothing failed, a person is needed. It fires only on the approval that would <b style="color:var(--text-3)">settle</b> the revision — both doors, verdict and roster save — after the outcome resolves, and the throw rolls the review row back with it: <b style="color:var(--text-3)">the server wrote nothing</b>. The body is the server's message verbatim, naming each open ruling. Request changes never needs a pick (⚖ B): the pick is human-only and bouncing is agent-allowed — the other rule would make agent bounces impossible.</div>
+</div>
+
+</div>
+</div>
+
+<!-- ============================================================ 09 ============================================================ -->
+<div class="frame" style="left:0;top:11874px;width:1500px;height:1080px;background:var(--surface-1)">
+<div class="frame-label"><b>09 · Top matter — the docket is the pick surface</b> &nbsp;<i>SWY-397 · the lead block gives narrative_md its window; the rulings docket replaces the rail card (⚖ 2 = A) · + the design reference in the rail, SWY-153</i></div>
+<div style="display:grid;grid-template-columns:940px 1fr;gap:0;height:100%">
+
+<div style="padding:22px;border-right:1px solid var(--line-soft);display:flex;flex-direction:column;gap:12px">
+<div class="mlab" style="margin:0">a · the top of the document — lead block, then the docket, then the sections</div>
+
+<div class="pdoc" style="box-shadow:none">
+<div class="pdoc-h"><span class="lb">Plan PR</span><span class="br">plan/swy-397</span><span class="revs" style="margin-left:10px"><span class="rev">rev 1</span><span class="rev on">rev 2</span></span><div class="sp"><span class="who">claude</span><span>·</span><span>claude-fable-5</span></div></div>
+<div class="pdoc-b" style="padding-bottom:16px">
+
+<div class="lead-block">
+<div class="lb-h"><span class="tag">summary</span><span class="chgchip">changed</span>
+<div style="margin-left:auto"><button class="cbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg> Comment</button></div>
+</div>
+<div class="prose"><p><b>Rev 2, after the rev 1 review.</b> The build is client-lead over SWY-389's data, with no schema change: a rulings docket at the top of the document as the one pick surface, the narrative rendered as this lead block, one submit-time refusal, and the <code>design</code> anchor + rail card folding in SWY-153. <b>1 decision needed.</b></p></div>
+</div>
+
+<div class="pdk">
+<div class="pdk-h need"><span class="g">⚖</span><span class="t">Rulings docket</span><span class="sub">a human picks; the pick is data · re-pick until the approval lands</span><span class="count">1 / 2 picked</span></div>
+<div class="pdk-b">
+
+<div class="rul open">
+<div class="q"><span class="n">⚖ 0</span><span>How does SWY-153 ship — folded into this build, or as an immediate follow-on?</span><span class="chgchip" style="margin-left:auto">changed</span></div>
+<span class="argued">argued in Client-lead build over SWY-389's data ↓</span>
+<div class="opts">
+<div class="op"><div class="t"><span class="c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></span>Fold into this build<span class="rec">recommended</span></div><div class="d">One branch, one PR closing both keys; the shared PlanAnchor edit regenerates once.</div><div class="cq"><span>↳</span><span>a slightly larger PR on one page</span></div></div>
+<div class="op"><div class="t"><span class="c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></span>Immediately after</div><div class="d">This PR ships without the card; SWY-153 gets its own right after.</div><div class="cq"><span>↳</span><span>a second plan/review/CI round for ~150 lines</span></div></div>
+</div>
+</div>
+
+<div class="rul done">
+<div class="q"><span class="n">⚖ 1</span><span>Does the docket collapse when every ruling is settled?</span><span class="opt">optional</span></div>
+<span class="argued">argued in Frontend ↓</span>
+<div class="opts">
+<div class="op on"><div class="t"><span class="c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></span>No — quiet, not hidden</div><div class="d">The record stays where the decision was made.</div></div>
+<div class="op"><div class="t"><span class="c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></span>Collapse to the header</div><div class="d">One line; the rows behind a toggle.</div></div>
+</div>
+<div class="pickmeta">picked by <b style="color:var(--text-3);font-weight:500">magos</b> · 4m · re-pick until the approval lands</div>
+</div>
+
+</div>
+</div>
+
+<div class="psec" style="padding-top:14px">
+<div class="psec-h"><h2>The top of a plan serves the wrong reader</h2><span class="tag">problem</span></div>
+<div class="prose"><p style="color:var(--text-4)">…the sections continue unchanged below the fold — the record agents argue over…</p></div>
+</div>
+
+</div>
+</div>
+<div style="font-size:11.5px;line-height:1.6;color:var(--text-4)">The lead block is <b style="color:var(--text-3)">narrative_md</b>, finally rendered on a sectioned plan — with the whole-plan comment affordance beside it, and the same <b style="color:var(--text-3)">changed</b> chip a section wears (free off <code style="font-family:var(--mono);font-size:10.5px">PlanDiff.narrative</code>). The docket header counts <b style="color:var(--text-3)">k / N picked over the answerable set</b> — live rulings, required or not; the refusal banner and the MCP fix list keep counting required ∧ live ∧ unpicked. Coral on the header only while a <i>required</i> ruling is open: an optional straggler leaves it neutral, and the approval lands.</div>
+</div>
+
+<div style="padding:22px;display:flex;flex-direction:column;gap:12px">
+<div class="mlab" style="margin:0">b · settled — the record, not a shout</div>
+<div class="pdk" style="margin:0">
+<div class="pdk-h done"><span class="g">⚖</span><span class="t">Rulings docket</span><span class="count">2 / 2 picked</span></div>
+<div class="pdk-b">
+<div class="rul done">
+<div class="q"><span class="n">⚖ 0</span><span>How does SWY-153 ship?</span></div>
+<div class="opts single">
+<div class="op on"><div class="t"><span class="c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></span>Fold into this build</div></div>
+</div>
+<div class="pickmeta">picked by <b style="color:var(--text-3);font-weight:500">magos</b> · approval pinned the pick</div>
+</div>
+<div class="rul off moot">
+<div class="q"><span class="n">⚖ 1</span><span class="tx">If follow-on: does the card wait for 7.5?</span></div>
+<div class="why">moot — ⚖ 0 = “Fold into this build” resolved otherwise · struck, never blocks, not counted</div>
+</div>
+</div>
+</div>
+
+<div class="mlab">c · the rail — the design beside the plan that implements it (SWY-153)</div>
+<div class="rcard">
+<div class="rh"><span class="t">Design reference</span><div class="sp"><span class="pill" style="font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-4);border:1px solid var(--line);border-radius:99px;padding:2px 7px">design</span></div></div>
+<div class="dref-row">
+<div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg></div>
+<div class="bd"><div class="ti">Switchyard - Planning - Plan as PR.html</div><div class="sub">attached by magos · frame deep link · opens in Claude Design</div></div>
+</div>
+<div class="dref-row late">
+<div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg></div>
+<div class="bd"><div class="ti">Switchyard - Planning - Rulings docket.dc.html</div><div class="sub">attached after rev 2 was submitted — the revision under review predates it</div></div>
+</div>
+<div class="thr live" style="margin:10px 0 2px">
+<div class="cm"><div style="width:24px;height:24px;border-radius:50%;background:var(--surface-4);display:grid;place-items:center;font-size:10px;color:var(--text-3)">m</div><div><div class="hd"><span class="nm">magos</span><span class="ts">12m</span></div><div class="bod">Frame 09's settled state — quiet header is right. Ship it.</div></div></div>
+</div>
+</div>
+
+<div class="rcard">
+<div class="rh"><span class="t">Design reference</span></div>
+<div class="dref-empty">the design this was reviewed against is no longer attached — the thread below is why the card is still here</div>
+<div class="thr settled" style="margin:8px 0 2px">
+<div class="cm"><div style="width:24px;height:24px;border-radius:50%;background:var(--surface-4);display:grid;place-items:center;font-size:10px;color:var(--text-3)">m</div><div><div class="hd"><span class="nm">magos</span><span class="ts">2d</span></div><div class="bod">Built against frame 04 before the re-scope; detached when the redesign superseded it.</div></div></div>
+</div>
+</div>
+
+<div style="font-size:11.5px;line-height:1.6;color:var(--text-4)">The card reads the <b style="color:var(--text-3)">ticket's</b> <code style="font-family:var(--mono);font-size:10.5px">design</code> external refs (SWY-355) in attach order — never pinned to a revision. <b style="color:var(--text-3)">Attached after rev N</b> is a client-side compare against the viewed revision's <code style="font-family:var(--mono);font-size:10.5px">submitted_at</code>, in the amber of advisory staleness. One anchored thread (<code style="font-family:var(--mono);font-size:10.5px">design</code>) reuses the ordinary thread machinery — and because a thread is history, the card renders whenever refs <i>or</i> a thread exist: a detach never strands the argument.</div>
+</div>
+
+</div>
+</div>
+
+<!-- ============================================================ 10 ============================================================ -->
+<div class="frame" style="left:0;top:13138px;width:1500px;height:720px;background:var(--surface-1)">
+<div class="frame-label"><b>10 · The roster editor — one component, three mounts</b> &nbsp;<i>SWY-384 · humans write every roster; defaults are copied onto plan_reviewers once, at plan creation · ⚖ 0 = frame first</i></div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;height:100%">
+
+<!-- a · the plan rail -->
+<div style="padding:22px;border-right:1px solid var(--line-soft);display:flex;flex-direction:column;gap:12px">
+<div class="mlab" style="margin:0">a · the plan rail — the read-only block grows an editor (human sessions)</div>
+
+<div class="rcard">
+<div class="rh"><span class="t">Review roster</span><div class="sp"><span class="hmono">human only</span></div></div>
+<div class="rre">
+<div class="rre-row">
+<span class="av sm" style="background:#c65a4a">M</span>
+<span class="nm">magos<span class="sub">instance owner</span></span>
+<span class="rre-role">deployer</span>
+<span class="rre-req"><span class="tg on"><i></i></span><span class="lb">required</span></span>
+<span class="rre-x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></span>
+</div>
+<div class="rre-row">
+<span class="av sm" style="background:#4a6ec6">K</span>
+<span class="nm">K. Park<span class="sub">member</span></span>
+<span class="rre-role ph">role label…</span>
+<span class="rre-req"><span class="tg"><i></i></span><span class="lb">required</span></span>
+<span class="rre-x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></span>
+</div>
+<div class="rre-add"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Add reviewer</div>
+<div class="rre-menu">
+<div class="mi"><span class="av sm" style="background:#3f7a5f">R</span>R. Diaz<span class="sub">member of SWY</span></div>
+<div class="mi"><span class="av sm" style="background:#8a6ec6">J</span>J. Osei<span class="sub">member of SWY</span></div>
+<div class="foot">Humans who can read this project. Agents are not listed — an agent cannot approve, and a reviewer who cannot open the plan deadlocks it; the server refuses both (422) on every roster door.</div>
+</div>
+<div class="rre-save">
+<span class="hint">Saving re-resolves the quorum in place — the roster is the second settlement door.</span>
+<div class="sp"><button class="btn">Cancel</button><button class="btn btn-primary">Save roster</button></div>
+</div>
+</div>
+</div>
+
+<div style="font-size:11.5px;line-height:1.6;color:var(--text-4)">A save that would <b style="color:var(--text-3)">approve</b> over unopened breakdown rows is refused with <span style="font-family:var(--mono);font-size:10.5px">confirm_open_required</span> and opens the same <b style="color:var(--text-3)">Approve &amp; open N</b> dialog the verdict door uses (frame 05), then re-sends confirmed. An <b style="color:var(--text-3)">agent session renders the read-only card</b> — hidden, not disabled; the server 403s either way.</div>
+</div>
+
+<!-- b · Setup → Automations -->
+<div style="padding:22px;border-right:1px solid var(--line-soft);display:flex;flex-direction:column;gap:12px">
+<div class="mlab" style="margin:0">b · Setup → Automations — the project list replaces, never merges</div>
+
+<div class="rcard">
+<div class="rh"><span class="t">Default plan reviewers · SWY</span><div class="sp"><span class="hmono">human only</span></div></div>
+<div class="inh">
+<span class="lb">Inheriting the global list · Settings → System</span>
+<div class="row"><span class="av sm" style="background:#c65a4a">M</span>magos<span class="sub">owner · required</span></div>
+</div>
+<div style="font-size:11px;line-height:1.6;color:var(--text-4);margin-top:11px">A project with rows of its own <b style="color:var(--text-3)">replaces</b> this list entirely. The empty list is the inherit sentinel, so a project cannot opt out — to get an empty roster on new plans, clear the global list.</div>
+</div>
+
+<div class="rcard">
+<div class="rh"><span class="t">Default plan reviewers · PLEX</span><div class="sp"><span class="gchip">replacing</span></div></div>
+<div class="rre">
+<div class="rre-row">
+<span class="av sm" style="background:#3f7a5f">R</span>
+<span class="nm">R. Diaz<span class="sub">member</span></span>
+<span class="rre-role">backend owner</span>
+<span class="rre-req"><span class="tg on"><i></i></span><span class="lb">required</span></span>
+<span class="rre-x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></span>
+</div>
+<div class="rre-add"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Add reviewer</div>
+</div>
+<div style="font-size:11px;line-height:1.6;color:var(--text-4);margin-top:11px">Write needs project <b style="color:var(--text-3)">manage</b> + a human. The read is any member's: a project admin who cannot see Settings → System still sees who a new plan here gets.</div>
+</div>
+</div>
+
+<!-- c · Settings → System -->
+<div style="padding:22px;display:flex;flex-direction:column;gap:12px">
+<div class="mlab" style="margin:0">c · Settings → System — the global default (human instance admins)</div>
+
+<div class="rcard">
+<div class="rh"><span class="t">Default plan reviewers</span><div class="sp"><span class="hmono">human only</span></div></div>
+<div class="rre">
+<div class="rre-row">
+<span class="av sm" style="background:#c65a4a">M</span>
+<span class="nm">magos<span class="sub">instance owner</span></span>
+<span class="rre-role">owner</span>
+<span class="rre-req"><span class="tg on"><i></i></span><span class="lb">required</span></span>
+<span class="rre-x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></span>
+</div>
+<div class="rre-add"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Add reviewer</div>
+<div class="rre-save">
+<span class="hint">Names instance-wide humans — there is no project yet to membership-check against.</span>
+<div class="sp"><button class="btn">Cancel</button><button class="btn btn-primary">Save</button></div>
+</div>
+</div>
+</div>
+
+<div style="font-size:11.5px;line-height:1.6;color:var(--text-4)">With this set, every plan an agent opens lands on <b style="color:var(--text-3)">Needs you</b> the moment it is submitted — the copy onto <span style="font-family:var(--mono);font-size:10.5px">plan_reviewers</span> happens <b style="color:var(--text-3)">once, when the plan row is created</b> (either door: draft-open or first submit). Existing plans are never touched; a moved ticket keeps the roster it materialised with. Changing this list is a statement about <b style="color:var(--text-3)">future plans only</b> — the same rule as <span style="font-family:var(--mono);font-size:10.5px">default_review_mode</span>. Nothing seeds it (⚖ 1 = B): until a human saves this list, plans keep the 7.0 behaviour — empty roster, one approval approves.</div>
+
+<div style="font-size:11.5px;line-height:1.6;color:var(--text-4);border-top:1px solid var(--line-soft);padding-top:11px">The docket above (frame 09) is why this matters: a plan with an empty roster is on <b style="color:var(--text-3)">nobody's</b> list — the one person the loop waits on has to go looking. Measured 2026-09-02: zero rosters on every production plan; <span style="font-family:var(--mono);font-size:10.5px">awaiting=me</span> had never fired.</div>
+</div>
+
+</div>
+</div>
+
+</div>
+</body>
+</html>
+

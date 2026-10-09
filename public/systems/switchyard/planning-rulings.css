@@ -1,0 +1,46 @@
+/* ============================================================
+   SWITCHYARD — planning layer · rulings (SWY-389).
+   Extends planning.css: the ⚖ decision points as data.
+   Same colour contract, no new hues: coral = a human is needed
+   (an open required ruling), green = picked, steel = the
+   planner's recommendation, struck/dim = moot or dormant.
+   ============================================================ */
+
+.rul{border-left:2px solid var(--line);padding:2px 0 8px 13px;margin-bottom:14px}
+.rul:last-child{margin-bottom:0}
+.rul.open{border-color:var(--accent-line)}          /* live + required + unpicked */
+.rul.done{border-color:rgba(99,181,140,.45)}        /* picked */
+.rul.off{border-color:var(--line-soft);opacity:.55} /* dormant or moot */
+.rul .q{display:flex;align-items:flex-start;gap:8px;font-size:12.5px;font-weight:600;line-height:1.45;color:var(--text)}
+.rul .q .n{font-family:var(--mono);font-size:10px;color:var(--text-4);margin-top:2px;font-weight:400;flex:none}
+.rul .q .opt{margin-left:auto;flex:none;font-family:var(--mono);font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:var(--text-4);border:1px solid var(--line);border-radius:4px;padding:1px 5px;font-weight:400}
+.rul.moot .q .tx{text-decoration:line-through;color:var(--text-4)}
+.rul .argued{display:inline-block;font-size:10.5px;color:var(--text-4);margin-top:3px}
+.rul .why{font-size:11px;color:var(--text-4);margin-top:5px;line-height:1.5}
+.rul .opts{display:flex;flex-direction:column;gap:6px;margin-top:9px}
+.rul .op{display:flex;flex-direction:column;gap:4px;padding:9px 12px;border-radius:9px;background:var(--surface-1);border:1px solid var(--line);cursor:pointer}
+.rul .op:hover{border-color:var(--accent-line)}
+.rul .op.on{border-color:rgba(99,181,140,.45);background:var(--st-closed-bg);cursor:default}
+.rul .op .t{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:var(--text)}
+.rul .op.on .t{color:var(--st-closed)}
+.rul .op .t .c{width:14px;height:14px;border-radius:50%;border:1.5px solid var(--line-strong);flex:none;display:grid;place-items:center;color:transparent}
+.rul .op.on .t .c{border-color:rgba(99,181,140,.6);color:var(--st-closed)}
+.rul .op .t .c svg{width:9px;height:9px}
+.rul .op .t .rec{margin-left:auto;flex:none;font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-2);border:1px solid var(--accent-line);background:var(--accent-weak);cursor:pointer;border-radius:4px;padding:1px 5px;font-weight:400}
+.rul .op .t .rec:hover{background:rgba(226,98,61,.18)}
+.rul .op .d{font-size:11px;line-height:1.45;color:var(--text-3)}
+.rul .op .cq{display:flex;gap:6px;font-size:10.5px;line-height:1.4;color:var(--text-4)}
+.rul .pickmeta{font-size:10.5px;color:var(--text-4);margin-top:7px}
+.rul .accept{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 9px;margin-top:8px;border-radius:6px;font-family:var(--sans);font-size:11px;font-weight:600;color:var(--accent-2);background:var(--accent-weak);border:1px solid var(--accent-line);cursor:pointer}
+.rul .accept:hover{background:rgba(226,98,61,.18)}
+.rul .accept svg{width:11px;height:11px}
+
+/* the ⚖ chip on a section that argues a ruling (beside .psec-h .tag) */
+.rulechip{font-family:var(--mono);font-size:9px;letter-spacing:.05em;color:var(--accent-2);border:1px solid var(--accent-line);background:var(--accent-weak);border-radius:4px;padding:1px 5px}
+
+/* the rulings-unpicked refusal — a banner in the action bar, never a toast */
+.rulban{display:flex;gap:11px;align-items:flex-start;border:1px solid var(--accent-line);background:linear-gradient(180deg,var(--accent-weak),var(--surface-2));border-radius:9px;padding:12px 15px}
+.rulban .g{font-size:15px;flex:none;line-height:1;margin-top:1px}
+.rulban .hd{font-size:13px;font-weight:600;color:var(--text)}
+.rulban .bod{font-size:11.5px;line-height:1.5;color:var(--text-3);margin-top:4px}
+

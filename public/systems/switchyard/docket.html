@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Switchyard — Self-assessment docket</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="design_doc_mode" content="canvas" />
+<link rel="stylesheet" href="theme.css" />
+<link rel="stylesheet" href="docket.css" />
+<style>html,body{margin:0;background:#17181b;font-family:var(--sans);color:var(--text)}</style>
+</head>
+<body>
+
+<div style="position:absolute;left:0;top:40px;width:1500px">
+<div class="dk-eyebrow">Docket · surface 6</div>
+<h1 class="dk-h1">The self-assessment docket — findings as tickets, deltas as the reading</h1>
+<p class="dk-note" style="margin:0 0 18px">Five frames: the <b>monthly one-pager</b> (the thing you read eleven months a year), the <b>quarterly edition</b>, a finding <b>in an ordinary ticket list</b>, a finding <b>as a ticket detail page</b>, and <b>per-project scope + finding history</b>. It reuses the delivery layer's contract exactly — 2.5px state edge on every row, coral means a person is needed, amber means advisory, dashed means something is missing that you should create. One new class prefix (<code>.dk*</code>), no new hues.</p>
+<p class="dk-note" style="margin:0 0 22px;color:var(--text-4)">Your sketch didn't come through — this is built from the structure you described. If the sketch differs on chrome, the content order and the seam/counted/judged rules here should still hold.</p>
+
+<div class="dk-pb"><div class="n">01</div><div class="b"><b>Nav: no new top-level item. It lives under LLM Insights.</b> That nav item already means "what the machines and I did"; a docket is its judged form. Sub-tabs become <code>Sessions · Docket · Instruments</code>. A seventh top-level item for something you open four times a year is how you get a nav that means nothing.</div></div>
+<div class="dk-pb"><div class="n">02</div><div class="b"><b>The habit answer is not chrome, it's a ticket.</b> The edition is itself a ticket assigned to you with a due date, so it arrives through the machinery you already open daily — it shows up in your list next to <code>SY-1188</code> and nags like everything else. The persistent affordance is then allowed to be tiny: one coral pill in the topbar, <code>4 findings open · Q3 due 12d</code>. Count, not thesis. A thesis sentence in the chrome gets read twice and becomes furniture; a count that changes stays legible. It sits in the topbar rather than the sidebar because the sidebar is a place-list and this is a state.</div></div>
+<div class="dk-pb"><div class="n">03</div><div class="b"><b>On the schema: findings as tickets, yes — but two records you didn't ask for.</b> Ticket type <code>finding</code> is right, and it buys you the best property in the design: <b><code>moving</code> is not authorable.</b> It's computed from the linked instrument's last two readings, so you cannot claim progress in prose. Where the pure-ticket model gets ugly is the other two rules. (a) An <b>edition</b> has fields no ticket has — period, thesis, confounder, grade marks, ledger scope — and a finding is ruled on <i>per edition</i>, so the ruling is a join row, not a ticket status. Force it into a ticket and you're authoring docket state twice, which is the exact thing you're avoiding. (b) "An instrument with no finding is decoration" requires an <b>instrument</b> you can see orphaned. If instruments are fields on findings, an orphan is unrepresentable and the rule can never fire. So: <code>tickets(type=finding)</code> + <code>editions</code> + <code>instruments</code> + <code>rulings(edition, finding, state, note)</code>. Three small tables, and both of your rules become renderable instead of remembered.</div></div>
+<div class="dk-pb"><div class="n">04</div><div class="b"><b>Per-project: your assumption is right, with one correction.</b> Filter on the same list, plus a strip in the project view — no second report. The correction: a filtered docket must not <i>hide</i> the global findings, because then the project view lies by omission and you read "2 open" when 6 are. Filtered views keep a dim band at the bottom — <code>not project-scoped: prompt length, secret pastes, confusion markers</code> — present, unopinionated, unclickable-looking. Frame 5.</div></div>
+<div class="dk-pb"><div class="n">05</div><div class="b"><b>The detail page keeps the instrument, but as a strip, not a rail.</b> Deferring it to the edition breaks the ticket: the instrument is the only thing that makes a finding falsifiable, and a page that shows a claim with no instrument reads as an opinion. What the detail page <i>does</i> drop is the delta reading — the strip shows the current value and the definition, and the sparkline-with-seam lives in the edition where neighbouring findings give it scale. A capture gap renders as a dashed strip that offers to create the instrument. Frame 4.</div></div>
+<div class="dk-pb" style="border-bottom:1px solid #2c2d33"><div class="n">06</div><div class="b"><b>One thing I'd push back on harder than you asked.</b> "Length is a feature" needs an enforcement surface or it dies by edition four. The monthly one-pager is capped by construction — it has to fit one screen, so a fourteenth finding physically cannot be added without closing one. Let that be the real limit: <b>the docket has a fixed number of slots.</b> A new finding costs you an old one, which is also the only mechanism that makes you rule on the boring ones. The quarterly edition is allowed to be long; the docket is not allowed to grow.</div></div>
+</div>
+
+<!-- ================= FRAME 1 — MONTHLY ONE-PAGER ================= -->
+<div class="frame" style="left:0;top:1420px;width:1560px;height:1040px"><div class="frame-label"><b>Monthly one-pager</b> &nbsp;— states only. No prose, no grade, no scrolling. Eleven months a year this is the whole product.</div>
+<div class="sy" data-nav="insights" data-cue="1"><div class="main"><div class="content" style="overflow:hidden">
+<div class="dsub"><div class="dt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h16M4 12h16M4 18h9"/></svg>Sessions</div><div class="dt on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 4h9l4 4v12H6z"/><path d="M9 11h7M9 15h5"/></svg>Docket<span class="n">13</span></div><div class="dt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12h4l2 6 4-14 2 8h6"/></svg>Instruments<span class="n">11</span></div><div class="sp"><span class="chip mono">amber · capturing</span><span class="chip mono">full-session since 2026-06-23</span></div></div>
+<div class="page-h"><div><div class="pt">Docket — 2026-07</div><div class="pd">Monthly reading: state changes only. Every row is a ticket; <b>moving</b> is computed from the instrument, not claimed. Judgment, re-scoring and prose wait for the quarterly.</div></div><div class="sp"><div class="dk-ednav"><div class="e"><div class="p">2026-05</div><div class="k">monthly</div></div><div class="e"><div class="p">2026-06</div><div class="k">monthly</div></div><div class="e on"><div class="p">2026-07</div><div class="k">monthly</div></div><div class="e q"><div class="p">Q3 2026</div><div class="k">due 12d</div></div></div></div></div>
+
+<div class="dk-1p">
+<div>
+<div class="dk-mgrp"><span class="d" style="background:var(--accent)"></span><span class="t">Needs a ruling from you</span><span class="c">2</span></div>
+<div class="dk-mlist">
+<div class="dk-m s-open"><div class="id">SY-1104</div><div class="cl">I don't verify auth, permissions or migration changes before shipping them</div><div class="inst"><span class="dk-sparkmini" data-vals="x,x,x,3,2,3" data-pre="52" data-color="var(--neg)"></span><span class="k">ledger_blanks</span></div><div class="mv"><span class="v">3 of 6</span><span class="dl bad">+1</span></div><div class="ago">14d</div></div>
+<div class="dk-m s-open"><div class="id">SY-1091</div><div class="cl">I start projects faster than I finish them</div><div class="inst"><span class="dk-sparkmini" data-vals="9,11,12,14,14,15" data-pre="52" data-color="var(--neg)"></span><span class="k">started_unshipped</span></div><div class="mv"><span class="v">15</span><span class="dl bad">+1</span></div><div class="ago">3d</div></div>
+</div>
+
+<div class="dk-mgrp"><span class="d" style="background:var(--st-progress)"></span><span class="t">Moving</span><span class="c">3</span><span style="font-family:var(--mono);font-size:10px;color:var(--text-4);letter-spacing:.06em">computed from instrument</span></div>
+<div class="dk-mlist">
+<div class="dk-m s-moving"><div class="id">SY-1097</div><div class="cl">I approve agent plans without reading past the first bullet</div><div class="inst"><span class="dk-sparkmini" data-vals="x,x,x,14,26,41" data-pre="52" data-color="var(--pos)"></span><span class="k">plan_dwell_median_s</span></div><div class="mv"><span class="v">41s</span><span class="dl good">+15s</span></div><div class="ago">6d</div></div>
+<div class="dk-m s-moving"><div class="id">SY-1112</div><div class="cl">I leave CI red on anything that isn't switchyard itself</div><div class="inst"><span class="dk-sparkmini" data-vals="38,31,29,22,14,9" data-pre="52" data-color="var(--pos)"></span><span class="k">ci_red_hours_median</span></div><div class="mv"><span class="v">9h</span><span class="dl good">−5h</span></div><div class="ago">8d</div></div>
+<div class="dk-m s-moving"><div class="id">SY-1128</div><div class="cl">I let the agent name things and then live with the names</div><div class="inst"><span class="dk-sparkmini" data-vals="x,x,x,71,68,64" data-pre="52" data-color="var(--pos)"></span><span class="k">co_author_share</span></div><div class="mv"><span class="v">0.64</span><span class="dl good">−0.04</span></div><div class="ago">11d</div></div>
+</div>
+
+<div class="dk-mgrp"><span class="d" style="background:var(--warn);border-radius:1px"></span><span class="t">Capture gaps</span><span class="c">2</span><span style="font-family:var(--mono);font-size:10px;color:var(--warn);letter-spacing:.06em">no instrument — rules as unprovable</span></div>
+<div class="dk-mlist">
+<div class="dk-m s-gap"><div class="id">SY-1133</div><div class="cl">I lose the thread switching between the terminal and the browser</div><div class="inst"><span class="miss">nothing measures this</span></div><div class="mv"><span class="dl flat">—</span></div><div class="ago">31d</div></div>
+<div class="dk-m s-gap"><div class="id">SY-1141</div><div class="cl">I re-explain the same context to a fresh session instead of writing it down</div><div class="inst"><span class="miss">nothing measures this</span></div><div class="mv"><span class="dl flat">—</span></div><div class="ago">9d</div></div>
+</div>
+
+<div class="dk-mgrp"><span class="d" style="background:var(--st-closed)"></span><span class="t">Closed</span><span class="c">4</span><span class="d" style="background:var(--text-4);margin-left:6px"></span><span class="t" style="color:var(--text-3);font-weight:500">Recanted</span><span class="c">2</span></div>
+<div class="dk-mlist">
+<div class="dk-m s-closed"><div class="id">SY-1088</div><div class="cl">I paste secrets into prompts when debugging auth</div><div class="inst"><span class="dk-sparkmini" data-vals="4,3,5,1,0,0" data-pre="52" data-color="var(--pos)"></span><span class="k">secret_pastes_per_100</span></div><div class="mv"><span class="v">0</span><span class="dl good">0 for 61d</span></div><div class="ago">61d</div></div>
+<div class="dk-m s-closed"><div class="id">SY-1095</div><div class="cl">Agent commits land without a ticket reference</div><div class="inst"><span class="dk-sparkmini" data-vals="22,19,11,4,1,0" data-pre="52" data-color="var(--pos)"></span><span class="k">orphan_commit_pct</span></div><div class="mv"><span class="v">0%</span><span class="dl good">−1</span></div><div class="ago">44d</div></div>
+<div class="dk-m s-recanted"><div class="id">SY-1103</div><div class="cl">My prompts get longer when I'm confused, not more specific</div><div class="inst"><span class="dk-sparkmini" data-vals="x,x,x,590,604,612" data-pre="52" data-color="var(--text-3)"></span><span class="k">prompt_len_p90</span></div><div class="mv"><span class="v">612</span><span class="dl flat">tracks task size</span></div><div class="ago">Q3</div></div>
+<div class="dk-m s-recanted"><div class="id">SY-1119</div><div class="cl">I review agent output more carefully in the morning</div><div class="inst"><span class="miss" style="color:var(--text-4)">withdrawn — n too small</span></div><div class="mv"><span class="dl flat">—</span></div><div class="ago">Q3</div></div>
+<div class="collapsedline" style="display:flex;align-items:center;gap:11px;padding:11px 14px;color:var(--text-3);font-size:12.5px;border-top:1px solid var(--line-soft);cursor:pointer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:14px;height:14px"><path d="M6 9l6 6 6-6"/></svg>2 more closed — settled in Q2, not re-judged<span class="tref" style="margin-left:auto">SY-1074</span><span class="tref">SY-1079</span></div>
+</div>
+</div>
+
+<div>
+<div class="dk-thesis quiet"><div class="l">Standing thesis · Q3 · not re-judged this month</div><div class="s">The work ships; the parts of it that can hurt someone are the parts nobody checks.</div></div>
+<div class="dk-card warnc" style="margin-top:12px"><div class="ch"><span class="t">Verification ledger</span><span class="sp"><span class="chip mono">n=6</span></span></div><div style="font-size:12.5px;line-height:1.6;color:var(--text-2);text-wrap:pretty">Three of this period's six sensitive changes carry no verification evidence. Named, not rated.</div><div style="display:flex;flex-direction:column;gap:6px;margin-top:11px"><div class="dk-line"><span class="v" style="font-size:12px;color:var(--text-2);text-align:left">Agent token can close tickets</span><span class="tref">SY-1188</span></div><div class="dk-line"><span class="v" style="font-size:12px;color:var(--text-2);text-align:left">PAT scope narrowing</span><span class="tref">SY-1171</span></div><div class="dk-line"><span class="v" style="font-size:12px;color:var(--text-2);text-align:left">Project member role added</span><span class="tref">SY-1156</span></div></div><button class="btn btn-w" style="margin-top:12px;width:100%;justify-content:center;height:32px">Open the full ledger</button></div>
+<div class="dk-card"><div class="ch"><span class="t">Slots</span><span class="sp"><span class="chip mono">13 / 13</span></span></div><div style="font-size:12.5px;line-height:1.6;color:var(--text-3);text-wrap:pretty">The docket is full. A new finding costs an old one — rule on something before you add.</div><div style="display:flex;gap:3px;margin-top:11px">
+<i style="flex:1;height:20px;border-radius:2px;background:var(--accent);display:block"></i><i style="flex:1;height:20px;border-radius:2px;background:var(--accent);display:block"></i><i style="flex:1;height:20px;border-radius:2px;background:var(--st-progress);display:block"></i><i style="flex:1;height:20px;border-radius:2px;background:var(--st-progress);display:block"></i><i style="flex:1;height:20px;border-radius:2px;background:var(--st-progress);display:block"></i><i style="flex:1;height:20px;border-radius:2px;background:var(--warn);display:block"></i><i style="flex:1;height:20px;border-radius:2px;background:var(--warn);display:block"></i><i style="flex:1;height:20px;border-radius:2px;background:var(--st-closed);display:block"></i><i style="flex:1;height:20px;border-radius:2px;background:var(--st-closed);display:block"></i><i style="flex:1;height:20px;border-radius:2px;background:var(--st-closed);display:block"></i><i style="flex:1;height:20px;border-radius:2px;background:var(--st-closed);display:block"></i><i style="flex:1;height:20px;border-radius:2px;background:var(--text-4);display:block"></i><i style="flex:1;height:20px;border-radius:2px;background:var(--text-4);display:block"></i></div></div>
+<div class="dk-card"><div class="ch"><span class="t">Fidelity</span></div><div class="dk-seamkey" style="flex-direction:column;align-items:flex-start;gap:8px"><div class="i"><span class="sw hatch"></span>prompt-only · from 2026-03-01</div><div class="i"><span class="sw line"></span>seam · 2026-06-23</div><div class="i"><span class="sw" style="background:var(--surface-2)"></span>full-session · onward</div></div><div style="font-size:11.5px;line-height:1.55;color:var(--text-4);margin-top:11px;text-wrap:pretty">Six of eleven instruments cannot speak before the seam. No line crosses it and no total spans it.</div></div>
+</div>
+</div>
+</div></div></div></div>
+
+<!-- ================= FRAME 2 — QUARTERLY EDITION ================= -->
+<div class="frame" style="left:0;top:2580px;width:1560px;height:4180px"><div class="frame-label"><b>Quarterly edition</b> &nbsp;— thesis → docket → new findings → ledger → instruments → confounder → grade → corrections. Order is fixed.</div>
+<div class="sy" data-nav="insights" data-cue="1"><div class="main"><div class="content" style="overflow:hidden">
+<div class="dsub"><div class="dt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h16M4 12h16M4 18h9"/></svg>Sessions</div><div class="dt on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 4h9l4 4v12H6z"/><path d="M9 11h7M9 15h5"/></svg>Docket<span class="n">13</span></div><div class="dt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12h4l2 6 4-14 2 8h6"/></svg>Instruments<span class="n">11</span></div><div class="sp"><span class="chip mono">Q3 2026 · 2026-05-01 → 2026-07-31</span><span class="chip mono">draft · you are the only reader</span></div></div>
+<div class="page-h"><div><div class="pt">Q3 2026 edition</div><div class="pd">Deltas are the reading. Every prior finding is ruled on before any new one is introduced — six rulings below, then two additions.</div></div><div class="sp"><div class="dk-ednav"><div class="e"><div class="p">Q1 2026</div><div class="k">prompt-only</div></div><div class="e"><div class="p">Q2 2026</div><div class="k">first edition</div></div><div class="e on q"><div class="p">Q3 2026</div><div class="k">this one</div></div><div class="e future"><div class="p">Q4 2026</div><div class="k">Nov 1</div></div></div><button class="btn">Compare to Q2</button></div></div>
+
+<div class="dk-thesis"><div class="l">Thesis · Q3 2026</div><div class="s">The habits that were about carelessness got fixed by tooling; the one that's about <em>not wanting to look</em> did not move, and it's the only one on the list that can hurt somebody else.</div><div class="m"><span>Ruling: <b>4 of 6 prior findings moved</b></span><span>·</span><span>Unmoved: <b>SY-1104</b>, <b>SY-1091</b></span><span>·</span><span>New this edition: <b>2</b></span><span>·</span><span>Recanted: <b>2</b></span></div></div>
+
+<div class="seclabel" style="margin-top:26px">Docket — rulings on prior findings</div>
+<div class="dk-finds">
+
+<div class="dk-f s-open"><div>
+<div class="hd"><span class="dk-st s-open"><i></i>Open</span><span class="tref">SY-1104</span><span style="font-family:var(--mono);font-size:10px;color:var(--text-4)">carried from Q2 · third edition open</span></div>
+<div class="claim">I don't verify auth, permissions or migration changes before I ship them.</div>
+<div class="dk-q"><p>"just push it, we can check the perms after — nobody else is on this box anyway"</p><p>"i'll write the test for the role thing later, remind me"</p><div class="src">2026-06-29 · session 41c8 · <a href="#">2 more matches</a> &nbsp;·&nbsp; 2026-07-14 · session 9e02 · <a href="#">open transcript</a></div></div>
+<div class="dk-chg"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg></div><div><div class="k">Committed change</div><div class="t">Every ticket touching <b>auth · permissions · migration</b> now auto-opens a verification sub-ticket that blocks promotion until it carries evidence or an explicit waiver. <span class="tref">SY-1199</span> <span style="color:var(--text-4)">· shipped 2026-07-22, nine days before period close</span></div></div></div>
+<div class="why">The ruling is <b>open, not moving</b>: the change landed too late to move the instrument. Three blanks this period against two last period — this got worse while I was building the thing meant to fix it.</div>
+</div><div class="dk-rail"><div class="rl">Instrument<span class="sp"><span class="dk-kind counted">counted</span></span></div><div class="nmm">ledger_blanks</div><div class="rd">Sensitive changes in the period with no verification evidence attached. Absolute count — a rate at n=6 is noise.</div><div class="num"><span class="was">2</span><span class="ar">→</span><span class="is">3</span><span class="u">of 6</span><span class="dl bad">+1</span></div><div class="dk-spark" data-vals="x,x,x,x,1,2,3" data-pre="48" data-color="var(--neg)" data-tier-l="prompt-only · can't speak" data-tier-r="full-session"></div></div></div>
+
+<div class="dk-f s-open"><div>
+<div class="hd"><span class="dk-st s-open"><i></i>Open</span><span class="tref">SY-1091</span><span style="font-family:var(--mono);font-size:10px;color:var(--text-4)">carried from Q2</span></div>
+<div class="claim">I start projects faster than I finish them.</div>
+<div class="dk-q"><p>"ok new repo, this'll be quick — scaffold a vite app called ledger-tool"</p><div class="src">2026-07-08 · session 7b31 · <a href="#">open transcript</a> &nbsp;·&nbsp; git: 6 repos initialised this period, 1 deployed</div></div>
+<div class="dk-chg"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg></div><div><div class="k">Committed change</div><div class="t">This docket lives inside Switchyard rather than as its own app — the one concrete instance of not starting a new thing. <span class="tref">SY-1207</span></div></div></div>
+<div class="why">Unmoved, and honestly reported: the instrument went the wrong way. The committed change is a single instance, not a mechanism, and one instance doesn't bend a count.</div>
+</div><div class="dk-rail"><div class="rl">Instrument<span class="sp"><span class="dk-kind counted">counted</span></span></div><div class="nmm">started_unshipped</div><div class="rd">Repos with a first commit and no deploy ever. Counted from git, no judgment.</div><div class="num"><span class="was">12</span><span class="ar">→</span><span class="is">15</span><span class="u">repos</span><span class="dl bad">+3</span></div><div class="dk-spark" data-vals="7,9,11,12,13,14,15" data-pre="48" data-color="var(--neg)" data-tier-l="prompt-only" data-tier-r="full-session"></div></div></div>
+
+<div class="dk-f s-moving"><div>
+<div class="hd"><span class="dk-st s-moving"><i></i>Moving</span><span class="tref">SY-1097</span><span style="font-family:var(--mono);font-size:10px;color:var(--text-4)">state computed, not claimed</span></div>
+<div class="claim">I approve agent plans without reading past the first bullet.</div>
+<div class="dk-q"><p>[plan rendered · 6 steps]  →  "yes go"</p><div class="src">2026-06-24 · session 2a70 · 11s dwell &nbsp;·&nbsp; <a href="#">38 sampled approvals</a></div></div>
+<div class="dk-chg"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg></div><div><div class="k">Committed change</div><div class="t">Plan mode on by default, and the approve button is disabled for <b>4s</b> after the plan renders. <span class="tref">SY-1163</span></div></div></div>
+<div class="why">Median dwell went 14s → 41s. <b>Read against the confounder below</b> — plan mode by default also changed what a plan <i>is</i>, so part of this is longer plans, not more reading.</div>
+</div><div class="dk-rail"><div class="rl">Instrument<span class="sp"><span class="dk-kind counted">counted</span></span></div><div class="nmm">plan_dwell_median_s</div><div class="rd">Seconds between plan render and approve. Needs full-session capture — silent before the seam.</div><div class="num"><span class="was">14</span><span class="ar">→</span><span class="is">41</span><span class="u">sec</span><span class="dl good">+27</span></div><div class="dk-spark" data-vals="x,x,x,x,14,26,41" data-pre="48" data-color="var(--pos)" data-tier-l="no capture" data-tier-r="full-session"></div></div></div>
+
+<div class="dk-f s-moving"><div>
+<div class="hd"><span class="dk-st s-moving"><i></i>Moving</span><span class="tref">SY-1112</span></div>
+<div class="claim">I leave CI red on anything that isn't Switchyard itself.</div>
+<div class="dk-q"><p>"ignore the failing build on argosy for now, it's the flaky snapshot test again"</p><div class="src">2026-05-19 · session c4d1 · <a href="#">open transcript</a> &nbsp;·&nbsp; it was not the flaky test</div></div>
+<div class="dk-chg"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg></div><div><div class="k">Committed change</div><div class="t">Red CI on any tracked repo raises a <b>blocked</b> ticket assigned to the next agent run, so the fix is queued instead of remembered. <span class="tref">SY-1150</span></div></div></div>
+<div class="why">31h → 9h median. The cleanest result in the edition, and the only one where the mechanism is fully automatic — which is the pattern worth noticing.</div>
+</div><div class="dk-rail"><div class="rl">Instrument<span class="sp"><span class="dk-kind counted">counted</span></span></div><div class="nmm">ci_red_hours_median</div><div class="rd">Median hours a tracked repo's default branch stays red. From Actions history — speaks across the seam.</div><div class="num"><span class="was">31</span><span class="ar">→</span><span class="is">9</span><span class="u">hours</span><span class="dl good">−22</span></div><div class="dk-spark" data-vals="42,38,31,29,22,14,9" data-pre="48" data-color="var(--pos)" data-tier-l="prompt-only" data-tier-r="full-session"></div></div></div>
+
+<div class="dk-f s-recanted"><div>
+<div class="hd"><span class="dk-st s-recanted"><i></i>Recanted</span><span class="tref">SY-1103</span><span style="font-family:var(--mono);font-size:10px;color:var(--text-4)">withdrawn this edition</span></div>
+<div class="claim">My prompts get longer when I'm confused, not more specific.</div>
+<div class="why" style="margin-top:9px">Held on prompt-only data and dissolved under full-session capture: length tracks <b>task size</b>, and the correlation with confusion markers was the seam itself — long prompts and full capture arrived in the same week. <b>I recanted a claim because better instrumentation contradicted it, not because it stopped being flattering.</b> Recorded in Corrections.</div>
+<div class="dk-q multi" style="border-left-color:var(--text-4)"><p>Q2 edition, §4: "prompt length is my confusion tell — watch p90."</p><div class="src">superseded 2026-07-28 · <a href="#">Q2 edition, in place</a></div></div>
+</div><div class="dk-rail"><div class="rl">Instrument<span class="sp"><span class="dk-kind counted">counted</span></span></div><div class="nmm">prompt_len_p90 <span style="color:var(--text-4)">· retired</span></div><div class="rd">Kept as a counted metric, no longer attached to a finding. Under your rule it is now decoration and gets cut next edition unless a finding claims it.</div><div class="num"><span class="was">604</span><span class="ar">→</span><span class="is" style="color:var(--text-3)">612</span><span class="u">tokens</span><span class="dl flat">flat</span></div><div class="dk-spark" data-vals="x,x,x,x,590,604,612" data-pre="48" data-color="var(--text-3)" data-tier-l="prompt-only · unusable" data-tier-r="full-session"></div></div></div>
+
+<div class="dk-f s-closed"><div>
+<div class="hd"><span class="dk-st s-closed"><i></i>Closed</span><span class="tref">SY-1088</span></div>
+<div class="claim">I paste secrets into prompts when debugging auth.</div>
+<div class="dk-q"><p>"here's the actual token so you can see the shape: sk_live_••••••••••••"</p><div class="src">2026-04-02 · session 1f5b · redacted at capture &nbsp;·&nbsp; last occurrence</div></div>
+<div class="dk-chg"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg></div><div><div class="k">Committed change</div><div class="t">Amber redacts at capture and a pre-prompt hook refuses on secret-shaped strings. <span class="tref">SY-1121</span></div></div></div>
+<div class="why">Zero for 61 days across 140 sessions. Closing on an absence is weaker evidence than closing on a number, and the note says so.</div>
+</div><div class="dk-rail"><div class="rl">Instrument<span class="sp"><span class="dk-kind counted">counted</span></span></div><div class="nmm">secret_pastes_per_100</div><div class="rd">Secret-shaped strings in prompts per 100 sessions. Detectable in prompt-only history, so it speaks on both sides of the seam.</div><div class="num"><span class="was">3.1</span><span class="ar">→</span><span class="is">0</span><span class="u">per 100</span><span class="dl good">−3.1</span></div><div class="dk-spark" data-vals="5,4,3,5,1,0,0" data-pre="48" data-color="var(--pos)" data-tier-l="prompt-only" data-tier-r="full-session"></div></div></div>
+
+</div>
+
+<div class="seclabel" style="margin-top:26px">New this edition</div>
+<div class="dk-finds">
+<div class="dk-f s-moving"><div>
+<div class="hd"><span class="dk-st s-moving"><i></i>Moving</span><span class="tref">SY-1128</span><span style="font-family:var(--mono);font-size:10px;color:var(--text-4)">new · first ruling next edition</span></div>
+<div class="claim">I let the agent name things and then live with the names.</div>
+<div class="dk-q"><p>"call it whatever makes sense" — then <span style="color:var(--text-4)">apane-h</span>, <span style="color:var(--text-4)">vpanel</span>, <span style="color:var(--text-4)">dk-1p</span> all survived into the design system</p><div class="src">2026-07-02 · session 5d19 &nbsp;·&nbsp; git: 64% of files touched this period carry a Co-Authored-By</div></div>
+<div class="dk-chg"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg></div><div><div class="k">Committed change</div><div class="t">Naming is mine before the agent writes: any new class prefix or table name goes in the ticket first. <span class="tref">SY-1204</span></div></div></div>
+</div><div class="dk-rail"><div class="rl">Instrument<span class="sp"><span class="dk-kind counted">counted</span></span></div><div class="nmm">co_author_share</div><div class="rd">Share of files touched in the period whose last commit carries a Co-Authored-By trailer. A proxy, and labelled as one.</div><div class="num"><span class="was">0.71</span><span class="ar">→</span><span class="is">0.64</span><span class="u">share</span><span class="dl good">−0.07</span></div><div class="dk-spark" data-vals="x,x,x,x,0.71,0.68,0.64" data-pre="48" data-color="var(--pos)" data-tier-l="no capture" data-tier-r="full-session"></div></div></div>
+
+<div class="dk-f s-gap"><div>
+<div class="hd"><span class="dk-st s-gap"><i></i>Capture gap</span><span class="tref">SY-1133</span><span style="font-family:var(--mono);font-size:10px;color:var(--warn)">renders as a gap until it has an instrument</span></div>
+<div class="claim">I lose the thread switching between the terminal and the browser.</div>
+<div class="dk-q"><p>"wait what was I — ok, re-read me the last plan"</p><div class="src">2026-07-19 · session 8c44 · <a href="#">6 similar</a> &nbsp;·&nbsp; feels true, measures nothing</div></div>
+<div class="why">This is the shape of a finding with no instrument: it stays on the docket, occupies a slot, and cannot be closed. Amber captures the terminal; nothing captures the browser, so the claim is <b>unprovable rather than unproven</b>. Either the capture gets closed or the finding gets cut at Q4 — it does not get to sit here as an unfalsifiable opinion.</div>
+</div><div class="dk-rail gap"><div class="rl">Instrument<span class="sp"><span class="dk-kind counted" style="opacity:.4">none</span></span></div><div class="msg"><b>Capture gap.</b> No instrument could exist from current sources. Nearest candidate — <span style="font-family:var(--mono);font-size:11px">context_reload_requests</span>, countable in full-session transcripts — would measure the symptom, not the switch.</div><button class="mk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Define the instrument</button><div class="nk">or cut at Q4 · slot 12 of 13</div></div></div>
+</div>
+
+<div class="seclabel" style="margin-top:26px">Verification ledger — every sensitive change this period</div>
+<div class="dk-led">
+<div class="dk-ledh"><div>Ticket</div><div>Category</div><div>Change</div><div>Verification evidence</div></div>
+<div class="dk-ledr"><div><span class="tref">SY-1142</span></div><div class="cat">auth</div><div class="ti">Session cookie moved to SameSite=Lax</div><div class="ev"><span class="evchip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>test_session_cross_site</span><span class="evchip">manual · 2 browsers</span></div></div>
+<div class="dk-ledr blank"><div><span class="tref">SY-1156</span></div><div class="cat">permissions</div><div class="ti">Project member role added; can promote to dev</div><div class="ev"><span class="dk-blank">blank</span><span style="font-size:11.5px;color:var(--text-4)">shipped 2026-06-11</span></div></div>
+<div class="dk-ledr"><div><span class="tref">SY-1163</span></div><div class="cat">migration</div><div class="ti">Backfill <span style="font-family:var(--mono);font-size:11.5px">deployments.status</span></div><div class="ev"><span class="evchip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>dry-run on restic snapshot</span><span class="evchip">row counts ±0</span></div></div>
+<div class="dk-ledr blank"><div><span class="tref">SY-1171</span></div><div class="cat">auth</div><div class="ti">PAT scope narrowed to <span style="font-family:var(--mono);font-size:11.5px">repo:status</span></div><div class="ev"><span class="dk-blank">blank</span><span style="font-size:11.5px;color:var(--text-4)">"it still worked" is not evidence</span></div></div>
+<div class="dk-ledr blank"><div><span class="tref">SY-1188</span></div><div class="cat">permissions</div><div class="ti">Agent token may close tickets without review</div><div class="ev"><span class="dk-blank">blank</span><span style="font-size:11.5px;color:var(--text-4)">the one that worries me</span></div></div>
+<div class="dk-ledr"><div><span class="tref">SY-1194</span></div><div class="cat">migration</div><div class="ti">Drop <span style="font-family:var(--mono);font-size:11.5px">flags.legacy_key</span></div><div class="ev"><span class="evchip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>rollback rehearsed</span></div></div>
+<div class="dk-ledfoot"><span><b>Three blanks.</b> Not 50% — at n=6 a percentage invents precision. Three named changes, three ticket numbers, one of which lets a machine close its own work.</span><span class="sp"><button class="btn">Open all three</button></span></div>
+</div>
+
+<div class="seclabel" style="margin-top:26px">Instruments — counted and judged</div>
+<div class="dk-led">
+<div class="dk-ledh" style="grid-template-columns:210px 96px 1fr 300px"><div>Instrument</div><div>Kind</div><div>Definition</div><div>This period</div></div>
+<div class="dk-ledr" style="grid-template-columns:210px 96px 1fr 300px"><div style="font-family:var(--mono);font-size:11.5px;color:var(--text)">ledger_blanks</div><div><span class="dk-kind counted">counted</span></div><div class="ti" style="color:var(--text-3);font-size:12px">Sensitive changes with no evidence attached</div><div class="ev"><span style="font-family:var(--mono);font-size:13px">3 of 6</span><span style="font-family:var(--mono);font-size:10.5px;color:var(--neg);font-weight:600">+1</span></div></div>
+<div class="dk-ledr" style="grid-template-columns:210px 96px 1fr 300px"><div style="font-family:var(--mono);font-size:11.5px;color:var(--text)">ci_red_hours_median</div><div><span class="dk-kind counted">counted</span></div><div class="ti" style="color:var(--text-3);font-size:12px">Median hours default branch stays red</div><div class="ev"><span style="font-family:var(--mono);font-size:13px">9h</span><span style="font-family:var(--mono);font-size:10.5px;color:var(--pos);font-weight:600">−22h</span></div></div>
+<div class="dk-ledr" style="grid-template-columns:210px 96px 1fr 300px"><div style="font-family:var(--mono);font-size:11.5px;color:var(--text)">plan_dwell_median_s</div><div><span class="dk-kind counted">counted</span></div><div class="ti" style="color:var(--text-3);font-size:12px">Seconds between plan render and approve <span style="color:var(--warn)">· full-session only</span></div><div class="ev"><span style="font-family:var(--mono);font-size:13px">41s</span><span style="font-family:var(--mono);font-size:10.5px;color:var(--pos);font-weight:600">+27s</span></div></div>
+<div class="dk-ledr" style="grid-template-columns:210px 96px 1fr 300px"><div style="font-family:var(--mono);font-size:11.5px;color:var(--text)">review_before_merge</div><div><span class="dk-kind judged">judged</span></div><div class="ti" style="color:var(--text-3);font-size:12px">Did I read the diff before merging agent work</div><div class="ev"><span class="dk-rail" style="all:unset"><span style="display:inline-flex;align-items:center;height:24px;padding:0 9px;border-radius:6px;background:var(--st-planning-bg);border:1px solid rgba(192,140,216,.28);font-size:12px;font-weight:600;color:var(--st-planning)">often</span></span><span style="font-family:var(--mono);font-size:9.5px;color:var(--text-4)">n=42 judged · k=8 checked</span><a href="#" style="font-family:var(--mono);font-size:9.5px">evidence</a></div></div>
+<div class="dk-ledr" style="grid-template-columns:210px 96px 1fr 300px"><div style="font-family:var(--mono);font-size:11.5px;color:var(--text)">confusion_markers</div><div><span class="dk-kind judged">judged</span></div><div class="ti" style="color:var(--text-3);font-size:12px">Sessions where I visibly lost the thread</div><div class="ev"><span style="display:inline-flex;align-items:center;height:24px;padding:0 9px;border-radius:6px;background:var(--st-planning-bg);border:1px solid rgba(192,140,216,.28);font-size:12px;font-weight:600;color:var(--st-planning)">low</span><span style="font-family:var(--mono);font-size:9.5px;color:var(--text-4)">n=61 judged · k=12 checked</span><a href="#" style="font-family:var(--mono);font-size:9.5px">evidence</a></div></div>
+<div class="dk-ledfoot"><span>Judged instruments are <b>banded, never decimal</b>, and always carry how many were judged and how many I spot-checked. That distinction is made here once and never restated.</span></div>
+</div>
+
+<div class="seclabel" style="margin-top:26px">Confounder — this period's largest harness change</div>
+<div class="dk-conf"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 3v11M12 18v3"/><circle cx="12" cy="16" r="1"/></svg></div><div><div class="t">Plan mode became the default on 2026-07-11.</div><div class="s">Plans got longer and more granular, so <b>plan_dwell_median_s</b> is partly measuring a longer artefact rather than more careful reading. The 14s → 41s move is real but over-credited; the honest read is "some of this is me and some of this is the plan". It also lands mid-period, so the July figures are a blend of two harnesses.</div><div class="att"><span class="l">attached to</span><span class="tref">SY-1097 · plan_dwell_median_s</span><span class="tref">confusion_markers</span><span style="font-size:11.5px;color:var(--text-4)">not applied to the other four — plan mode cannot explain CI red time or secret pastes</span></div></div></div>
+
+<div class="seclabel" style="margin-top:26px">Grade</div>
+<div class="dk-grade">
+<div style="display:flex;align-items:center;gap:12px"><div style="font-size:13px;font-weight:600">One axis, three marks</div><div style="font-size:12px;color:var(--text-4)">— the ruler labels the gap, not the scores</div></div>
+<div class="dk-ruler">
+<div class="ax"></div>
+<div class="band" style="left:56%;width:26%"></div>
+<div class="gapmark" style="left:34%;width:28%"></div><div class="gaplb" style="left:48%">the gap · verification discipline</div>
+<div class="mk me" style="left:34%"></div>
+<div class="mk ceil" style="left:88%"></div>
+<div class="lb me below" style="left:34%"><div class="n">Me, now</div><div class="k">Q3 2026</div></div>
+<div class="lb below" style="left:69%"><div class="n" style="color:var(--st-progress)">Working professional band</div><div class="k">judged · unverifiable</div></div>
+<div class="lb below" style="left:88%"><div class="n">My ceiling</div><div class="k">same tools, more care</div></div>
+</div>
+<div class="gapsay">The distance between me and a working professional is almost entirely <em>verification discipline</em> — not speed, not code quality, not tooling. Three unverified sensitive changes is the whole gap; close those and the marks nearly touch.</div>
+<div class="off"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:14px;height:14px;flex:none"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="2.6"/></svg><span>Absolute scores are judged, unverifiable and deliberately off this page. <a href="#">Show the numbers anyway</a> — they were 82 / 85 / 96 in Q2 and the drift between editions is not meaningful.</span></div>
+</div>
+
+<div class="seclabel" style="margin-top:26px">Corrections</div>
+<div style="background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:6px 18px 10px">
+<div class="dk-corr"><div class="w">Q2 · §4</div><div class="b"><b>Recanted.</b> "Prompt length is my confusion tell." It tracks task size. The apparent correlation was the capture seam, not a behaviour. <span class="tref">SY-1103</span></div></div>
+<div class="dk-corr"><div class="w">Q2 · §2</div><div class="b"><b>Recanted.</b> "I review agent output more carefully in the morning." Fourteen mornings is not a finding, it's a mood. Withdrawn without replacement. <span class="tref">SY-1119</span></div></div>
+<div class="dk-corr"><div class="w">Q2 · grade</div><div class="b"><b>Corrected.</b> Q2 put the professional band at a point, not a range, which made the gap look like a score difference. Bands from here on.</div></div>
+<div class="dk-corr"><div class="w">Q2 · ledger</div><div class="b"><b>Corrected.</b> Q2 reported "67% verified". At n=6 that was invented precision. Restated as <b>2 blanks of 6</b>, named. <span class="tref">SY-1156</span> <span class="tref">SY-1171</span></div></div>
+</div>
+<div style="height:30px"></div>
+</div></div></div></div>
+
+<!-- ================= FRAME 3 — IN AN ORDINARY TICKET LIST ================= -->
+<div class="frame" style="left:0;top:6880px;width:1560px;height:820px"><div class="frame-label"><b>A finding in an ordinary ticket list</b> &nbsp;— same row height, same status vocabulary. The type icon and the FINDING prefix do all the differentiating.</div>
+<div class="sy" data-nav="tickets" data-cue="1"><div class="main"><div class="content" style="overflow:hidden">
+<div class="page-h"><div><div class="pt">Tickets</div><div class="pd">Findings are tickets of type <b>finding</b> — they sort, filter, get assigned and get closed like everything else. No special row treatment: a docket that needs its own list is a docket you forget to open.</div></div><div class="sp"><span class="chip mono">type: all</span><button class="btn">Filter</button><button class="btn btn-primary">New ticket</button></div></div>
+<div class="dk-tl">
+<div class="dk-tlh"><div>ID</div><div></div><div>Title</div><div>Status</div><div>Instrument / project</div><div>Updated</div><div></div></div>
+<div class="dk-t"><div class="id">SY-1207</div><div class="ty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 10h8M8 14h5"/></svg></div><div class="ti">Q3 2026 edition — rule on 6 prior findings, then add</div><div><span class="dk-stx prog"><i></i>In progress</span></div><div class="rt"><span class="chip mono">edition</span></div><div class="ago" style="font-family:var(--mono);font-size:10.5px;color:var(--text-4);text-align:right">due 12d</div><div class="own"><span class="av sm" style="background:#c65a4a">M</span></div></div>
+<div class="dk-t find"><div class="id">SY-1104</div><div class="ty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M11 4a7 7 0 107 7 7 7 0 00-7-7zM16.5 16.5L21 21"/></svg></div><div class="ti"><span class="pre">finding</span>I don't verify auth, permissions or migration changes</div><div><span class="dk-stx block"><i></i>Blocked</span></div><div class="rt"><span class="chip mono">ledger_blanks 3</span></div><div class="ago" style="font-family:var(--mono);font-size:10.5px;color:var(--text-4);text-align:right">14d</div><div class="own"><span class="av sm" style="background:#c65a4a">M</span></div></div>
+<div class="dk-t"><div class="id">SY-1206</div><div class="ty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 8h18M3 8l2-4h14l2 4M3 8v10a2 2 0 002 2h14a2 2 0 002-2V8"/></svg></div><div class="ti">Promote gate: pre-flight should block on a flag mismatch</div><div><span class="dk-stx plan"><i></i>Planning</span></div><div class="rt"><span class="chip mono">switchyard</span></div><div class="ago" style="font-family:var(--mono);font-size:10.5px;color:var(--text-4);text-align:right">2h</div><div class="own"><span class="av sm sq">A</span></div></div>
+<div class="dk-t find"><div class="id">SY-1133</div><div class="ty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M11 4a7 7 0 107 7 7 7 0 00-7-7zM16.5 16.5L21 21"/></svg></div><div class="ti"><span class="pre">finding</span>I lose the thread switching between the terminal and the browser</div><div><span class="dk-stx backlog"><i></i>Backlog</span></div><div class="rt"><span class="chip mono" style="color:var(--warn);border-color:var(--warn-line);background:var(--warn-bg)">no instrument</span></div><div class="ago" style="font-family:var(--mono);font-size:10.5px;color:var(--text-4);text-align:right">31d</div><div class="own"><span class="av sm" style="background:#c65a4a">M</span></div></div>
+<div class="dk-t"><div class="id">SY-1205</div><div class="ty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 8h18M3 8l2-4h14l2 4M3 8v10a2 2 0 002 2h14a2 2 0 002-2V8"/></svg></div><div class="ti">lyceum: promote v2.4.0 to prod</div><div><span class="dk-stx prog"><i></i>In progress</span></div><div class="rt"><span class="chip mono">lyceum</span></div><div class="ago" style="font-family:var(--mono);font-size:10.5px;color:var(--text-4);text-align:right">40m</div><div class="own"><span class="av sm sq">A</span></div></div>
+<div class="dk-t find"><div class="id">SY-1097</div><div class="ty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M11 4a7 7 0 107 7 7 7 0 00-7-7zM16.5 16.5L21 21"/></svg></div><div class="ti"><span class="pre">finding</span>I approve agent plans without reading past the first bullet</div><div><span class="dk-stx prog"><i></i>In progress</span></div><div class="rt"><span class="chip mono">plan_dwell 41s</span></div><div class="ago" style="font-family:var(--mono);font-size:10.5px;color:var(--text-4);text-align:right">6d</div><div class="own"><span class="av sm" style="background:#c65a4a">M</span></div></div>
+<div class="dk-t"><div class="id">SY-1199</div><div class="ty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 8h18M3 8l2-4h14l2 4M3 8v10a2 2 0 002 2h14a2 2 0 002-2V8"/></svg></div><div class="ti">Auto-open a verification sub-ticket for auth / permissions / migration</div><div><span class="dk-stx done"><i></i>Closed</span></div><div class="rt"><span class="chip mono">switchyard</span></div><div class="ago" style="font-family:var(--mono);font-size:10.5px;color:var(--text-4);text-align:right">9d</div><div class="own"><span class="av sm sq">A</span></div></div>
+<div class="dk-t find"><div class="id">SY-1103</div><div class="ty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M11 4a7 7 0 107 7 7 7 0 00-7-7zM16.5 16.5L21 21"/></svg></div><div class="ti"><span class="pre">finding</span><span style="text-decoration:line-through;text-decoration-color:var(--text-4);color:var(--text-3)">My prompts get longer when I'm confused</span></div><div><span class="dk-stx done"><i></i>Closed · recanted</span></div><div class="rt"><span class="chip mono" style="color:var(--text-4)">retired</span></div><div class="ago" style="font-family:var(--mono);font-size:10.5px;color:var(--text-4);text-align:right">Q3</div><div class="own"><span class="av sm" style="background:#c65a4a">M</span></div></div>
+</div>
+<div class="dk-scope" style="margin-top:14px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 8v.01M12 11v5"/></svg><span><b>Status maps, it doesn't duplicate.</b> Docket state is derived: <b>open</b> = backlog or blocked · <b>moving</b> = in progress <i>and</i> the instrument moved the right way in the last two readings · <b>closed</b> = closed with a resolution · <b>recanted</b> = closed with resolution <span style="font-family:var(--mono);font-size:11px">recanted</span>. Nothing about docket state is typed by hand, which is the whole argument for putting findings in the ticket table.</span></div>
+</div></div></div></div>
+
+<!-- ================= FRAME 4 — TICKET DETAIL ================= -->
+<div class="frame" style="left:0;top:7820px;width:1560px;height:1220px"><div class="frame-label"><b>Finding as a ticket detail page</b> &nbsp;— rail stacks into a strip. The instrument stays; the delta reading defers to the edition.</div>
+<div class="sy" data-nav="tickets" data-cue="1"><div class="main"><div class="content" style="overflow:hidden">
+<div class="dk-col">
+<div class="dk-dh"><div><div class="id">SY-1104 · finding · opened 2026-04-18 by you</div><h1>I don't verify auth, permissions or migration changes before I ship them.</h1></div><div class="sp"><button class="btn">Edit</button><button class="btn btn-primary">Rule on this</button></div></div>
+<div class="dk-meta"><span class="dk-st s-open"><i></i>Open</span><span class="chip mono">3rd edition open</span><span class="chip mono">appears in Q2 · Q3</span><span class="chip mono">scope: global</span><span class="chip">Slot 1 of 13</span></div>
+
+<div class="dk-sect"><div class="sh"><span class="n">01</span><span class="t">Evidence</span><span class="sp"><span class="chip mono">4 matches · 2 sessions</span></span></div>
+<div class="dk-q"><p>"just push it, we can check the perms after — nobody else is on this box anyway"</p><div class="src">2026-06-29 · session 41c8 · <a href="#">open transcript at this line</a></div></div>
+<div class="dk-q" style="margin-top:8px"><p>"i'll write the test for the role thing later, remind me"</p><div class="src">2026-07-14 · session 9e02 · <a href="#">open transcript at this line</a> &nbsp;·&nbsp; no reminder was created</div></div>
+</div>
+
+<div class="dk-sect"><div class="sh"><span class="n">02</span><span class="t">Instrument</span><span class="sp"><span class="dk-kind counted">counted</span></span></div>
+<div class="dk-instrip"><div><div class="nmm">ledger_blanks</div><div class="rd">Sensitive changes in the period with no verification evidence attached. Counted from the ledger; absolute, never a rate.</div></div><div class="big"><span class="is">3</span><span class="u">of 6</span></div></div>
+<div class="dk-scope" style="margin-top:10px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20V8M10 20V4M16 20v-7M22 20H2"/></svg><span>The <b>delta and the sparkline live in the edition</b>, where neighbouring findings give them scale. Here the instrument only has to prove the claim is falsifiable. <a href="#">See it in the Q3 edition →</a></span></div>
+</div>
+
+<div class="dk-sect"><div class="sh"><span class="n">03</span><span class="t">Committed change</span></div>
+<div class="dk-chg" style="margin-top:0"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg></div><div><div class="k">One change · Q3</div><div class="t">Every ticket touching <b>auth · permissions · migration</b> auto-opens a verification sub-ticket that blocks promotion until it carries evidence or an explicit waiver. <span class="tref">SY-1199</span> <span style="color:var(--text-4)">· shipped 2026-07-22</span></div></div></div>
+<div class="dk-body" style="margin-top:12px">One committed change per finding, per edition. Q2's change was "remember to check" and it is recorded as a failure, because a change that is a resolution isn't a change.</div>
+</div>
+
+<div class="dk-sect"><div class="sh"><span class="n">04</span><span class="t">Rulings</span><span class="sp"><span class="chip mono">2 editions</span></span></div>
+<div class="dk-hist">
+<div class="dk-histh"><div>Edition</div><div>State</div><div>Ruling</div><div>ledger_blanks</div></div>
+<div class="dk-histr"><div class="per"><div class="p">Q3 2026</div><div class="k">current</div></div><div><span class="dk-st s-open"><i></i>Open</span></div><div class="rule">Change landed <b>nine days before close</b> — too late to move the instrument. Blanks went 2 → 3. Got worse while the fix was being built.</div><div class="val"><span class="v">3</span><span class="dl bad">+1</span></div></div>
+<div class="dk-histr"><div class="per"><div class="p">Q2 2026</div><div class="k">first edition</div></div><div><span class="dk-st s-open"><i></i>Open</span></div><div class="rule">Introduced. Committed change was <b>"remember to check"</b>, which is not a change.</div><div class="val"><span class="v">2</span><span class="none">baseline</span></div></div>
+<div class="dk-seambar"><div class="l">capture seam · 2026-06-23</div><div class="s">Before this date the ledger was reconstructed from git and ticket text only — blanks are <b>undercounted</b>, so the Q2 baseline is a floor, not a measurement. No trend line is drawn through here.</div></div>
+<div class="dk-histr seamrow"><div class="per"><div class="p">Q1 2026</div><div class="k">prompt-only</div></div><div><span style="font-family:var(--mono);font-size:10px;color:var(--text-4);letter-spacing:.08em">NO EDITION</span></div><div class="rule" style="color:var(--text-4)">The docket did not exist. The period is shown so the empty region is visible rather than cropped — where the instrument can't speak, the emptiness is the reading.</div><div class="val"><span class="none">cannot speak</span></div></div>
+</div>
+</div>
+<div style="height:24px"></div>
+</div>
+</div></div></div></div>
+
+<!-- ================= FRAME 5 — PER-PROJECT ================= -->
+<div class="frame" style="left:0;top:9240px;width:1560px;height:900px"><div class="frame-label"><b>Per-project</b> &nbsp;— a filter on the same list plus a strip in the project view. Global findings stay visible, dimmed, so the filtered view can't lie by omission.</div>
+<div class="sy" data-nav="projects" data-cue="1"><div class="main"><div class="content" style="overflow:hidden">
+<div class="page-h"><div><div class="pt">lyceum</div><div class="pd">Project view. The docket appears as one strip — not a second report, not a tab, not a chart.</div></div><div class="sp"><span class="chip mono">v2.4.0 dev · v2.3.1 prod</span><button class="btn">Settings</button></div></div>
+
+<div class="dk-pstrip"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 4h9l4 4v12H6z"/><path d="M9 11h7M9 15h5"/></svg></div><div><div class="t"><b>Two docket findings scope to lyceum</b> — CI red time is moving; naming is new and unruled.</div><div class="s">Q3 2026 edition · next ruling Nov 1 · nothing here needs you today</div></div><div class="sp"><span class="dk-st s-moving"><i></i>Moving</span><span class="dk-st s-moving"><i></i>Moving</span><button class="btn">Open the Q3 edition</button></div></div>
+
+<div class="seclabel" style="margin-top:24px">Docket · filtered to lyceum</div>
+<div class="dk-mlist">
+<div class="dk-m s-moving"><div class="id">SY-1112</div><div class="cl">I leave CI red on anything that isn't switchyard itself</div><div class="inst"><span class="dk-sparkmini" data-vals="38,31,29,22,14,9" data-pre="52" data-color="var(--pos)"></span><span class="k">ci_red_hours_median</span></div><div class="mv"><span class="v">4h</span><span class="dl good">−19h</span></div><div class="ago">8d</div></div>
+<div class="dk-m s-moving"><div class="id">SY-1128</div><div class="cl">I let the agent name things and then live with the names</div><div class="inst"><span class="dk-sparkmini" data-vals="x,x,x,78,74,69" data-pre="52" data-color="var(--pos)"></span><span class="k">co_author_share</span></div><div class="mv"><span class="v">0.69</span><span class="dl good">−0.09</span></div><div class="ago">11d</div></div>
+</div>
+<div class="dk-globalband"><span class="l">not project-scoped · still open against you</span><div class="items"><span class="gi"><i style="background:var(--accent)"></i>verification discipline</span><span class="gi"><i style="background:var(--accent)"></i>started, unshipped</span><span class="gi"><i style="background:var(--st-progress)"></i>plan dwell</span><span class="gi"><i style="background:var(--warn);border-radius:1px"></i>terminal ↔ browser</span><span class="gi"><i style="background:var(--warn);border-radius:1px"></i>re-explaining context</span></div></div>
+<div class="dk-scope" style="margin-top:10px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 8v.01M12 11v5"/></svg><span>Filtering to a project would otherwise read as <b>"2 open"</b> when six are open against you. The band is unclickable-looking on purpose: it's context, not a to-do list. Per-project values are the same instrument re-scoped — <span style="font-family:var(--mono);font-size:11px">ci_red_hours_median</span> is 9h globally and 4h here.</span></div>
+
+<div class="seclabel" style="margin-top:22px">Persistent chrome — the whole affordance</div>
+<div style="display:flex;align-items:center;gap:16px;padding:14px 16px;border-radius:10px;background:var(--surface-2);border:1px solid var(--line)"><span class="dk-topcue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 4h9l4 4v12H6z"/><path d="M9 11h7M9 15h5"/></svg><span class="n">4 open</span><span class="sep"></span><span class="due">Q3 due 12d</span></span><span style="font-size:12.5px;line-height:1.6;color:var(--text-3);max-width:88ch;text-wrap:pretty">One pill, in the topbar of every screen. It shows a <b style="color:var(--text-2)">count and a due date</b> — both change, so both stay legible. It does not show the thesis: a sentence that never changes becomes furniture inside a week, and the failure mode you're guarding against is not "I forgot the thesis", it's "I never opened it". The count going 4 → 5 is the only thing that can nag.</span></div>
+</div></div></div></div>
+
+<template id="dk-shell">
+<aside class="side">
+<div class="brand"><span class="brand-mark"><img src="sy-mark.svg" alt="" /></span><div class="brand-name"><span>Switch</span><span>Yard</span></div></div>
+<nav class="nav">
+<div class="nav-item" data-n="dash"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Dashboard</div>
+<div class="nav-item" data-n="tickets"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 8h18M3 8l2-4h14l2 4M3 8v10a2 2 0 002 2h14a2 2 0 002-2V8M8 12h8"/></svg>Tickets</div>
+<div class="nav-item" data-n="boards"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="5" height="16" rx="1"/><rect x="10" y="4" width="5" height="11" rx="1"/><rect x="17" y="4" width="4" height="16" rx="1"/></svg>Boards</div>
+<div class="nav-item" data-n="projects"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>Projects</div>
+<div class="nav-item" data-n="delivery"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5v7M9 7l3 3 3-3"/><path d="M4.5 12.5h15v5.5a1 1 0 01-1 1h-13a1 1 0 01-1-1z"/><path d="M3 21.5h18"/><path d="M7.5 19v2M16.5 19v2"/></svg>Delivery</div>
+<div class="nav-item" data-n="insights"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12h4l2 6 4-14 2 8h6"/></svg>LLM Insights</div>
+<div class="nav-item" data-n="automations"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M13 3L4 14h6l-1 7 9-11h-6z"/></svg>Automations</div>
+<div class="nav-label">Admin</div>
+<div class="nav-item" data-n="creds"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="14" r="4"/><path d="M12 11l7-7 2.5 2.5-1.6 1.6 1.6 1.6-2.5 2.5-1.6-1.6-1.6 1.6"/></svg>Credentials</div>
+<div class="nav-item" data-n="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3.2"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/></svg>Settings</div>
+<div class="nav-item" data-n="health"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12h4l2-5 3 10 2-7 2 2h5"/></svg>Health</div>
+</nav>
+<div class="side-foot">v3.7.0</div>
+</aside>
+</template>
+
+<template id="dk-topbar">
+<div class="topbar"><div class="search"><span class="kbd">Ctrl K</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>Search tickets, findings, instruments…</div><div class="topbar-right"><span class="dk-topcue" data-cue-slot><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 4h9l4 4v12H6z"/><path d="M9 11h7M9 15h5"/></svg><span class="n">4 open</span><span class="sep"></span><span class="due">Q3 due 12d</span></span><div class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0"/></svg></div><span class="av lg" style="background:#c65a4a">M</span></div></div>
+</template>
+
+<script>
+(function(){
+  var shell=document.getElementById("dk-shell").innerHTML,top=document.getElementById("dk-topbar").innerHTML;
+  document.querySelectorAll(".sy[data-nav]").forEach(function(sy){
+    sy.insertAdjacentHTML("afterbegin",shell);
+    var it=sy.querySelector('.nav-item[data-n="'+sy.dataset.nav+'"]');if(it)it.classList.add("active");
+    var main=sy.querySelector(".main");main.insertAdjacentHTML("afterbegin",top);
+    if(sy.dataset.cue!=="1"){var c=main.querySelector("[data-cue-slot]");if(c)c.remove();}
+  });
+  function draw(el,h){
+    var vals=(el.dataset.vals||"").split(",").map(function(s){return s.trim()});
+    var pre=parseFloat(el.dataset.pre||0),color=el.dataset.color||"var(--accent-2)";
+    var nums=vals.filter(function(v){return v!=="x"}).map(Number);
+    var mn=Math.min.apply(null,nums),mx=Math.max.apply(null,nums),pad=14;
+    var yy=function(v){return mx===mn?50:pad+(1-(v-mn)/(mx-mn))*(100-2*pad)};
+    var xx=function(i){return vals.length<2?50:(i/(vals.length-1))*100};
+    var segs=[],cur=[];
+    vals.forEach(function(v,i){if(v==="x"){if(cur.length)segs.push(cur);cur=[]}else cur.push([xx(i).toFixed(2),yy(+v).toFixed(2)])});
+    if(cur.length)segs.push(cur);
+    var svg='<svg viewBox="0 0 100 100" preserveAspectRatio="none">';
+    segs.forEach(function(s){
+      if(s.length===1)svg+='<rect x="'+(s[0][0]-1)+'" y="'+(s[0][1]-1)+'" width="2" height="2" fill="'+color+'"/>';
+      else svg+='<polyline points="'+s.map(function(p){return p.join(",")}).join(" ")+'" fill="none" stroke="'+color+'" stroke-width="1.6" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round"/>';
+    });
+    svg+="</svg>";
+    var tiers="";
+    if(h){
+      if(el.dataset.tierL)tiers+='<div class="tier l" style="left:6px">'+el.dataset.tierL+"</div>";
+      if(el.dataset.tierR)tiers+='<div class="tier" style="left:calc('+pre+'% + 7px)">'+el.dataset.tierR+"</div>";
+    }
+    el.innerHTML='<div class="pre" style="width:'+pre+'%"></div>'+svg+'<div class="seam" style="left:'+pre+'%"></div>'+tiers;
+  }
+  document.querySelectorAll(".dk-spark").forEach(function(e){draw(e,true)});
+  document.querySelectorAll(".dk-sparkmini").forEach(function(e){draw(e,false)});
+})();
+</script>
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><rect width="120" height="120" fill="#16171b"/><g stroke="#e2623d" stroke-width="4" fill="none" stroke-linecap="round"><path d="M40 34h30l12 12v42H40z"/><path d="M50 58h22M50 70h14"/></g></svg></template>
+</body>
+</html>
+
