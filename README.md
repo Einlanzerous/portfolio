@@ -4,7 +4,7 @@ Ashley Dodson's systems portfolio — the services built under Zero Gravity
 Industries, one dossier each: what it is, the features that matter, the
 screens that prove them, and the architecture map.
 
-**Live:** https://portfolio.einlanzerous.workers.dev
+**Live:** https://portfolio.zerogravity.industries (also https://portfolio.einlanzerous.workers.dev)
 
 ## Stack
 

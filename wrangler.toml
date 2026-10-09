@@ -12,3 +12,11 @@ not_found_handling = "none"
 # page and iframed with query strings; the default `auto-trailing-slash`
 # answered each with a 307 to the extensionless path first. Serve as-is.
 html_handling = "none"
+
+# Public hostname on the estate's zone (FOLIO-9). A Workers custom domain:
+# wrangler attaches it through the Workers domains API on deploy, and
+# Cloudflare creates the proxied DNS record and the certificate itself. The
+# deploy token is an Account API token made from Cloudflare's own
+# "Edit Cloudflare Workers" template, scoped to this account and to the
+# zerogravity.industries zone (FOLIO-8). No tunnel, no Access — public by design.
+routes = [{ pattern = "portfolio.zerogravity.industries", custom_domain = true }]
