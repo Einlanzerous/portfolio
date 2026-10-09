@@ -1,0 +1,48 @@
+name: ci
+
+# Typecheck, test, build. No backend, no database, no browser — the data-file
+# guard test is the one thing that can go red here besides types. This repo
+# is PUBLIC, so `ubuntu-latest` minutes are unmetered; nothing here needs a
+# self-hosted runner.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: typecheck, test, build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.14
+      - run: bun install --frozen-lockfile
+      - run: bun run verify
+
+  lint:
+    name: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # Downloaded PINNED and checksummed, not read off the runner — the same
+      # artifact and checksum trestle's and switchyard's ci.yml pin, so an
+      # unversioned host binary can't turn an unrelated PR red.
+      - name: Workflow lint (actionlint)
+        run: |
+          set -euo pipefail
+          curl -sSfL -o "$RUNNER_TEMP/actionlint.tgz" \
+            https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz
+          echo "8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8  $RUNNER_TEMP/actionlint.tgz" | sha256sum -c -
+          tar -xzf "$RUNNER_TEMP/actionlint.tgz" -C "$RUNNER_TEMP" actionlint
+          "$RUNNER_TEMP/actionlint"

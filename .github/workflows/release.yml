@@ -1,0 +1,22 @@
+name: release
+
+# release-please owns CHANGELOG.md and the version. A `feat:`/`fix:` on main
+# opens or updates the release PR; merging it cuts the tag that deploy.yml
+# listens for. `chore:` does not release (PRINCIPLES §3).
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: googleapis/release-please-action@v4
+        with:
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json

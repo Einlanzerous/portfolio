@@ -1,0 +1,37 @@
+name: PR Review
+
+# Fresh-context review of every pull request, via the shared definition in
+# construct-server (SERV-92). Judgement lives in `REVIEW.md`; the procedure
+# is fetched from construct-server — do not copy `review-prompt.md` here, and
+# do not add a `concurrency:` key, which the shared workflow owns. See
+# construct-server's `docs/pr-reviewer.md`, including its runner
+# prerequisite: this workflow queues silently for 24h with no red check if
+# the repo has no self-hosted runner registered.
+#
+# Needs two repo secrets a person sets (FOLIO-8): CLAUDE_CODE_OAUTH_TOKEN and
+# SWITCHYARD_REVIEWER_TOKEN — one bearer per consumer, minted for this repo.
+
+on:
+  pull_request:
+    types: [opened, reopened, ready_for_review, synchronize]
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: read
+
+jobs:
+  pr-review:
+    uses: Einlanzerous/construct-server/.github/workflows/pr-review-reusable.yml@main
+    with:
+      # Where a mistake changes what ships publicly or who can deploy it:
+      # the workflows and wrangler config (deploy identity), scripts/ (the
+      # archify render that writes committed public HTML), and the
+      # agent-facing standards.
+      sensitive_paths: '^(\.github/workflows/|wrangler\.toml|scripts/|REVIEW\.md|CLAUDE\.md|\.claude/)'
+      standards_files: '^(REVIEW\.md|CLAUDE\.md|PRINCIPLES\.md|\.github/review-prompt\.md|\.github/review-ignore|\.claude/.+)$'
+    secrets:
+      claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+      switchyard_token: ${{ secrets.SWITCHYARD_REVIEWER_TOKEN }}

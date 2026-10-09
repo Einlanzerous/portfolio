@@ -1,0 +1,27 @@
+{
+  "name": "portfolio",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Ashley Dodson's systems portfolio — Zero Gravity Industries",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "typecheck": "vue-tsc --noEmit -p tsconfig.app.json && vue-tsc --noEmit -p tsconfig.node.json",
+    "test": "vitest run",
+    "verify": "bun run typecheck && bun run test && bun run build"
+  },
+  "dependencies": {
+    "vue": "^3.5.32"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "@vitejs/plugin-vue": "^6.0.6",
+    "typescript": "^5.9.0",
+    "vite": "^8.0.9",
+    "vitest": "^3.0.5",
+    "vue-tsc": "^3.2.7",
+    "wrangler": "^4.0.0"
+  }
+}
