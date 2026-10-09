@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import SysScreen from './SysScreen.vue'
 import type { Projected } from '../composables/useStage'
 import type { Feature, Screen } from '../data/types'
@@ -13,6 +13,7 @@ const props = defineProps<{
   dir: number
   arch: boolean
   archSrc: string
+  dark: boolean
   link: string | null
 }>()
 const emit = defineEmits<{ close: []; showFeat: []; showArch: []; go: [i: number]; step: [d: number]; touchStart: [e: TouchEvent]; touchEnd: [e: TouchEvent] }>()
@@ -21,13 +22,30 @@ const pad = (n: number) => String(n).padStart(2, '0')
 const cur = computed(() => props.feats[props.slide]!)
 const idx = computed(() => props.arch ? 'ARCHIFY' : `${pad(props.slide + 1)} / ${pad(props.feats.length)}`)
 const label = computed(() => props.arch
-  ? `Archify · HLA diagram · ${props.d.name}${props.archSrc ? '' : ' · coming soon'}`
+  ? `Archify · ${props.d.name}${props.archSrc ? '' : ' · coming soon'}`
   : `Screen · ${props.d.name} — ${cur.value.title}`)
 const stageBg = computed(() => props.arch
   ? 'repeating-linear-gradient(0deg, var(--line) 0 1px, transparent 1px 24px), repeating-linear-gradient(90deg, var(--line) 0 1px, transparent 1px 24px), var(--card)'
   : props.d.stage)
-const src = computed(() => props.arch ? props.archSrc : (props.screen?.src ?? ''))
+// archify's output takes `?embed=1` (chrome off, body sized to the frame) and
+// `?theme=` (follows the site; SysScreen keys layers on src, so a theme change
+// swaps layers). Undocumented template parameters of archify 2.16.0 — see
+// CLAUDE.md § Architecture maps. No `.sy` in that output: body is the target.
+const src = computed(() => props.arch
+  ? (props.archSrc ? `${props.archSrc}?embed=1&theme=${props.dark ? 'dark' : 'light'}` : '')
+  : (props.screen?.src ?? ''))
 const target = computed(() => props.arch ? 0 : (props.screen?.t ?? 0))
+// archify's body colours, so the contain letterbox reads as part of the map.
+const archBg = computed(() => props.dark ? '#020617' : '#f8fafc')
+
+// `?embed=1` hides archify's own zoom nav and it has no wheel listener, so
+// these buttons are the only way to zoom; drag-pan works once zoomed in.
+const shot = ref<InstanceType<typeof SysScreen> | null>(null)
+interface ArchifyWindow extends Window { Archify?: { view?: { zoomIn(): void; zoomOut(): void; reset(): void } } }
+function zoom(op: 'zoomIn' | 'zoomOut' | 'reset') {
+  const win = shot.value?.frame()?.contentWindow as ArchifyWindow | null | undefined
+  win?.Archify?.view?.[op]()
+}
 </script>
 
 <template>
@@ -58,12 +76,18 @@ const target = computed(() => props.arch ? 0 : (props.screen?.t ?? 0))
       <div class="stage" :style="{ background: stageBg }" @touchstart.passive="emit('touchStart', $event)" @touchend.passive="emit('touchEnd', $event)">
         <div class="label">{{ label }}</div>
         <div class="shot">
-          <SysScreen :src="src" :target="target" :dir="dir" :fit="arch ? 'contain' : 'cover'" :preload="arch ? '' : preload" :interactive="arch" />
+          <SysScreen ref="shot" :src="src" :target="target" :dir="dir" :fit="arch ? 'contain' : 'cover'" :bg="archBg" :preload="arch ? '' : preload" :interactive="arch" />
+        </div>
+        <div v-if="arch && archSrc" class="zoom">
+          <button type="button" aria-label="Zoom out" @click="zoom('zoomOut')">−</button>
+          <button type="button" aria-label="Reset zoom" @click="zoom('reset')">⟲</button>
+          <button type="button" aria-label="Zoom in" @click="zoom('zoomIn')">+</button>
         </div>
         <div class="tick tl" :style="{ borderColor: d.acc }"></div>
         <div class="tick br" :style="{ borderColor: d.acc }"></div>
         <div class="idx">{{ d.serial }} / {{ idx }}</div>
         <a v-if="!arch && link" :href="link" target="_blank" rel="noopener" class="full">Open full design ↗</a>
+        <a v-if="arch && archSrc" :href="archSrc" target="_blank" rel="noopener" class="full">Open full map ↗</a>
       </div>
       <div v-if="!arch" class="ctrls">
         <button type="button" aria-label="Previous" @click="emit('step', -1)">‹</button>
@@ -104,11 +128,15 @@ const target = computed(() => props.arch ? 0 : (props.screen?.t ?? 0))
 .main { min-height: 0; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
 .stage { position: relative; flex: 1; min-height: 0; border: 1px solid var(--line); border-radius: 4px; }
 .label { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 20px; text-align: center; font: 500 12px 'Geist Mono'; letter-spacing: .12em; text-transform: uppercase; color: var(--mut); }
-.shot { position: absolute; inset: 0; overflow: hidden; border-radius: 3px; }
+/* isolation: SysScreen z-indexes its layers; without a stacking context here they would sit over .zoom, .idx and .full. */
+.shot { position: absolute; inset: 0; overflow: hidden; border-radius: 3px; isolation: isolate; }
 .tick { position: absolute; width: 20px; height: 20px; pointer-events: none; }
 .tl { top: -1px; left: -1px; border-top: 2px solid; border-left: 2px solid; }
 .br { bottom: -1px; right: -1px; border-bottom: 2px solid; border-right: 2px solid; }
 .idx { position: absolute; left: 12px; bottom: 12px; padding: 4px 8px; border-radius: 3px; background: var(--card); font: 500 11px 'Geist Mono'; color: var(--mut); pointer-events: none; }
+.zoom { position: absolute; right: 12px; top: 12px; display: flex; gap: 3px; padding: 3px; border-radius: 3px; background: var(--card); border: 1px solid var(--line); }
+.zoom button { width: 28px; height: 28px; border: none; border-radius: 2px; background: transparent; color: var(--fg); font: 500 15px/1 'Geist'; cursor: pointer; }
+.zoom button:hover { background: var(--chip); }
 .full { position: absolute; right: 12px; bottom: 12px; padding: 6px 11px; border-radius: 3px; background: var(--card); border: 1px solid var(--line); font: 500 12px 'Geist'; color: var(--fg); }
 .ctrls { display: flex; align-items: center; gap: 14px; }
 .ctrls > button { width: 38px; height: 38px; border-radius: 3px; border: 1px solid var(--line); background: transparent; color: var(--fg); font: 500 18px 'Geist'; cursor: pointer; }

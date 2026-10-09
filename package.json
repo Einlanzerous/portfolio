@@ -10,6 +10,7 @@
     "preview": "vite preview",
     "typecheck": "vue-tsc --noEmit -p tsconfig.app.json && vue-tsc --noEmit -p tsconfig.node.json",
     "test": "vitest run",
+    "archify": "bun scripts/render-archify.ts",
     "verify": "bun run typecheck && bun run test && bun run build"
   },
   "dependencies": {

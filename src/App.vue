@@ -26,7 +26,7 @@ const vars = computed(() => st.dark.value ? {} : light)
     <main id="work" :ref="el => (st.stageEl.value = el as HTMLElement | null)">
       <HeroStage v-if="!s.open" :hero="st.cur.value" :feats="st.feats.value" :slide="st.slide.value" :screen="st.screen.value" :preload="st.preload.value" :dir="s.dir"
         @open="st.openAt(false)" @open-arch="st.openAt(true)" @go="st.goSlide" @pause="st.heroPause" @resume="st.heroResume" @touch-start="st.touchStart" @touch-end="st.touchEnd" />
-      <Dossier v-else :d="st.cur.value" :feats="st.feats.value" :slide="st.slide.value" :screen="st.screen.value" :preload="st.preload.value" :dir="s.dir" :arch="s.arch" :arch-src="st.archSrc.value" :link="st.featureScreen.value?.src ?? null"
+      <Dossier v-else :d="st.cur.value" :feats="st.feats.value" :slide="st.slide.value" :screen="st.screen.value" :preload="st.preload.value" :dir="s.dir" :arch="s.arch" :arch-src="st.archSrc.value" :dark="st.dark.value" :link="st.featureScreen.value?.src ?? null"
         @close="st.close" @show-feat="st.showFeat" @show-arch="st.showArch" @go="st.goSlide" @step="st.step" @touch-start="st.touchStart" @touch-end="st.touchEnd" />
     </main>
 
