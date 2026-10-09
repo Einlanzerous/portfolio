@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import { nextTick, watch } from 'vue'
 import type { Projected } from '../composables/useStage'
 import type { Cat } from '../data/systems'
 
-defineProps<{
+const props = defineProps<{
   tiles: Projected[]
   filters: { label: Cat; count: number; on: boolean }[]
   sel: number
@@ -10,6 +11,19 @@ defineProps<{
 }>()
 const emit = defineEmits<{ select: [i: number]; filter: [c: Cat]; rail: [sign: 1 | -1]; wheel: [e: WheelEvent] }>()
 const railEl = defineModel<HTMLElement | null>('rail')
+
+// The selected tile goes to the first slot (the browser clamps at the end of
+// the strip, so the last tiles settle in the last slots). Tile widths animate
+// for .35s when the dossier opens or closes, so aim once now and once after.
+function bringSelectedFirst() {
+  const rail = railEl.value
+  const idx = props.tiles.findIndex(t => t.index === props.sel)
+  const tile = rail?.children[idx] as HTMLElement | undefined
+  if (!rail || !tile) return
+  const pad = parseFloat(getComputedStyle(rail).paddingLeft) || 0
+  rail.scrollTo({ left: tile.getBoundingClientRect().left - rail.getBoundingClientRect().left + rail.scrollLeft - pad, behavior: 'smooth' })
+}
+watch(() => [props.sel, props.open], () => { void nextTick(bringSelectedFirst); setTimeout(bringSelectedFirst, 420) }, { immediate: true })
 </script>
 
 <template>
@@ -62,4 +76,12 @@ const railEl = defineModel<HTMLElement | null>('rail')
 .nm { font-family: 'Bricolage Grotesque'; font-weight: 800; font-size: 26px; line-height: 1; letter-spacing: -.02em; transition: font-size .35s; }
 .open .nm { font-size: 19px; }
 .tg { margin-top: 6px; font: 400 13px 'Geist'; color: var(--mut); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* Narrow: the title and the arrows share the first row; the chips take the second. */
+@media (max-width: 900px) {
+  .bar { display: grid; grid-template-columns: 1fr auto; row-gap: 12px; }
+  .h { grid-row: 1; grid-column: 1; }
+  .arrows { grid-row: 1; grid-column: 2; }
+  .chips { grid-row: 2; grid-column: 1 / -1; }
+  .sp { display: none; }
+}
 </style>
