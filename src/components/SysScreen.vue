@@ -3,7 +3,9 @@
 // design page (or an image), scaled to fill this box. Layers are cached per
 // src; changing src slides the new layer in from `dir` (1 = from the right,
 // -1 = from the left, 0 = crossfade). The iframe is inert unless `interactive`
-// (the Archify tab wants pan/zoom).
+// (the Archify tab wants pan/zoom). `cover` fits the target's width and crops
+// the rest (a screen); `contain` fits both axes and letterboxes in `bg` (a map
+// whose bottom row must stay visible).
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
 const props = withDefaults(defineProps<{
@@ -11,9 +13,14 @@ const props = withDefaults(defineProps<{
   target?: number
   dir?: number
   fit?: 'cover' | 'contain'
+  bg?: string
   preload?: string
   interactive?: boolean
-}>(), { src: '', target: 0, dir: 0, fit: 'cover', preload: '', interactive: false })
+}>(), { src: '', target: 0, dir: 0, fit: 'cover', bg: '#0b0f17', preload: '', interactive: false })
+
+// The iframe currently on stage, for a parent that drives the framed page's
+// own API (same origin: the Archify tab's zoom buttons).
+defineExpose({ frame: () => cur?.ifr ?? null })
 
 const IMG = /\.(png|jpe?g|webp|gif|svg)(\?|#|$)/i
 const EASE = 'transform .5s cubic-bezier(.2,.7,.2,1), opacity .35s'
@@ -38,7 +45,7 @@ function make(src: string, t: number, key: string): Layer {
     Object.assign(el.style, {
       backgroundImage: `url("${src}")`, backgroundRepeat: 'no-repeat',
       backgroundSize: contain ? 'contain' : 'cover', backgroundPosition: contain ? 'center' : 'top left',
-      backgroundOrigin: 'content-box', padding: contain ? '14px' : '0', backgroundColor: contain ? '#0b0f17' : 'transparent',
+      backgroundOrigin: 'content-box', padding: contain ? '14px' : '0', backgroundColor: contain ? props.bg : 'transparent',
     })
     L.ready = true
   } else {
@@ -66,7 +73,17 @@ function layout(L: Layer) {
   const els = doc.querySelectorAll<HTMLElement>('.sy')
   const el = els[L.t] || els[0] || doc.body
   doc.documentElement.style.overflow = 'hidden'
-  const w = el.offsetWidth || 1560, W = host.value.clientWidth || 1, H = host.value.clientHeight || 1, sc = W / w
+  const W = host.value.clientWidth || 1, H = host.value.clientHeight || 1
+  if (props.fit === 'contain') {
+    // The frame keeps its natural size (archify's embed lays out from the
+    // iframe width, so offsetWidth is the width we gave it) and is scaled
+    // until both axes fit, then centred; the letterbox is painted to match.
+    const w = el.offsetWidth || 1560, h = el.offsetHeight || 1000, sc = Math.min(W / w, H / h)
+    Object.assign(L.ifr.style, { width: w + 'px', height: h + 'px', transform: `scale(${sc})`, left: (W - w * sc) / 2 + 'px', top: (H - h * sc) / 2 + 'px' })
+    L.el.style.background = props.bg
+    return
+  }
+  const w = el.offsetWidth || 1560, sc = W / w
   L.ifr.style.width = w + 'px'
   L.ifr.style.height = Math.ceil(H / sc) + 'px'
   L.ifr.style.transform = `scale(${sc})`
@@ -116,6 +133,7 @@ onMounted(() => {
 })
 onBeforeUnmount(() => { ro?.disconnect(); ro = null })
 watch(() => [props.src, props.target, props.fit, props.preload], queue)
+watch(() => props.bg, () => { if (cur) layout(cur) })
 watch(() => props.interactive, v => { for (const L of Object.values(layers)) if (L.ifr) L.ifr.style.pointerEvents = v ? 'auto' : 'none' })
 </script>
 
