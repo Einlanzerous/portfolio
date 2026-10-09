@@ -1,0 +1,75 @@
+/* ============================================================
+   SWITCHYARD — planning layer · top matter (SWY-397) + the
+   design-ref rail card (SWY-153). Extends planning.css and
+   planning-rulings.css; loads after both.
+
+   Same colour contract, no new hues: coral = a human is needed
+   (an open REQUIRED ruling), green = picked, steel = the
+   planner's recommendation, struck/dim = moot or dormant,
+   --warn amber = advisory staleness (a ref attached after the
+   revision under review).
+
+   The docket (.pdk) REPLACES the rail rulings card as the one
+   pick surface (⚖ 2 = A, SWY-397 rev 1): document width, above
+   the first section, below the lead block. The action-bar
+   refusal banner (.rulban) is unchanged and bridges the
+   distance to the verdict buttons. `.pdk` on purpose — bare
+   "docket" (.dk-*) belongs to the self-assessment surface.
+   ============================================================ */
+
+/* ---- the lead block — narrative_md's window (SWY-397 rev 1 finding 1) ---- */
+.lead-block{padding:15px 0 2px}
+.lead-block .lb-h{display:flex;align-items:center;gap:9px;margin-bottom:7px}
+.lead-block .lb-h .tag{font-family:var(--mono);font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:var(--text-4);border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+.lead-block .prose p{font-size:13.5px;line-height:1.7;max-width:96ch}
+/* the comment affordance for the whole-plan thread moves up here (`.cbtn`
+   from planning.css); the thread renders directly beneath the block. */
+
+/* ---- the rulings docket ---- */
+.pdk{border:1px solid var(--line);border-radius:12px;background:var(--surface-1);overflow:hidden;margin:13px 0 6px;box-shadow:var(--shadow-card)}
+.pdk-h{display:flex;align-items:center;gap:10px;padding:10px 16px;background:var(--surface-2);border-bottom:1px solid var(--line)}
+.pdk-h .g{font-size:14px;line-height:1;color:var(--accent-2);flex:none}
+.pdk-h .t{font-size:13px;font-weight:600;color:var(--text)}
+.pdk-h .sub{font-size:10.5px;color:var(--text-4)}
+.pdk-h .count{margin-left:auto;display:inline-flex;height:20px;align-items:center;border:1px solid var(--line);background:var(--surface-3);border-radius:6px;padding:0 8px;font-family:var(--mono);font-size:10px;font-variant-numeric:tabular-nums;color:var(--text-2)}
+/* open required rulings remain → the count carries the coral; settled → green.
+   The k/N is counted over the ANSWERABLE (live) set — the same set the rail
+   card counted; the refusal banner and get_plan_feedback keep counting
+   required ∧ live ∧ unpicked. Three surfaces, two sets, one helper each. */
+.pdk-h.need .count{color:var(--accent-2);border-color:var(--accent-line);background:var(--accent-weak)}
+.pdk-h.done .count{color:var(--st-closed);border-color:rgba(99,181,140,.32);background:var(--st-closed-bg)}
+.pdk-h.done .g{color:var(--text-4)}
+.pdk-b{padding:13px 16px 11px}
+
+/* rows reuse the .rul grammar (planning-rulings.css) unchanged; the docket
+   only widens what a 404px rail had to stack: */
+.pdk .rul .opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pdk .rul .opts.single{grid-template-columns:1fr}
+.pdk .rul .argued{margin-top:4px}
+.pdk .rul .argued a,.pdk .rul .argued{color:var(--text-4)}
+.pdk .rul .argued:hover{color:var(--accent-2)}
+
+/* the question was reworded / the option set moved since the previous
+   revision — same chip the sections wear, free off PlanDiff.rulings[] */
+.chgchip{flex:none;font-family:var(--mono);font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:var(--accent-2);border:1px solid var(--accent-line);background:var(--accent-weak);border-radius:4px;padding:1px 5px}
+
+/* settled: the record, not a shout — rows keep their green edges, the
+   header goes .done, nothing pulses. */
+
+/* ---- design-ref rail card (SWY-153) ---- */
+/* .rcard/.kv grammar from delivery.css; this file adds only the rows. */
+.dref-row{display:flex;align-items:flex-start;gap:9px;padding:8px 0;border-top:1px solid var(--line-soft)}
+.dref-row:first-of-type{border-top:none}
+.dref-row .ic{width:24px;height:24px;border-radius:7px;background:var(--surface-3);display:grid;place-items:center;flex:none;color:var(--text-3)}
+.dref-row .ic svg{width:13px;height:13px}
+.dref-row .bd{min-width:0;flex:1}
+.dref-row .ti{font-size:12.5px;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dref-row .ti:hover{color:var(--accent-2);text-decoration:underline;cursor:pointer}
+.dref-row .sub{font-size:10.5px;color:var(--text-4);margin-top:2px}
+.dref-row .pill{flex:none;font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-4);border:1px solid var(--line);border-radius:99px;padding:2px 7px;font-weight:600}
+/* attached after the revision under review — advisory, not an error */
+.dref-row.late .sub{color:var(--warn)}
+/* every design ref detached while a `design` thread survives: the card stays
+   (a thread is history, and history renders), and says why it is empty */
+.dref-empty{padding:9px 0 2px;font-size:11.5px;line-height:1.55;color:var(--text-4);font-style:italic}
+

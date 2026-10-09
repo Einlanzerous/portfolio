@@ -1,0 +1,42 @@
+/* ============================================================
+   SWITCHYARD — planning layer · check rows (SWY-398 / SWY-413 /
+   SWY-415). Extends planning.css + delivery.css (.rcard .rh
+   .gchip); loads after planning-roster.css.
+
+   The adversarial pass's recorded look, rendered like CI on a
+   PR: one row per named check on the viewed revision. The chips
+   are delivery's .gchip verbatim — pend (queued/skipped), run
+   (in progress), pass (success), fail (failure, the --st-blocked
+   CI-red family, NOT coral: coral means a human is needed), warn
+   (stale — the window ran out, the plan is back in the human's
+   queue). This file adds only the rows, the state icons, and the
+   summary disclosure a completed row opens.
+
+   Two rules the rows enforce visually:
+   1. NO bare ✗ glyph — failure is a labelled chip; the icon rail
+      stays quiet (hollow → spinner → green check is the whole
+      icon vocabulary, per the estate status-indicator rule).
+   2. Stale age is the REVISION's age, not the row's: staleness
+      is measured from plan_revisions.submitted_at, so nothing a
+      check writer re-sends can move what these rows say.
+   ============================================================ */
+
+/* ---- rows ---- */
+.chk{display:flex;flex-direction:column;gap:8px}
+.chk-row{display:grid;grid-template-columns:18px minmax(0,1fr) auto;gap:9px;align-items:center;padding:7px 9px;border:1px solid var(--line-soft);border-radius:9px;background:var(--surface-2)}
+.chk-row .nm{font-family:var(--mono);font-size:11.5px;color:var(--text-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.chk-row .nm .sub{display:block;font-family:var(--sans);font-size:10.5px;color:var(--text-4)}
+.chk-row.fail{border-color:rgba(215,111,106,.3)}
+.chk-row.stale{border-color:var(--warn-line)}
+
+/* ---- the icon rail: hollow → spinner → green check, nothing else ---- */
+.chk-ic{width:16px;height:16px;display:grid;place-items:center;color:var(--text-4)}
+.chk-ic .dot{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--text-4);display:block}
+.chk-ic .spin{width:11px;height:11px;border-radius:50%;border:1.5px solid var(--line);border-top-color:var(--st-progress);animation:chkspin .9s linear infinite;display:block}
+.chk-ic.ok{color:var(--st-closed);font-size:12px;font-weight:700}
+@keyframes chkspin{to{transform:rotate(360deg)}}
+
+/* ---- the disclosure a completed row opens — summary_md's window ---- */
+.chk-sum{padding:8px 10px;border:1px solid var(--line-soft);border-left:2px solid var(--line);border-radius:0 9px 9px 0;background:var(--surface-1);font-size:11.5px;line-height:1.6;color:var(--text-3)}
+.chk-sum b{color:var(--text-2);font-weight:600}
+
