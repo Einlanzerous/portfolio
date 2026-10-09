@@ -44,7 +44,7 @@ export const systems: System[] = [
     name: 'Signet', group: 'Platform', h: 295,
     tag: 'The credential vault for Zero Gravity Industries',
     blurb: 'A credential vault daemon behind the ZGI services, with an admin console in the Switchyard theme.',
-    surfaces: 'Daemon · Admin console', design: 'Shares the Switchyard theme',
+    lang: 'Go · SQLite', surfaces: 'Daemon · CLI · REST API · Admin console', design: 'Shares the Switchyard theme',
     features: [
       { title: 'Admin console', line: 'Credentials per project, as a blind mirror: metadata and version hash, never the value.', screen: { src: 'systems/switchyard/signet-credentials.html', t: 0 },
         explainer: 'Switchyard shows the vault without holding it. The console lists every credential a project owns with its version hash, scope and sync targets, and the plaintext is never returned to the browser. Rotate and add-target are requests to the Signet daemon, which seals the new version and pushes it out.' },
