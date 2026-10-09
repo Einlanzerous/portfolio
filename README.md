@@ -4,7 +4,7 @@ Ashley Dodson's systems portfolio — the services built under Zero Gravity
 Industries, one dossier each: what it is, the features that matter, the
 screens that prove them, and the architecture map.
 
-**Live:** _pending first deploy_
+**Live:** https://portfolio.einlanzerous.workers.dev
 
 ## Stack
 
@@ -31,3 +31,6 @@ also renders — via `bun run archify`.
 Merging a `feat:` or `fix:` to `main` lets release-please open a release PR;
 merging that cuts a `v*` tag, and `deploy.yml` builds with that version and
 runs `wrangler deploy`. The footer shows the deployed version.
+
+The first deploy was run by hand from the box (`bun run build && bunx
+wrangler deploy`); every later one is the workflow. Custom hostname: FOLIO-9.

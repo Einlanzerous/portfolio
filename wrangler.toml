@@ -1,0 +1,10 @@
+# Portfolio — a static bundle on Cloudflare Workers static assets. No Worker
+# script: there is nothing to run, only files to serve. deploy.yml builds
+# dist/ with APP_VERSION from the release tag and runs `wrangler deploy`.
+name = "portfolio"
+compatibility_date = "2026-09-01"
+
+[assets]
+directory = "./dist"
+# A one-page site: an unknown path is a 404, not index.html.
+not_found_handling = "none"

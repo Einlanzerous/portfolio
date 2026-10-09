@@ -1,0 +1,58 @@
+name: deploy
+
+# Deploys the release that release-please just cut: the `v*` tag is the
+# trigger, and its bare semver is what the footer shows (PRINCIPLES §4 —
+# never package.json's version, never `latest`). `main` is not deployed on
+# push; a release is the unit. workflow_dispatch exists for a redeploy of
+# whatever ref is chosen, and reports `dev` as its version.
+#
+# Secrets (FOLIO-8, per-consumer, recorded in Signet): CLOUDFLARE_API_TOKEN
+# scoped to Workers Scripts:Edit on this account, CLOUDFLARE_ACCOUNT_ID.
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: build and deploy
+    runs-on: ubuntu-latest
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.14
+      - run: bun install --frozen-lockfile
+
+      - name: Build
+        run: |
+          set -euo pipefail
+          if [[ "$GITHUB_REF_TYPE" == "tag" ]]; then
+            APP_VERSION="${GITHUB_REF_NAME#v}"
+          else
+            APP_VERSION=dev
+          fi
+          echo "building $APP_VERSION"
+          APP_VERSION="$APP_VERSION" bun run build
+
+      # Retried because the first attempt has intermittently hit "Cloudflare
+      # API timed out" in this account's other repos (LLT-2). wrangler is a
+      # pinned devDependency, so bunx resolves it locally.
+      - name: Deploy
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 5
+          max_attempts: 3
+          retry_wait_seconds: 15
+          command: bunx wrangler deploy
