@@ -3,8 +3,6 @@
 // that has not landed; the page treats a listed screen as "coming soon" rather
 // than framing a 404. Remove entries as the files arrive:
 //   FOLIO-12 — systems/switchyard/signet-admin.html (not in the design project yet)
-//   FOLIO-10 — systems/switchyard/archify.* (and the `arch` field moves to .html)
 export const pendingAssets = new Set<string>([
-  'systems/switchyard/archify.png',
   'systems/switchyard/signet-admin.html',
 ])

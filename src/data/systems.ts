@@ -12,7 +12,7 @@ export const systems: System[] = [
     lang: 'TypeScript · Bun · Hono · Vue',
     surfaces: 'Web SPA · REST API · MCP server',
     design: 'Dense ops console, coral signal',
-    arch: 'systems/switchyard/archify.png',
+    arch: 'systems/switchyard/archify.html',
     features: [
       { title: 'Plan as PR', line: 'An agent opens a plan against the ticket. Nothing is built until a human merges it.', screen: { src: 'systems/switchyard/plan-as-pr.html', t: 0 },
         explainer: 'Before anything is built, an agent writes the whole change as one reviewable document: schema, migration phases, API contract, toggles, observability and rollback, with the UI listed last on purpose. Comments anchor to sections, and the argument stays in one shared thread. A revision is a force-push that shows what changed and which comment caused it. Approving is the merge: tickets open and the first one dispatches.' },
