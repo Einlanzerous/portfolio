@@ -12,3 +12,10 @@ not_found_handling = "none"
 # page and iframed with query strings; the default `auto-trailing-slash`
 # answered each with a 307 to the extensionless path first. Serve as-is.
 html_handling = "none"
+
+# Public hostname on the estate's zone (FOLIO-9). A Workers custom domain:
+# wrangler creates the proxied DNS record and the certificate on deploy, so
+# the deploy token needs Zone → DNS → Edit (scoped to zerogravity.industries)
+# and Account → Workers Routes → Edit on top of Workers Scripts → Edit
+# (FOLIO-8). No tunnel, no Access — this site is public by design.
+routes = [{ pattern = "portfolio.zerogravity.industries", custom_domain = true }]
