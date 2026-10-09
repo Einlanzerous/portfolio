@@ -6,4 +6,8 @@ import vue from '@vitejs/plugin-vue'
 export default defineConfig({
   plugins: [vue()],
   define: { __APP_VERSION__: JSON.stringify(process.env.APP_VERSION ?? 'dev') },
+  // `bun run dev --host` is how a change is checked from another machine on
+  // the LAN or tailnet; the box is reached by its hostname, which Vite's
+  // host check refuses unless it is listed.
+  server: { allowedHosts: ['imperial-construct'] },
 })
