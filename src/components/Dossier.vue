@@ -14,7 +14,6 @@ const props = defineProps<{
   arch: boolean
   archSrc: string
   dark: boolean
-  link: string | null
 }>()
 const emit = defineEmits<{ close: []; showFeat: []; showArch: []; go: [i: number]; step: [d: number]; touchStart: [e: TouchEvent]; touchEnd: [e: TouchEvent] }>()
 const pad = (n: number) => String(n).padStart(2, '0')
@@ -86,7 +85,6 @@ function zoom(op: 'zoomIn' | 'zoomOut' | 'reset') {
         <div class="tick tl" :style="{ borderColor: d.acc }"></div>
         <div class="tick br" :style="{ borderColor: d.acc }"></div>
         <div class="idx">{{ d.serial }} / {{ idx }}</div>
-        <a v-if="!arch && link" :href="link" target="_blank" rel="noopener" class="full">Open full design ↗</a>
         <a v-if="arch && archSrc" :href="archSrc" target="_blank" rel="noopener" class="full">Open full map ↗</a>
       </div>
       <div v-if="!arch" class="ctrls">
