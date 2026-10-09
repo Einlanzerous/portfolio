@@ -17,7 +17,10 @@ function pip(e: Event, i: number) { e.stopPropagation(); emit('go', i) }
 </script>
 
 <template>
-  <div class="hero" :style="{ background: hero.field }" @mouseenter="emit('pause')" @mouseleave="emit('resume')" @touchstart.passive="emit('touchStart', $event)" @touchend.passive="emit('touchEnd', $event)">
+  <!-- Pause on mousemove, not mouseenter: Chrome fires a synthetic mouseenter when the hero
+       renders under a pointer that has not moved (a fresh load with the cursor already over
+       the page), which froze the rotation before anyone hovered on purpose. -->
+  <div class="hero" :style="{ background: hero.field }" @mousemove="emit('pause')" @mouseleave="emit('resume')" @touchstart.passive="emit('touchStart', $event)" @touchend.passive="emit('touchEnd', $event)">
     <div class="top">
       <div class="copy">
         <div class="serial">{{ hero.serial }} — {{ hero.group }}</div>
