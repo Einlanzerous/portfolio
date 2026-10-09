@@ -54,8 +54,11 @@ login.
 2. **`systems.ts` is the only place content lives.** No copy in components,
    no second list of systems anywhere (the filters derive their counts from
    it).
-3. **No dead links on the page.** Nav items, the SSO pill and
-   `Open full design ↗` render only when there is something behind them.
+3. **No dead links on the page.** Nav items and the SSO pill render only
+   when there is something behind them. Design pages are shown only inside
+   the stage — there is deliberately no "open the full design" link; the
+   pages are how the screens are drawn, not something the site advertises.
+   (`Open full map ↗` on the Archify tab stays: the map is the content.)
 4. **Static bundle, no HTTP surface** (PRINCIPLES §4). There is no
    `/healthz` and this service is not registered in Switchyard's delivery
    ledger. The footer shows `__APP_VERSION__`: bare semver on a release

@@ -65,7 +65,7 @@ Pending systems: `{ name, group, h, tag, pending: true }` only. Nothing else in 
 ## 4. Verify
 - `bun run dev`, open `/#<slug>/1`; click the tile. Hero rotates through features; each screen loads, is scaled to the app shell, and nothing confidential is visible.
 - Dossier → features list, Archify tab, Language/Surfaces/Design boxes all populated (no `TBD` unless agreed).
-- Swipe/arrow through every feature; "Open full design ↗" opens the standalone page.
+- Swipe/arrow through every feature. Do not add a link to the standalone design page — the stage is the only window onto it.
 - Long names: check the hero name doesn't run under the screen wedge.
 - Light and dark theme both read.
 - `bun run verify` green (typecheck, guard test, build).
