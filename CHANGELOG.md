@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/Einlanzerous/portfolio/compare/portfolio-v0.2.0...portfolio-v0.2.1) (2026-10-11)
+
+
+### Bug Fixes
+
+* **deploy:** ship releases from the release job, not a v* tag (FOLIO-2) ([#13](https://github.com/Einlanzerous/portfolio/issues/13)) ([5c36a73](https://github.com/Einlanzerous/portfolio/commit/5c36a73edf359054ca0d8c3f96045703f4dbd57a))
+
 ## [0.2.0](https://github.com/Einlanzerous/portfolio/compare/portfolio-v0.1.0...portfolio-v0.2.0) (2026-10-09)
 
 
