@@ -1,6 +1,6 @@
 # Portfolio — a static bundle on Cloudflare Workers static assets. No Worker
 # script: there is nothing to run, only files to serve. deploy.yml builds
-# dist/ with APP_VERSION from the release tag and runs `wrangler deploy`.
+# dist/ with APP_VERSION from release.yml (release-please's bare version) and runs `wrangler deploy`.
 name = "portfolio"
 compatibility_date = "2026-09-01"
 

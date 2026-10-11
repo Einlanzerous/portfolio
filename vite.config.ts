@@ -1,8 +1,9 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
-// APP_VERSION is set only by the release build (deploy.yml strips the tag's
-// `v`). Anything else is `dev` — never package.json's pinned 0.0.0.
+// APP_VERSION is set only by a release build (release.yml hands
+// release-please's bare version to deploy.yml). Anything else is `dev` —
+// never package.json's version, which is release-please's to bump.
 export default defineConfig({
   plugins: [vue()],
   define: { __APP_VERSION__: JSON.stringify(process.env.APP_VERSION ?? 'dev') },
