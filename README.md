@@ -30,8 +30,10 @@ snapshot (see `CLAUDE.md` § Architecture maps).
 ## Deploy
 
 Merging a `feat:` or `fix:` to `main` lets release-please open a release PR;
-merging that cuts a `v*` tag, and `deploy.yml` builds with that version and
-runs `wrangler deploy`. The footer shows the deployed version.
+merging that cuts the release, and the same `release.yml` run calls
+`deploy.yml` with the new version to build and `wrangler deploy`. The footer
+shows the deployed version. (Not a tag trigger: release-please's tags are
+`portfolio-v*`, and tags pushed with `GITHUB_TOKEN` do not start workflows.)
 
 The first deploy was run by hand from the box (`bun run build && bunx
 wrangler deploy`); every later one is the workflow. Custom hostname: FOLIO-9.
