@@ -62,9 +62,8 @@ login.
 4. **Static bundle, no HTTP surface** (PRINCIPLES §4). There is no
    `/healthz` and this service is not registered in Switchyard's delivery
    ledger. The footer shows `__APP_VERSION__`: bare semver on a release
-   build (release.yml passes release-please's version to deploy.yml), `dev`
-   everywhere else — never
-   read from `package.json`.
+   build (release.yml passes release-please's version to deploy.yml),
+   `dev` everywhere else — never read from `package.json`.
 5. **Archify renders are committed snapshots with evidence stripped.** The
    source of truth is the owning repo's `docs/architecture.archify.json` —
    the same file the estate wiki renders (SERV-159). The portfolio's copy
