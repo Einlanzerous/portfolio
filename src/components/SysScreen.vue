@@ -11,12 +11,13 @@ import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 const props = withDefaults(defineProps<{
   src?: string
   target?: number
+  at?: string
   dir?: number
   fit?: 'cover' | 'contain'
   bg?: string
   preload?: string
   interactive?: boolean
-}>(), { src: '', target: 0, dir: 0, fit: 'cover', bg: '#0b0f17', preload: '', interactive: false })
+}>(), { src: '', target: 0, at: '', dir: 0, fit: 'cover', bg: '#0b0f17', preload: '', interactive: false })
 
 // The iframe currently on stage, for a parent that drives the framed page's
 // own API (same origin: the Archify tab's zoom buttons).
@@ -25,7 +26,7 @@ defineExpose({ frame: () => cur?.ifr ?? null })
 const IMG = /\.(png|jpe?g|webp|gif|svg)(\?|#|$)/i
 const EASE = 'transform .5s cubic-bezier(.2,.7,.2,1), opacity .35s'
 
-interface Layer { el: HTMLDivElement; t: number; img: boolean; ready: boolean; ifr?: HTMLIFrameElement; hideT?: number }
+interface Layer { el: HTMLDivElement; t: number; at: string; img: boolean; ready: boolean; ifr?: HTMLIFrameElement; hideT?: number }
 
 const host = ref<HTMLDivElement | null>(null)
 const layers: Record<string, Layer> = {}
@@ -39,7 +40,7 @@ const keyOf = (src: string, t: number) => src + '#' + t + '#' + props.fit
 function make(src: string, t: number, key: string): Layer {
   const el = document.createElement('div')
   Object.assign(el.style, { position: 'absolute', inset: '0', overflow: 'hidden', visibility: 'hidden', opacity: '0', boxSizing: 'border-box' })
-  const L: Layer = { el, t, img: IMG.test(src), ready: false }
+  const L: Layer = { el, t, at: props.at, img: IMG.test(src), ready: false }
   if (L.img) {
     const contain = props.fit === 'contain'
     Object.assign(el.style, {
@@ -87,12 +88,18 @@ function layout(L: Layer) {
   L.ifr.style.width = w + 'px'
   L.ifr.style.height = Math.ceil(H / sc) + 'px'
   L.ifr.style.transform = `scale(${sc})`
-  const ifr = L.ifr
+  const ifr = L.ifr, at = L.at
   requestAnimationFrame(() => {
     const win = ifr.contentWindow
     if (!win) return
     const r = el.getBoundingClientRect()
-    win.scrollTo(r.left + win.scrollX, r.top + win.scrollY)
+    // The focus point lands 16 shell-px below the top edge, never past the
+    // point where the page's bottom meets the box's bottom. A selector that
+    // matches nothing shows the top of the shell, same as no `at`.
+    const a = at ? el.querySelector<HTMLElement>(at) : null
+    const maxY = Math.max(0, el.offsetHeight - H / sc)
+    const dy = a ? Math.min(maxY, Math.max(0, a.getBoundingClientRect().top - r.top - 16)) : 0
+    win.scrollTo(r.left + win.scrollX, r.top + win.scrollY + dy)
   })
 }
 
@@ -100,9 +107,12 @@ function show() {
   const src = props.src, t = props.target
   props.preload.split(',').map(x => x.trim()).filter(Boolean).forEach(p => { const k = keyOf(p, 0); if (!layers[k]) make(p, 0, k) })
   const key = src ? keyOf(src, t) : null
-  if (key === curKey) return
+  // Same page, different focus point: re-aim the layer already on stage
+  // instead of loading the page again (keeps `preload` layers reusable).
+  if (key === curKey) { if (cur && cur.at !== props.at) { cur.at = props.at; layout(cur) } return }
   const prev = cur, dir = props.dir
   const L = key ? (layers[key] ?? make(src, t, key)) : null
+  if (L) L.at = props.at
   cur = L; curKey = key
   for (const o of Object.values(layers)) if (o !== L && o !== prev) { o.el.style.transition = 'none'; o.el.style.visibility = 'hidden' }
   if (L) {
@@ -132,7 +142,7 @@ onMounted(() => {
   queue()
 })
 onBeforeUnmount(() => { ro?.disconnect(); ro = null })
-watch(() => [props.src, props.target, props.fit, props.preload], queue)
+watch(() => [props.src, props.target, props.at, props.fit, props.preload], queue)
 watch(() => props.bg, () => { if (cur) layout(cur) })
 watch(() => props.interactive, v => { for (const L of Object.values(layers)) if (L.ifr) L.ifr.style.pointerEvents = v ? 'auto' : 'none' })
 </script>

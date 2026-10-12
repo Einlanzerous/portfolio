@@ -75,7 +75,7 @@ function zoom(op: 'zoomIn' | 'zoomOut' | 'reset') {
       <div class="stage" :style="{ background: stageBg }" @touchstart.passive="emit('touchStart', $event)" @touchend.passive="emit('touchEnd', $event)">
         <div class="label">{{ label }}</div>
         <div class="shot">
-          <SysScreen ref="shot" :src="src" :target="target" :dir="dir" :fit="arch ? 'contain' : 'cover'" :bg="archBg" :preload="arch ? '' : preload" :interactive="arch" />
+          <SysScreen ref="shot" :src="src" :target="target" :at="arch ? '' : (screen?.at ?? '')" :dir="dir" :fit="arch ? 'contain' : 'cover'" :bg="archBg" :preload="arch ? '' : preload" :interactive="arch" />
         </div>
         <div v-if="arch && archSrc" class="zoom">
           <button type="button" aria-label="Zoom out" @click="zoom('zoomOut')">−</button>
