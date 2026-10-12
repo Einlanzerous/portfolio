@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.2.2](https://github.com/Einlanzerous/portfolio/compare/portfolio-v0.2.1...portfolio-v0.2.2) (2026-10-12)
+
+
+### Bug Fixes
+
+* **signet:** lead with the agent-blind feature (FOLIO-13) ([#15](https://github.com/Einlanzerous/portfolio/issues/15)) ([7287ac8](https://github.com/Einlanzerous/portfolio/commit/7287ac863129ab19e15745c54940174e975bd0ad))
+* **signet:** scope the blind-by-design claim to what Signet guarantees (FOLIO-13) ([#18](https://github.com/Einlanzerous/portfolio/issues/18)) ([5823bb7](https://github.com/Einlanzerous/portfolio/commit/5823bb77c786f5cf7dea171ad0d840dbee506c02))
+* **stage:** focus point per screen, so a feature shows its subject (FOLIO-12) ([#17](https://github.com/Einlanzerous/portfolio/issues/17)) ([bdec531](https://github.com/Einlanzerous/portfolio/commit/bdec5314e889468d5fb881a5b2f13102f87b1fe4))
+
 ## [0.2.1](https://github.com/Einlanzerous/portfolio/compare/portfolio-v0.2.0...portfolio-v0.2.1) (2026-10-11)
 
 
