@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/Einlanzerous/portfolio/compare/portfolio-v0.2.2...portfolio-v0.3.0) (2026-10-12)
+
+
+### Features
+
+* **slice:** Drydock (FOLIO-14) ([#19](https://github.com/Einlanzerous/portfolio/issues/19)) ([7bb5f1c](https://github.com/Einlanzerous/portfolio/commit/7bb5f1c0476598c92a67f2323680813325bf96e5))
+
 ## [0.2.2](https://github.com/Einlanzerous/portfolio/compare/portfolio-v0.2.1...portfolio-v0.2.2) (2026-10-12)
 
 
