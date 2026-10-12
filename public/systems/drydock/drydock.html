@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Drydock — the desk</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  @keyframes ddblink{0%,49%{opacity:1}50%,100%{opacity:0}}
+  @keyframes ddpulse{0%,100%{opacity:.45}50%{opacity:1}}
+  @keyframes dockpop{from{transform:translateY(10px) scale(.96);opacity:0}to{transform:none;opacity:1}}
+  @keyframes winpop{from{transform:scale(.97);opacity:0}to{transform:none;opacity:1}}
+  @keyframes needsyou{0%,100%{box-shadow:0 0 0 0 #e0a33c00,0 6px 20px #00000077}50%{box-shadow:0 0 0 5px #e0a33c1f,0 6px 20px #00000077}}
+  @keyframes failpulse{0%,100%{box-shadow:0 0 0 0 #d5695c00,0 6px 20px #00000077}50%{box-shadow:0 0 0 5px #d5695c1f,0 6px 20px #00000077}}
+  @keyframes flow{from{background-position:0 0}to{background-position:22px 0}}
+  @keyframes spinring{to{transform:rotate(360deg)}}
+  @keyframes gaterise{from{transform:translateY(14px);opacity:0}to{transform:none;opacity:1}}
+  .ddscroll::-webkit-scrollbar{width:9px;height:9px}
+  .ddscroll::-webkit-scrollbar-thumb{background:#2b333d;border-radius:6px;border:2px solid transparent;background-clip:padding-box}
+  .ddscroll::-webkit-scrollbar-thumb:hover{background:#3a444f;background-clip:padding-box}
+  .ddscroll::-webkit-scrollbar-track{background:transparent}
+</style>
+</helmet>
+<div class="sy" style="position:absolute;inset:0;display:flex;flex-direction:column;background:#0a0c0f;color:#d5dde6;font-family:system-ui,-apple-system,'Segoe UI',sans-serif;overflow:hidden;-webkit-font-smoothing:antialiased">
+
+  <!-- ====================== TOP BAR ====================== -->
+  <div style="height:54px;flex:0 0 auto;display:flex;align-items:center;gap:16px;padding:0 14px;background:#0e1116;border-bottom:1px solid #ffffff10;z-index:50">
+    <div style="display:flex;align-items:center;gap:10px">
+      <svg width="30" height="30" viewBox="0 0 48 34" style="display:block">
+        <g stroke="#3f5468" stroke-width="1" fill="none" stroke-linecap="round"><path d="M5 6 V20 H2 V28 H46 V20 H43 V6"></path><line x1="2" y1="28" x2="46" y2="28"></line></g>
+        <g fill="#5b7794"><rect x="13" y="25" width="3" height="3"></rect><rect x="22" y="25" width="3" height="3"></rect><rect x="31" y="25" width="3" height="3"></rect></g>
+        <path fill="#7aa6cc" d="M9 15 L9 21 Q9 25 13 25 L34 25 L41 18 L41 16 L13 16 Z"></path>
+        <path fill="#7aa6cc" d="M19 16 L19 9 L22 9 L22 16 Z M24 16 L24 11 L29 11 L29 16 Z"></path>
+        <line x1="20.5" y1="9" x2="20.5" y2="4" stroke="#7aa6cc" stroke-width="1"></line>
+      </svg>
+      <div style="display:flex;align-items:baseline;gap:9px">
+        <span style="font-size:17px;font-weight:680;letter-spacing:-.01em;color:#eaf0f6">Drydock</span>
+        <span style="font-size:12px;color:#5a636f;letter-spacing:.01em">watch the agents work</span>
+      </div>
+    </div>
+
+    <div style="flex:1"></div>
+
+    <!-- layout switcher -->
+    <div style="display:flex;background:#0a0c0f;border:1px solid #ffffff12;border-radius:8px;padding:3px;gap:2px">
+      <button onClick="{{ setFloat }}" style="{{ floatBtn }}">Float</button>
+      <button onClick="{{ setTile }}" style="{{ tileBtn }}">Tile</button>
+      <button onClick="{{ setFocusL }}" style="{{ focusBtn }}">Focus</button>
+    </div>
+
+    <div style="flex:1"></div>
+
+    <!-- repo / launch controls -->
+    <div style="display:flex;align-items:center;gap:8px">
+      <div style="display:flex;align-items:center;gap:7px;background:#0a0c0f;border:1px solid #ffffff12;border-radius:8px;padding:0 10px;height:34px">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="#5a636f" stroke-width="1.4"><path d="M2 4h4l1.5 2H14v6a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"></path></svg>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#9aa6b2">~/projects/argosy</span>
+      </div>
+      <button onClick="{{ openQuick }}" style="display:flex;align-items:center;gap:8px;height:34px;padding:0 12px;background:#16314a;border:1px solid #2a557d;border-radius:8px;color:#cfe3f5;font-size:13px;font-weight:600;cursor:pointer">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="#9cc6ec" stroke-width="1.6"><path d="M8 3v10M3 8h10"></path></svg>
+        New session
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#7fa8cf;background:#0e2236;padding:1px 5px;border-radius:4px;margin-left:2px">Ctrl K</span>
+      </button>
+      <button onClick="{{ spawnClaude }}" style="height:34px;padding:0 11px;background:#13171c;border:1px solid #ffffff14;border-radius:8px;color:#b9c3cf;font-size:12.5px;font-family:'JetBrains Mono',monospace;cursor:pointer">+ claude</button>
+      <button onClick="{{ spawnBash }}" style="height:34px;padding:0 11px;background:#13171c;border:1px solid #ffffff14;border-radius:8px;color:#b9c3cf;font-size:12.5px;font-family:'JetBrains Mono',monospace;cursor:pointer">+ bash</button>
+    </div>
+  </div>
+
+  <!-- ====================== BODY ====================== -->
+  <div style="flex:1;display:flex;min-height:0">
+
+    <!-- SWITCHYARD SIDEBAR -->
+    <sc-if value="{{ sidebarOpen }}" hint-placeholder-val="{{ true }}">
+    <div style="width:266px;flex:0 0 auto;background:#0c0f13;border-right:1px solid #ffffff0d;display:flex;flex-direction:column;min-height:0">
+      <div style="height:42px;flex:0 0 auto;display:flex;align-items:center;gap:8px;padding:0 14px;border-bottom:1px solid #ffffff0a">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="3" fill="#1e2b3a" stroke="#3d6fa6" stroke-width="1.2"></rect><path d="M5 8l2 2 4-4.5" stroke="#5b9bd5" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        <span style="font-size:12px;font-weight:700;letter-spacing:.08em;color:#7a8696">SWITCHYARD</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#4f5965;margin-left:auto">{{ ticketCount }}</span>
+        <span style="width:6px;height:6px;border-radius:50%;background:#5fb98a;box-shadow:0 0 6px #5fb98a99"></span>
+      </div>
+      <div class="ddscroll" style="flex:1;overflow-y:auto;padding:8px 8px 16px">
+        <sc-for list="{{ ticketGroups }}" as="grp" hint-placeholder-count="3">
+          <div style="margin:6px 6px 4px;display:flex;align-items:center;gap:7px">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:600;letter-spacing:.04em;color:#5a636f;text-transform:uppercase">{{ grp.repo }}</span>
+            <div style="flex:1;height:1px;background:#ffffff0a"></div>
+          </div>
+          <sc-for list="{{ grp.tickets }}" as="t" hint-placeholder-count="3">
+            <div onClick="{{ t.launch }}" style="display:flex;align-items:flex-start;gap:9px;padding:8px 9px;border-radius:8px;cursor:pointer;margin-bottom:1px" style-hover="background:#141a21">
+              <span style="margin-top:2px;width:7px;height:7px;border-radius:50%;flex:0 0 auto;background:{{ t.statusColor }};box-shadow:0 0 6px {{ t.statusGlow }}"></span>
+              <div style="flex:1;min-width:0">
+                <div style="display:flex;align-items:center;gap:7px">
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:11.5px;font-weight:600;color:#5b9bd5">{{ t.id }}</span>
+                  <span style="font-size:10px;color:#6b7682">{{ t.statusLabel }}</span>
+                </div>
+                <div style="font-size:12.5px;color:#bcc6d1;line-height:1.35;margin-top:2px;text-wrap:pretty">{{ t.title }}</div>
+                <div style="display:flex;align-items:center;gap:6px;margin-top:5px">
+                  <span style="width:6px;height:6px;border-radius:2px;background:{{ t.tagColor }}"></span>
+                  <span style="font-size:10.5px;color:#5a636f">{{ t.tag }}</span>
+                </div>
+              </div>
+              <div style="margin-top:1px;width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;background:#16314a;border:1px solid #2a557d;flex:0 0 auto" title="Spawn agent">
+                <svg width="11" height="11" viewBox="0 0 12 12" fill="#9cc6ec"><path d="M3 2l6 4-6 4z"></path></svg>
+              </div>
+            </div>
+          </sc-for>
+        </sc-for>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- DESKTOP -->
+    <div ref="{{ deskRef }}" style="{{ deskStyle }}">
+      <sc-for list="{{ windows }}" as="win" hint-placeholder-count="3">
+        <div onMouseDown="{{ win.focus }}" style="{{ win.frameStyle }}">
+          <!-- title bar -->
+          <div onMouseDown="{{ win.dragStart }}" style="{{ win.barStyle }}">
+            <span style="width:8px;height:8px;border-radius:50%;flex:0 0 auto;background:{{ win.statusColor }};box-shadow:0 0 7px {{ win.statusGlow }}"></span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;color:#c5cfda">{{ win.titleMain }}</span>
+            <sc-if value="{{ win.hasTicket }}" hint-placeholder-val="{{ true }}">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;color:#5b9bd5;background:#10243a;border:1px solid #234a6e;padding:1px 6px;border-radius:5px">{{ win.ticket }}</span>
+            </sc-if>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#56606c">{{ win.repoLabel }}</span>
+            <div style="flex:1"></div>
+            <button onMouseDown="{{ stop }}" onClick="{{ win.minimize }}" title="Minimize to dock" style="width:24px;height:22px;display:flex;align-items:center;justify-content:center;background:transparent;border:none;border-radius:5px;color:#7a8593;cursor:pointer" style-hover="background:#ffffff14;color:#cfd8e2">
+              <svg width="12" height="12" viewBox="0 0 12 12" stroke="currentColor" stroke-width="1.4"><path d="M2.5 8.5h7"></path></svg>
+            </button>
+            <button onMouseDown="{{ stop }}" onClick="{{ win.close }}" title="Close" style="width:24px;height:22px;display:flex;align-items:center;justify-content:center;background:transparent;border:none;border-radius:5px;color:#7a8593;cursor:pointer" style-hover="background:#5c2b2b;color:#f0c9c4">
+              <svg width="12" height="12" viewBox="0 0 12 12" stroke="currentColor" stroke-width="1.4"><path d="M3 3l6 6M9 3l-6 6"></path></svg>
+            </button>
+          </div>
+          <!-- body -->
+          <div class="ddscroll" style="flex:1;min-height:0;overflow:auto;border-radius:0 0 9px 9px">{{ win.body }}</div>
+          <!-- resize handle -->
+          <div onMouseDown="{{ win.resizeStart }}" style="{{ win.resizeStyle }}">
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="#4a5662" stroke-width="1.1"><path d="M10 4L4 10M10 8l-2 2"></path></svg>
+          </div>
+        </div>
+      </sc-for>
+
+      <!-- ==================== BOTTOM RAIL ==================== -->
+      <sc-if value="{{ railVisible }}" hint-placeholder-val="{{ true }}">
+      <div style="position:absolute;left:0;right:0;bottom:0;z-index:9000;pointer-events:none;display:flex;flex-direction:column;align-items:center">
+
+        <!-- ---------- inline permission gate ---------- -->
+        <sc-if value="{{ gateOpen }}" hint-placeholder-val="{{ false }}">
+        <div style="pointer-events:auto;width:604px;max-width:calc(100% - 28px);margin-bottom:9px;background:#141920F7;border:1px solid #7a5a25;border-radius:14px;box-shadow:0 24px 64px #000000b8,0 0 0 1px #e0a33c1f;backdrop-filter:blur(16px);overflow:hidden;animation:gaterise .2s cubic-bezier(.2,.8,.3,1)">
+          <div style="display:flex;align-items:center;gap:9px;padding:10px 13px;background:#231b0e;border-bottom:1px solid #ffffff10">
+            <span style="width:17px;height:17px;flex:0 0 auto;border-radius:5px;background:#e0a33c;color:#1c1305;font-size:12px;font-weight:800;line-height:17px;text-align:center">!</span>
+            <span style="font-size:10.5px;font-weight:700;letter-spacing:.09em;color:#eabf70">PERMISSION NEEDED</span>
+            <sc-if value="{{ gateQueued }}" hint-placeholder-val="{{ false }}">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#caa262;background:#3a2c12;border:1px solid #6b5122;border-radius:5px;padding:1px 7px">{{ gateCounter }}</span>
+            </sc-if>
+            <div style="flex:1"></div>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;color:#5b9bd5">{{ gateTicket }}</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#7a6a4b">~/{{ gateRepo }}</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#7a6a4b">held {{ gateAge }}</span>
+          </div>
+
+          <div style="padding:12px 13px 13px">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:9px;flex-wrap:wrap">
+              <span style="font-size:12.5px;color:#9aa6b2">wants to run</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:#f0d49a;background:#2e2410;border:1px solid #5e4a1e;border-radius:6px;padding:2px 8px">{{ gateTool }}</span>
+              <span style="font-size:12px;color:#77828f">{{ gateSubject }}</span>
+            </div>
+
+            <div style="position:relative;border:1px solid #ffffff12;border-radius:9px;background:#0a0d11;overflow:hidden">
+              <div class="ddscroll" style="{{ gateBlobStyle }}">{{ gateArgs }}</div>
+              <sc-if value="{{ gateFaded }}" hint-placeholder-val="{{ true }}">
+                <div style="position:absolute;left:1px;right:1px;bottom:0;height:44px;background:linear-gradient(to bottom,#0a0d1100,#0a0d11 78%);pointer-events:none"></div>
+              </sc-if>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:10px;margin-top:7px">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#66707c">{{ gateTrunc }}</span>
+              <button onClick="{{ toggleGateFull }}" style="background:transparent;border:none;padding:0;font-size:11px;font-weight:600;color:#7fa8cf;cursor:pointer;text-decoration:underline;text-underline-offset:2px">{{ gateExpandLabel }}</button>
+              <div style="flex:1"></div>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#66707c">in {{ gateCwd }}</span>
+            </div>
+
+            <sc-if value="{{ denyOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top:11px;padding:10px;background:#1a1013;border:1px solid #5c3130;border-radius:9px">
+              <div style="font-size:11px;font-weight:600;color:#d99b90;margin-bottom:7px">Tell the agent why — it goes back as a tool result</div>
+              <textarea ref="{{ denyRef }}" value="{{ denyText }}" onInput="{{ onDenyText }}" placeholder="Don't wipe node_modules — use pnpm install --offline instead." style="width:100%;height:52px;resize:none;background:#0d0f13;border:1px solid #ffffff14;border-radius:7px;color:#dbe3ec;font-family:'JetBrains Mono',monospace;font-size:11.5px;padding:8px 9px;outline:none"></textarea>
+            </div>
+            </sc-if>
+
+            <div style="display:flex;align-items:center;gap:8px;margin-top:12px">
+              <button onClick="{{ openFromGate }}" style="background:transparent;border:none;padding:0;font-size:11.5px;color:#7c8693;cursor:pointer;text-decoration:underline;text-underline-offset:2px">Open the terminal instead</button>
+              <div style="flex:1"></div>
+              <button onClick="{{ denyGate }}" style="{{ denyBtnStyle }}">{{ denyBtnLabel }}</button>
+              <button onClick="{{ allowAlways }}" style="height:31px;padding:0 12px;background:#1a2028;border:1px solid #384352;border-radius:8px;color:#c3ccd6;font-size:12px;font-weight:600;cursor:pointer" style-hover="background:#222a34;border-color:#4a5766">Always allow {{ gateTool }}</button>
+              <button onClick="{{ approveGate }}" style="height:31px;padding:0 15px;background:#c58f2c;border:1px solid #e0a33c;border-radius:8px;color:#1a1205;font-size:12.5px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:7px" style-hover="background:#dba33a">Approve<span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;opacity:.6">↵</span></button>
+            </div>
+          </div>
+        </div>
+        </sc-if>
+
+        <!-- ---------- expand chooser ---------- -->
+        <sc-if value="{{ chooserOpen }}" hint-placeholder-val="{{ false }}">
+        <div style="pointer-events:auto;width:330px;margin-bottom:9px;background:#141920F7;border:1px solid #ffffff1c;border-radius:13px;box-shadow:0 20px 54px #000000aa;backdrop-filter:blur(14px);overflow:hidden;padding:6px;animation:gaterise .18s ease">
+          <div style="display:flex;align-items:center;gap:8px;padding:7px 8px 9px">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:11.5px;font-weight:600;color:#5b9bd5">{{ chooserTicket }}</span>
+            <span style="font-size:11px;color:#66707c">open as…</span>
+            <div style="flex:1"></div>
+            <button onClick="{{ closeChooser }}" style="background:transparent;border:none;color:#66707c;font-size:14px;line-height:1;cursor:pointer;padding:0 2px">×</button>
+          </div>
+          <button onClick="{{ doWatch }}" style="display:block;width:100%;text-align:left;padding:9px 10px;background:#161c23;border:1px solid #ffffff10;border-radius:9px;cursor:pointer;margin-bottom:5px" style-hover="background:#1d242d;border-color:#33506e">
+            <div style="font-size:12.5px;font-weight:600;color:#dbe3ec">Watch</div>
+            <div style="font-size:11px;color:#7c8693;margin-top:2px;text-wrap:pretty">Opens a window. Keeps running autonomously and stays in the rail.</div>
+          </button>
+          <button onClick="{{ doTakeOver }}" style="display:block;width:100%;text-align:left;padding:9px 10px;background:#161c23;border:1px solid #ffffff10;border-radius:9px;cursor:pointer" style-hover="background:#1d242d;border-color:#33506e">
+            <div style="font-size:12.5px;font-weight:600;color:#dbe3ec">Take over</div>
+            <div style="font-size:11px;color:#7c8693;margin-top:2px;text-wrap:pretty">Ends autonomy. Becomes a normal supervised session and leaves the rail.</div>
+          </button>
+        </div>
+        </sc-if>
+
+        <!-- ---------- the rail ---------- -->
+        <div style="{{ railBarStyle }}">
+
+          <!-- UNDERWAY LANE -->
+          <sc-if value="{{ hasRuns }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;align-items:stretch;gap:10px;min-width:0;flex:1">
+            <div style="display:flex;flex-direction:column;justify-content:center;gap:3px;flex:0 0 auto;padding-right:2px">
+              <span style="font-size:9.5px;font-weight:800;letter-spacing:.11em;color:#7f8c9c">UNDERWAY</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#5a636f">{{ runCountLabel }}</span>
+            </div>
+
+            <div class="ddscroll" style="display:flex;align-items:stretch;gap:11px;min-width:0;overflow-x:auto;padding-bottom:2px">
+              <sc-for list="{{ repoGroups }}" as="g" hint-placeholder-count="2">
+                <div style="display:flex;flex-direction:column;gap:4px;flex:0 0 auto">
+                  <div style="display:flex;align-items:center;gap:6px;padding-left:1px">
+                    <span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:600;letter-spacing:.05em;color:#59636f;text-transform:uppercase">{{ g.repo }}</span>
+                    <div style="flex:1;height:1px;background:#ffffff0d"></div>
+                  </div>
+                  <div style="display:flex;align-items:flex-start;gap:6px">
+                    <sc-for list="{{ g.runs }}" as="r" hint-placeholder-count="2">
+                      <div onClick="{{ r.click }}" title="{{ r.tip }}" style="{{ r.cardStyle }}">
+                        <div style="display:flex;align-items:center;gap:7px;min-width:0">
+                          <span style="{{ r.glyphStyle }}">{{ r.glyph }}</span>
+                          <sc-if value="{{ r.showId }}" hint-placeholder-val="{{ true }}">
+                            <span style="font-family:'JetBrains Mono',monospace;font-size:11.5px;font-weight:600;color:{{ r.idColor }};white-space:nowrap">{{ r.ticket }}</span>
+                          </sc-if>
+                          <span style="{{ r.byStyle }}" title="{{ r.byTip }}">{{ r.byMark }}</span>
+                          <div style="flex:1;min-width:4px"></div>
+                          <sc-if value="{{ r.showMeta }}" hint-placeholder-val="{{ true }}">
+                            <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#68727e;white-space:nowrap">{{ r.meta }}</span>
+                          </sc-if>
+                          <sc-if value="{{ r.showAck }}" hint-placeholder-val="{{ false }}">
+                            <button onClick="{{ r.ack }}" title="Clear from the rail" style="flex:0 0 auto;width:15px;height:15px;padding:0;display:flex;align-items:center;justify-content:center;background:transparent;border:none;border-radius:4px;color:#68727e;font-size:13px;line-height:1;cursor:pointer" style-hover="background:#ffffff14;color:#dbe3ec">×</button>
+                          </sc-if>
+                        </div>
+
+                        <sc-if value="{{ r.showAction }}" hint-placeholder-val="{{ true }}">
+                          <div style="{{ r.actionStyle }}"><sc-if value="{{ r.showLabel }}" hint-placeholder-val="{{ false }}"><span style="{{ r.labelStyle }}">{{ r.stateLabel }}</span></sc-if>{{ r.action }}</div>
+                        </sc-if>
+
+                        <div style="{{ r.trackStyle }}"><div style="{{ r.fillStyle }}"></div></div>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          </sc-if>
+
+          <!-- DIVIDER -->
+          <sc-if value="{{ bothLanes }}" hint-placeholder-val="{{ false }}">
+            <div style="flex:0 0 auto;width:1px;align-self:stretch;margin:0 2px;background:linear-gradient(to bottom,#ffffff00,#ffffff1c 22%,#ffffff1c 78%,#ffffff00)"></div>
+          </sc-if>
+
+          <!-- DOCKED LANE -->
+          <sc-if value="{{ dockHasItems }}" hint-placeholder-val="{{ true }}">
+          <div class="ddscroll" style="display:flex;align-items:center;gap:9px;flex:0 1 auto;min-width:0;max-width:38%;overflow-x:auto;padding:6px 8px 6px 9px;border-radius:11px;background:#07090c;box-shadow:inset 0 2px 7px #00000099,inset 0 0 0 1px #ffffff08">
+            <div style="display:flex;flex-direction:column;gap:3px">
+              <span style="font-size:9.5px;font-weight:800;letter-spacing:.11em;color:#5f6874">DOCKED</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#4b545f">{{ dockCountLabel }}</span>
+            </div>
+            <sc-for list="{{ dockWindows }}" as="d" hint-placeholder-count="2">
+              <div onClick="{{ d.restore }}" title="{{ d.sub }}" style="display:flex;align-items:center;gap:8px;height:34px;padding:0 9px;background:#12161b;border:1px solid #ffffff0d;border-radius:8px;cursor:pointer;animation:dockpop .26s ease" style-hover="background:#1a2027;border-color:#2c3742">
+                <span style="width:6px;height:6px;border-radius:50%;flex:0 0 auto;background:{{ d.statusColor }};opacity:.75"></span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;color:{{ d.idColor }}">{{ d.idLabel }}</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#4f5965">{{ d.repoShort }}</span>
+                <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="#5a636f" stroke-width="1.4"><path d="M7 10V4M4 7l3-3 3 3"></path></svg>
+              </div>
+            </sc-for>
+          </div>
+          </sc-if>
+        </div>
+      </div>
+      </sc-if>
+    </div>
+  </div>
+
+  <!-- ====================== QUICK LAUNCH ====================== -->
+  <sc-if value="{{ quickOpen }}" hint-placeholder-val="{{ false }}">
+  <div onMouseDown="{{ closeQuick }}" style="position:absolute;inset:0;background:#060709b3;backdrop-filter:blur(3px);display:flex;justify-content:center;padding-top:96px;z-index:10000">
+    <div onMouseDown="{{ stop }}" style="width:600px;max-width:90%;height:max-content;background:#13171d;border:1px solid #ffffff1c;border-radius:13px;box-shadow:0 24px 70px #000000aa;overflow:hidden">
+      <div style="display:flex;align-items:center;gap:11px;padding:15px 17px;border-bottom:1px solid #ffffff10">
+        <svg width="17" height="17" viewBox="0 0 16 16" fill="none" stroke="#5b9bd5" stroke-width="1.5"><path d="M3 2l6 4-6 4z"></path></svg>
+        <input ref="{{ quickRef }}" value="{{ query }}" onInput="{{ onQuery }}" onKeyDown="{{ onQueryKey }}" placeholder="Spawn an agent on a ticket…  try “auto-advance” or “ARGY”" style="flex:1;background:transparent;border:none;outline:none;color:#e6edf4;font-size:16px;font-family:system-ui,sans-serif"/>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#5a636f;border:1px solid #ffffff14;border-radius:5px;padding:2px 6px">esc</span>
+      </div>
+      <div class="ddscroll" style="max-height:340px;overflow-y:auto;padding:8px">
+        <sc-for list="{{ quickResults }}" as="r" hint-placeholder-count="4">
+          <div onMouseEnter="{{ r.hover }}" onClick="{{ r.launch }}" style="{{ r.rowStyle }}">
+            <span style="width:8px;height:8px;border-radius:50%;flex:0 0 auto;background:{{ r.statusColor }};box-shadow:0 0 6px {{ r.statusGlow }}"></span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:12.5px;font-weight:600;color:#5b9bd5;width:64px;flex:0 0 auto">{{ r.id }}</span>
+            <span style="flex:1;font-size:13.5px;color:#cdd6e0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ r.title }}</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#56606c">{{ r.repo }}</span>
+            <sc-if value="{{ r.active }}" hint-placeholder-val="{{ false }}">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#7fa8cf;background:#13283d;padding:2px 7px;border-radius:5px">↵ spawn</span>
+            </sc-if>
+          </div>
+        </sc-for>
+        <sc-if value="{{ noResults }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:28px;text-align:center;color:#5a636f;font-size:13px">No matching tickets. Press ↵ for a blank claude session.</div>
+        </sc-if>
+      </div>
+      <div style="display:flex;align-items:center;gap:16px;padding:10px 17px;border-top:1px solid #ffffff10;font-size:11.5px;color:#5a636f">
+        <span><b style="color:#8590a0">↑↓</b> navigate</span>
+        <span><b style="color:#8590a0">↵</b> spawn agent</span>
+        <span style="margin-left:auto">pulled live from Switchyard</span>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1320,&quot;height&quot;:840},&quot;autoRuns&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:4,&quot;min&quot;:0,&quot;max&quot;:12,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Autonomous rail&quot;},&quot;gateCount&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:1,&quot;min&quot;:0,&quot;max&quot;:2,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Autonomous rail&quot;},&quot;streamingOn&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;showGrid&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;denseTerminals&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  constructor(props){
+    super(props);
+    const h = React.createElement;
+    this.h = h;
+    this.spawnCount = 0;
+    this.dragState = null;
+    this.raf = null;
+
+    // ---- Switchyard tickets ----
+    this.tickets = [
+      { id:'ARGY-89', repo:'argosy', title:'Series auto-advance: auto-play the next episode', tag:'frontend', tagColor:'#c9b15a', status:'progress' },
+      { id:'ARGY-90', repo:'argosy', title:'Skip Intro / Skip Credits buttons (web player)', tag:'frontend', tagColor:'#c9b15a', status:'backlog' },
+      { id:'ARGY-91', repo:'argosy', title:'Global auto-play preference (opt-in, default off)', tag:'backend', tagColor:'#7a9e6b', status:'backlog' },
+      { id:'ARGY-64', repo:'argosy', title:'Phase 8 — Extra Credit (Stretch & Scale)', tag:'epic', tagColor:'#8b7fd6', status:'progress' },
+      { id:'SWY-12', repo:'switchyard', title:'Saved filters in the board view', tag:'frontend', tagColor:'#c9b15a', status:'review' },
+      { id:'SWY-7',  repo:'switchyard', title:'Webhook retries with exponential backoff', tag:'backend', tagColor:'#7a9e6b', status:'backlog' },
+      { id:'DRY-3',  repo:'drydock', title:'Tile layout snapping + window persistence', tag:'frontend', tagColor:'#c9b15a', status:'progress' },
+      { id:'DRY-5',  repo:'drydock', title:'Session persistence across server reconnect', tag:'infra', tagColor:'#6fa0a8', status:'backlog' },
+    ];
+
+    // ---- autonomous runs (the rail) ----
+    this.runPool = [
+      { ticket:'ARGY-90', repo:'argosy', by:'you', action:'editing web/src/player/SkipIntro.vue', step:4, steps:7, sec:134, prog:.56 },
+      { ticket:'SWY-7', repo:'switchyard', by:'agent', byName:'ARGY-64 · planner', action:'running the retry suite', step:2, steps:5, sec:41, prog:.33 },
+      { ticket:'ARGY-91', repo:'argosy', by:'schedule', byName:'nightly 02:00', action:'reading src/prefs/store.ts', step:1, steps:6, sec:8, prog:.12 },
+      { ticket:'DRY-5', repo:'drydock', by:'you', action:'writing reconnect handshake', step:3, steps:4, sec:302, prog:.71 },
+      { ticket:'SWY-12', repo:'switchyard', by:'agent', byName:'SWY-7 · planner', action:'grepping for filter serialisation', step:2, steps:8, sec:66, prog:.24 },
+      { ticket:'ARGY-64', repo:'argosy', by:'schedule', byName:'on push to main', action:'pnpm build --filter web', step:5, steps:9, sec:511, prog:.62 },
+      { ticket:'ARGY-89', repo:'argosy', by:'you', action:'adding countdown to the overlay', step:6, steps:7, sec:88, prog:.84 },
+      { ticket:'DRY-3', repo:'drydock', by:'you', action:'8px grid snapping', step:2, steps:5, sec:150, prog:.4 },
+      { ticket:'SWY-19', repo:'switchyard', by:'agent', byName:'SWY-12 · planner', action:'migrating the board query', step:1, steps:3, sec:22, prog:.18 },
+      { ticket:'ARGY-77', repo:'argosy', by:'schedule', byName:'nightly 02:00', action:'regenerating fixtures', step:3, steps:6, sec:204, prog:.5 },
+      { ticket:'DRY-9', repo:'drydock', by:'you', action:'PTY reconnect backoff', step:1, steps:4, sec:31, prog:.15 },
+      { ticket:'SWY-4', repo:'switchyard', by:'agent', byName:'SWY-7 · planner', action:'writing webhook fixtures', step:4, steps:6, sec:390, prog:.66 },
+    ];
+    this.gates = {
+      'SWY-7': { tool:'Bash', subject:'in the worktree',
+        args:'rm -rf node_modules .turbo && pnpm install --frozen-lockfile \\\n  && pnpm --filter @switchyard/worker test -- --runInBand \\\n  && pnpm --filter @switchyard/worker build \\\n  && node scripts/seed-webhook-fixtures.mjs --reset --count 240 \\\n  && git add -A && git commit -m "chore(worker): reset deps, reseed webhook fixtures"',
+        full:'rm -rf node_modules .turbo && pnpm install --frozen-lockfile \\\n  && pnpm --filter @switchyard/worker test -- --runInBand \\\n  && pnpm --filter @switchyard/worker build \\\n  && node scripts/seed-webhook-fixtures.mjs --reset --count 240 \\\n  && git add -A && git commit -m "chore(worker): reset deps, reseed webhook fixtures" \\\n  && git push origin agent/SWY-7 --force-with-lease \\\n  && gh pr create --fill --base main --head agent/SWY-7 \\\n  && echo "done"',
+        lines:9, bytes:'1.4 KB', cwd:'~/projects/switchyard' },
+      'ARGY-91': { tool:'Write', subject:'web/src/prefs/store.ts  +42 −7',
+        args:'@@ -18,6 +18,34 @@ export const usePrefs = defineStore(\'prefs\', {\n   state: () => ({\n     theme: \'system\',\n+    autoplayNext: false,\n+    autoplayCountdown: 8,\n   }),\n   actions: {\n+    setAutoplayNext(v: boolean) {\n+      this.autoplayNext = v',
+        full:'@@ -18,6 +18,34 @@ export const usePrefs = defineStore(\'prefs\', {\n   state: () => ({\n     theme: \'system\',\n+    autoplayNext: false,\n+    autoplayCountdown: 8,\n   }),\n   actions: {\n+    setAutoplayNext(v: boolean) {\n+      this.autoplayNext = v\n+      persist(\'autoplayNext\', v)\n+    },\n+    setAutoplayCountdown(s: number) {\n+      this.autoplayCountdown = clamp(s, 3, 20)\n+      persist(\'autoplayCountdown\', this.autoplayCountdown)\n+    },\n   },\n })',
+        lines:22, bytes:'3 hunks', cwd:'~/projects/argosy' },
+    };
+
+    this.state = {
+      layout:(['float','tile','focus'].find(m=>m===new URLSearchParams(location.search).get('layout'))||'float'),
+      runs:[], railTick:0,
+      gateId:null, gateFull:false, denyOpen:false, denyText:'',
+      chooserId:null, autoSpawn:true,
+      sidebarOpen:true,
+      quickOpen:false,
+      query:'',
+      quickIdx:0,
+      focusedId:'w1',
+      z:30,
+      deskW:1000, deskH:640,
+      windows:[
+        this.mkAgent('w1','ARGY-89','argosy','thinking',
+          [
+            {k:'user', t:'Can we knock out ARGY-89?'},
+            {k:'assistant', t:"I'll look up ARGY-89 to see what we're dealing with."},
+            {k:'tool', t:'Called switchyard (ctrl+o to expand)'},
+            {k:'assistant', t:'This is a frontend feature on the Vue web player. Let me map the relevant code before writing anything — the player, series/episode navigation, and the prefs store.'},
+            {k:'tool', t:'Read web/src/player/PlayerView.vue (ctrl+o to expand)'},
+            {k:'assistant', t:'Found the end-of-episode hook. I\u2019ll add an "Up Next" overlay with a short countdown and a per-user opt-out (default on), then wire it to the series navigator.'},
+          ],
+          {x:22,y:18,w:452,h:336, live:true, seconds:19, tokens:886}),
+
+        this.mkAgent('w2','SWY-12','switchyard','running',
+          [
+            {k:'user', t:'Wire up saved filters in the board view'},
+            {k:'assistant', t:'Saved filters now persist to localStorage and round-trip through the URL. I added a "Saved" dropdown beside the filter bar.'},
+            {k:'tool', t:'Edited web/src/board/FilterBar.tsx (ctrl+o to expand)'},
+            {k:'assistant', t:'Running the board tests.'},
+            {k:'tool', t:'Bash: pnpm test board (ctrl+o to expand)'},
+            {k:'success', t:'\u2714 14 passed \u00b7 1.8s'},
+          ],
+          {x:500,y:18,w:430,h:300, live:false, seconds:212, tokens:7430, full:true}),
+
+        this.mkBrowser('w3','argosy',{x:22,y:374,w:566,h:300}),
+
+        this.mkAgent('w4','DRY-3','drydock','idle',
+          [
+            {k:'user', t:'Add snapping to the tile layout'},
+            {k:'assistant', t:'Snapping works against an 8px grid. Waiting on your call for the persistence format — localStorage or server-side per workspace?'},
+          ],
+          {x:0,y:0,w:430,h:300, live:false, full:true, minimized:true, seconds:540, tokens:3120}),
+
+        this.mkBash('w5','argosy',{minimized:true}),
+      ],
+    };
+  }
+
+  // ---------- window factories ----------
+  mkAgent(id,ticket,repo,status,transcript,o){
+    o=o||{};
+    return { id, type:'agent', ticket, repo, status,
+      titleMain:'claude-code', transcript,
+      x:o.x||60, y:o.y||40, w:o.w||452, h:o.h||330, z:1,
+      live:!!o.live, full:!!o.full, minimized:!!o.minimized,
+      shown:o.full?transcript.length:0, typing:'',
+      seconds:o.seconds||0, tokens:o.tokens||0 };
+  }
+  mkBrowser(id,repo,o){ o=o||{};
+    return { id, type:'browser', repo, status:'running', titleMain:'preview',
+      url:'localhost:5173/watch/s3e7', count:4,
+      x:o.x||80, y:o.y||80, w:o.w||560, h:o.h||300, z:1, minimized:!!o.minimized }; }
+  mkBash(id,repo,o){ o=o||{};
+    return { id, type:'bash', repo, status:'running', titleMain:'bash',
+      x:o.x||120, y:o.y||120, w:o.w||440, h:o.h||240, z:1, minimized:!!o.minimized }; }
+
+  // ---------- lifecycle ----------
+  componentDidMount(){
+    this.measure();
+    this._onMove=(e)=>this.onMove(e);
+    this._onUp=()=>this.onUp();
+    this._onResize=()=>this.measure();
+    this._onKey=(e)=>this.onKey(e);
+    document.addEventListener('mousemove',this._onMove);
+    document.addEventListener('mouseup',this._onUp);
+    window.addEventListener('resize',this._onResize);
+    window.addEventListener('keydown',this._onKey);
+    this.syncRuns();
+    if(new URLSearchParams(location.search).get('gate')==='open'){ const g=this.gateQueue()[0]; if(g) this.openGate(g.id); }
+    this.tickT = setInterval(()=>this.tick(),1000);
+    this.streamT = setInterval(()=>this.stream(),46);
+    setTimeout(()=>this.measure(),120);
+  }
+  componentWillUnmount(){
+    document.removeEventListener('mousemove',this._onMove);
+    document.removeEventListener('mouseup',this._onUp);
+    window.removeEventListener('resize',this._onResize);
+    window.removeEventListener('keydown',this._onKey);
+    clearInterval(this.tickT); clearInterval(this.streamT);
+  }
+  measure(){ if(this.deskEl){ const r=this.deskEl.getBoundingClientRect();
+    this.setState({deskW:r.width, deskH:r.height}); } }
+
+  onKey(e){
+    if((e.metaKey||e.ctrlKey) && (e.key==='k'||e.key==='K')){ e.preventDefault(); this.setState(s=>({quickOpen:!s.quickOpen, query:'', quickIdx:0})); this.focusQuick(); }
+    else if(e.key==='Escape' && this.state.quickOpen){ this.setState({quickOpen:false}); }
+  }
+  focusQuick(){ setTimeout(()=>{ if(this.quickEl) this.quickEl.focus(); },30); }
+
+  // ---------- streaming ----------
+  stream(){
+    if(this.props.streamingOn===false) return;
+    let dirty=false;
+    const ws=this.state.windows.map(w=>{
+      if(w.type!=='agent'||w.minimized) return w;
+      if(w.status!=='thinking'&&w.status!=='running') return w;
+      if(w.shown>=w.transcript.length) return w;
+      const line=w.transcript[w.shown];
+      if(line.k!=='assistant'&&line.k!=='plain'){ dirty=true; return {...w, shown:w.shown+1, typing:''}; }
+      if(w.typing.length<line.t.length){ dirty=true; const step=line.t.length>90?2:1; return {...w, typing:line.t.slice(0,w.typing.length+step)}; }
+      dirty=true; return {...w, shown:w.shown+1, typing:''};
+    });
+    if(dirty) this.setState({windows:ws});
+  }
+  tick(){
+    if(this.props.streamingOn===false) return;
+    let dirty=false;
+    const ws=this.state.windows.map(w=>{
+      if(w.type==='agent'&&w.status==='thinking'){ dirty=true; return {...w, seconds:w.seconds+1, tokens:w.tokens+ (38+Math.floor(Math.random()*70))}; }
+      return w;
+    });
+    let rdirty=false;
+    const rs=this.state.runs.map(r=>{
+      if(r.state==='running'){ rdirty=true; return {...r, sec:r.sec+1, prog:Math.min(.97,r.prog+0.004)}; }
+      if(r.state==='starting'){ rdirty=true; return {...r, sec:r.sec+1}; }
+      if(r.state==='gate'){ rdirty=true; return {...r, held:r.held+1}; }
+      return r;
+    });
+    if(dirty||rdirty) this.setState(st=>({windows:dirty?ws:st.windows, runs:rdirty?rs:st.runs}));
+  }
+
+  // ---------- window ops ----------
+  bringFront(id){ this.setState(s=>{ const z=s.z+1; return { z, focusedId:id,
+    windows:s.windows.map(w=>w.id===id?{...w,z}:w) }; }); }
+  minimize(id){ this.setState(s=>({windows:s.windows.map(w=>w.id===id?{...w,minimized:true}:w)})); }
+  restore(id){ this.setState(s=>{ const z=s.z+1; return { z, focusedId:id, layout: s.layout==='float'?'float':s.layout,
+    windows:s.windows.map(w=>w.id===id?{...w,minimized:false,z}:w) }; }); }
+  closeWin(id){ this.setState(s=>({windows:s.windows.filter(w=>w.id!==id)})); }
+  setLayout(m){ this.setState({layout:m}); }
+
+  // ---------- spawn ----------
+  spawnTicket(t){
+    const id='w'+(100+(this.spawnCount++));
+    const tr=[
+      {k:'user', t:'Can we knock out '+t.id+'?'},
+      {k:'assistant', t:'Pulling '+t.id+' from Switchyard to scope it.'},
+      {k:'tool', t:'Called switchyard (ctrl+o to expand)'},
+      {k:'assistant', t:'\u201C'+t.title+'.\u201D Mapping the affected code in '+t.repo+' before I touch anything.'},
+      {k:'tool', t:'Read '+t.repo+'/src (ctrl+o to expand)'},
+      {k:'assistant', t:'Got the lay of the land. Drafting the change now — I\u2019ll run the tests once it compiles.'},
+    ];
+    const n=this.countOpen();
+    const w=this.mkAgent(id,t.id,t.repo,'thinking',tr,{
+      x:90+(n*30)%240, y:54+(n*26)%150, w:452, h:330, live:true, seconds:0, tokens:0 });
+    this.setState(s=>{ const z=s.z+1; w.z=z; return { z, focusedId:id, quickOpen:false, layout:'float',
+      windows:[...s.windows.map(x=>x), w] }; });
+  }
+  spawnFresh(kind){
+    const id='w'+(100+(this.spawnCount++));
+    const n=this.countOpen();
+    let w;
+    if(kind==='bash'){ w=this.mkBash(id,'argosy',{x:110+(n*30)%200,y:60+(n*26)%140}); }
+    else { w=this.mkAgent(id,null,'argosy','thinking',[
+      {k:'assistant', t:'Fresh session in ~/projects/argosy. What are we building?'},
+      {k:'plain', t:'\u203a'},
+    ],{x:110+(n*30)%200,y:60+(n*26)%140,w:452,h:320,live:true,full:true}); }
+    this.setState(s=>{ const z=s.z+1; w.z=z; return { z, focusedId:id, layout:'float',
+      windows:[...s.windows, w] }; });
+  }
+  countOpen(){ return this.state.windows.filter(w=>!w.minimized).length; }
+
+  // ---------- drag / resize ----------
+  startDrag(e,id){ if(this.state.layout!=='float') return; e.stopPropagation();
+    const w=this.state.windows.find(x=>x.id===id); if(!w) return;
+    this.dragState={mode:'move', id, sx:e.clientX, sy:e.clientY, ox:w.x, oy:w.y};
+    this.dragId=id; this.bringFront(id); }
+  startResize(e,id){ if(this.state.layout!=='float') return; e.stopPropagation(); e.preventDefault();
+    const w=this.state.windows.find(x=>x.id===id); if(!w) return;
+    this.dragState={mode:'resize', id, sx:e.clientX, sy:e.clientY, ow:w.w, oh:w.h};
+    this.dragId=id; this.bringFront(id); }
+  onMove(e){ const d=this.dragState; if(!d) return;
+    if(this.raf) return;
+    this.raf=requestAnimationFrame(()=>{ this.raf=null;
+      const dx=e.clientX-d.sx, dy=e.clientY-d.sy;
+      this.setState(s=>({windows:s.windows.map(w=>{ if(w.id!==d.id) return w;
+        if(d.mode==='move') return {...w, x:Math.max(0,d.ox+dx), y:Math.max(0,d.oy+dy)};
+        return {...w, w:Math.max(300,d.ow+dx), h:Math.max(180,d.oh+dy)};
+      })}));
+    });
+  }
+  onUp(){ if(this.dragState){ this.dragState=null; this.dragId=null; this.forceUpdate(); } }
+
+  // ---------- autonomous runs ----------
+  wantRuns(){ const n=this.props.autoRuns; return n===undefined?4:Math.max(0,Math.min(12,n)); }
+  wantGates(){ const n=this.props.gateCount; return n===undefined?1:Math.max(0,Math.min(2,n)); }
+  syncRuns(){
+    const n=this.wantRuns(), g=this.wantGates();
+    const gateTix=['SWY-7','ARGY-91'].slice(0,g);
+    const fixed={ 'DRY-5':'turn', 'SWY-12':'done', 'ARGY-64':'failed', 'ARGY-91':'starting' };
+    const prev={}; this.state.runs.forEach(r=>prev[r.ticket]=r);
+    const runs=this.runPool.slice(0,n).map(p=>{
+      const st = gateTix.includes(p.ticket) ? 'gate' : (fixed[p.ticket]||'running');
+      const old=prev[p.ticket];
+      if(old && old.seed===st) return old;
+      return {...p, id:'run-'+p.ticket, seed:st, state:st, held:14, dismissed:false};
+    });
+    this.setState({runs});
+  }
+  componentDidUpdate(pp){
+    if(pp.autoRuns!==this.props.autoRuns || pp.gateCount!==this.props.gateCount) this.syncRuns();
+  }
+  gateQueue(){ return this.state.runs.filter(r=>r.state==='gate'); }
+  activeGate(){ const q=this.gateQueue(); if(!q.length) return null;
+    return q.find(r=>r.id===this.state.gateId) || q[0]; }
+  openGate(id){ this.setState({gateId:id, gateFull:false, denyOpen:false, denyText:'', chooserId:null}); }
+  resolveGate(mode){
+    const g=this.activeGate(); if(!g) return;
+    if(mode==='deny' && !this.state.denyOpen){ this.setState({denyOpen:true});
+      setTimeout(()=>{ if(this.denyEl) this.denyEl.focus(); },40); return; }
+    const note = mode==='deny' ? 'denial sent — rerouting'
+      : mode==='always' ? 'allowed for the session' : 'approved · continuing';
+    this.setState(s=>({
+      runs:s.runs.map(r=>r.id===g.id?{...r,state:'running',action:note}:r),
+      gateId:null, gateFull:false, denyOpen:false, denyText:'' }));
+  }
+  setRun(id,patch){ this.setState(s=>({runs:s.runs.map(r=>r.id===id?{...r,...patch}:r)})); }
+  dropRun(id){ this.setState(s=>({runs:s.runs.filter(r=>r.id!==id), chooserId:s.chooserId===id?null:s.chooserId})); }
+  openChooser(id){ this.setState({chooserId:id, gateId:null}); }
+  expandRun(id,mode){
+    const r=this.state.runs.find(x=>x.id===id); if(!r) return;
+    const t=this.tickets.find(t=>t.id===r.ticket)||{id:r.ticket,repo:r.repo,title:r.action};
+    const wid='w'+(100+(this.spawnCount++));
+    const w=this.mkAgent(wid,t.id,r.repo,mode==='watch'?'thinking':'idle',[
+      {k:'user', t:(r.by==='you'?'':'['+(r.byName||'agent')+'] ')+'Work '+t.id+' autonomously.'},
+      {k:'assistant', t:'Step '+r.step+' of '+r.steps+' — '+r.action+'.'},
+      {k:'tool', t:'Read '+r.repo+'/src (ctrl+o to expand)'},
+    ],{x:120,y:70,w:470,h:330,live:mode==='watch',full:true,seconds:r.sec,tokens:r.step*900});
+    this.setState(s=>{ const z=s.z+1; w.z=z; return { z, focusedId:wid, layout:'float', chooserId:null,
+      windows:[...s.windows,w],
+      runs: mode==='takeover' ? s.runs.filter(x=>x.id!==id) : s.runs.map(x=>x.id===id?{...x,watched:true}:x) }; });
+  }
+  railH(){
+    const hasR=this.state.runs.length>0;
+    const hasD=this.state.windows.some(w=>w.minimized);
+    if(!hasR&&!hasD) return 14;
+    if(!hasR) return 66;
+    return 98; // every state renders at one card height
+  }
+  fmtT(s){ const m=Math.floor(s/60), ss=s%60; return m+':'+(ss<10?'0':'')+ss; }
+
+  // ---------- geometry ----------
+  computeRects(){
+    const { layout, windows, deskW, deskH, focusedId } = this.state;
+    const vis=windows.filter(w=>!w.minimized);
+    const dockReserve = this.railH()+10;
+    const rects={};
+    if(layout==='float'){ vis.forEach(w=>rects[w.id]={x:w.x,y:w.y,w:w.w,h:w.h,z:w.z}); return rects; }
+    const pad=12, gap=10;
+    if(layout==='tile'){
+      const n=vis.length||1; const cols=Math.ceil(Math.sqrt(n)); const rows=Math.ceil(n/cols);
+      const cw=(deskW-pad*2-gap*(cols-1))/cols;
+      const ch=(deskH-pad-dockReserve-gap*(rows-1))/rows;
+      vis.forEach((w,i)=>{ const c=i%cols, r=Math.floor(i/cols);
+        rects[w.id]={x:pad+c*(cw+gap), y:pad+r*(ch+gap), w:cw, h:ch, z:w.id===focusedId?50:10}; });
+      return rects;
+    }
+    // focus
+    const stripW=210;
+    const others=vis.filter(w=>w.id!==focusedId);
+    const foc=vis.find(w=>w.id===focusedId)||vis[0];
+    if(foc) rects[foc.id]={x:pad, y:pad, w:deskW-pad*2-(others.length?stripW+gap:0), h:deskH-pad-dockReserve, z:50};
+    const th=others.length? (deskH-pad-dockReserve-gap*(others.length-1))/others.length : 0;
+    others.forEach((w,i)=>{ rects[w.id]={x:deskW-pad-stripW+ gap, y:pad+i*(th+gap), w:stripW-gap, h:th, z:10}; });
+    return rects;
+  }
+
+  // ====================================================
+  renderVals(){
+    const h=this.h;
+    const S=this.state;
+    const accent='#7aa6cc';
+    const statusMap={
+      progress:{c:'#d6a651',g:'#d6a65166',l:'In Progress'},
+      backlog:{c:'#6a737f',g:'#6a737f55',l:'Backlog'},
+      review:{c:'#7f9fd6',g:'#7f9fd655',l:'In Review'},
+      thinking:{c:'#d6a651',g:'#d6a65177'},
+      running:{c:'#5fb98a',g:'#5fb98a77'},
+      idle:{c:'#6a737f',g:'#6a737f55'},
+      done:{c:'#5fb98a',g:'#5fb98a77'},
+    };
+
+    // ----- topbar layout buttons -----
+    const segBtn=(active)=>'padding:5px 14px;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer;background:'+(active?'#1d2a38':'transparent')+';color:'+(active?'#cfe3f5':'#7a8593');
+    const rects=this.computeRects();
+
+    // ----- ticket groups for sidebar -----
+    const repos=['argosy','switchyard','drydock'];
+    const ticketGroups=repos.map(repo=>({
+      repo,
+      tickets:this.tickets.filter(t=>t.repo===repo).map(t=>{
+        const st=statusMap[t.status]||statusMap.backlog;
+        return { id:t.id, title:t.title, tag:t.tag, tagColor:t.tagColor,
+          statusColor:st.c, statusGlow:st.g, statusLabel:st.l,
+          launch:()=>this.spawnTicket(t) };
+      })
+    })).filter(g=>g.tickets.length);
+
+    // ----- windows (visible) -----
+    const windows=S.windows.filter(w=>!w.minimized).map(w=>{
+      const r=rects[w.id]||{x:w.x,y:w.y,w:w.w,h:w.h,z:1};
+      const focused=S.focusedId===w.id;
+      const dragging=this.dragId===w.id;
+      const st=statusMap[w.status]||statusMap.running;
+      const frameStyle='position:absolute;display:flex;flex-direction:column;'
+        +'left:'+r.x+'px;top:'+r.y+'px;width:'+r.w+'px;height:'+r.h+'px;z-index:'+(r.z||1)+';'
+        +'background:#0d1116;border:1px solid '+(focused?'#33506e':'#ffffff14')+';border-radius:10px;'
+        +'box-shadow:'+(focused?'0 18px 50px #000000aa,0 0 0 1px #2a486622':'0 10px 30px #00000077')+';'
+        +'overflow:hidden;animation:winpop .22s ease;'
+        +'transition:'+(dragging||S.layout==='float'?(dragging?'none':'box-shadow .2s,border-color .2s'):'all .26s cubic-bezier(.4,0,.2,1)')+';';
+      const barStyle='flex:0 0 auto;height:34px;display:flex;align-items:center;gap:9px;padding:0 8px 0 12px;'
+        +'background:'+(focused?'#161b22':'#11151a')+';border-bottom:1px solid #ffffff0d;cursor:'+(S.layout==='float'?'grab':'default')+';user-select:none';
+      const resizeStyle='position:absolute;right:0;bottom:0;width:18px;height:18px;display:'+(S.layout==='float'?'flex':'none')
+        +';align-items:flex-end;justify-content:flex-end;padding:3px;cursor:nwse-resize;z-index:5';
+      return {
+        id:w.id, titleMain:w.titleMain, ticket:w.ticket||'', hasTicket:!!w.ticket,
+        repoLabel:'~/'+w.repo, statusColor:st.c, statusGlow:st.g,
+        frameStyle, barStyle, resizeStyle,
+        body:this.renderBody(w, focused),
+        focus:()=>this.bringFront(w.id),
+        dragStart:(e)=>this.startDrag(e,w.id),
+        resizeStart:(e)=>this.startResize(e,w.id),
+        minimize:()=>this.minimize(w.id),
+        close:()=>this.closeWin(w.id),
+      };
+    });
+
+    // ----- dock -----
+    const dockArr=S.windows.filter(w=>w.minimized);
+    const dockWindows=dockArr.map(w=>{
+      const st=statusMap[w.status]||statusMap.idle;
+      const idLabel = w.ticket || (w.type==='bash'?'bash':'claude');
+      const sub = w.type==='bash' ? 'shell session'
+        : w.type==='browser' ? w.url
+        : (w.transcript&&w.transcript.length? w.transcript.find(l=>l.k==='user')?.t || 'agent session' : 'agent session');
+      return { idLabel, idColor: w.ticket?'#5b9bd5':'#b9c3cf', repoLabel:'~/'+w.repo, repoShort:w.repo,
+        sub, statusColor:st.c, statusGlow:st.g,
+        dotAnim: w.status==='thinking'?'ddpulse 1.2s ease-in-out infinite':'none',
+        restore:()=>this.restore(w.id) };
+    });
+
+    // ================= AUTONOMOUS RAIL =================
+    const RS={
+      starting:{ g:'◌', c:'#8b95a3', label:'STARTING' },
+      running: { g:'▸', c:'#7aa6cc', label:null },
+      gate:    { g:'!', c:'#e0a33c', label:'NEEDS YOU' },
+      turn:    { g:'‖', c:'#9d93c9', label:'ENDED TURN' },
+      done:    { g:'✓', c:'#5fb98a', label:'FINISHED' },
+      failed:  { g:'✕', c:'#d5695c', label:'FAILED' },
+    };
+    const runsAll=S.runs;
+    const loudN=(st)=>st==='gate'||st==='failed';
+    const baseTier = runsAll.length<=3?'full':(runsAll.length<=8?'compact':'tile');
+    const gq=this.gateQueue();
+    const runVals=runsAll.map(r=>{
+      const s=RS[r.state]||RS.running;
+      const loud=loudN(r.state);
+      // anything awaiting a human keeps full geometry no matter how crowded the rail gets
+      const actionable = loud || r.state==='done' || r.state==='turn';
+      const tier = actionable?'full':baseTier;
+      const w = tier==='full'?226:(tier==='compact'?150:92);
+      const raised = loud?'#1c1d1c':'#161b21';
+      const bg = r.state==='gate'?'#211a0e' : r.state==='failed'?'#1e1214' : raised;
+      const bord = r.state==='gate'?'#7a5a25' : r.state==='failed'?'#6d3a36' : (r.watched?'#33506e':'#ffffff12');
+      const anim = r.state==='gate'?'needsyou 1.7s ease-in-out infinite'
+        : r.state==='failed'?'failpulse 2.4s ease-in-out infinite' : 'none';
+      const cardStyle='position:relative;display:flex;flex-direction:column;flex:0 0 auto;box-sizing:border-box;'
+        +'width:'+w+'px;padding:'+(tier==='tile'?'7px 8px 9px':'8px 10px 10px')+';cursor:pointer;'
+        +'background:'+bg+';border:'+(loud?'1px':'1px')+' solid '+bord+';'
+        +'border-left:'+(loud?'3px':'1px')+' solid '+(loud?s.c:bord)+';border-radius:9px;'
+        +'box-shadow:0 6px 20px #00000077;animation:'+anim+';overflow:hidden;'
+        +'transition:width .2s ease,background .2s ease';
+      const glyphStyle='flex:0 0 auto;width:15px;height:15px;border-radius:4px;font-size:'+(r.state==='gate'?'11px':'9px')
+        +';font-weight:800;line-height:15px;text-align:center;'
+        +(loud?('background:'+s.c+';color:'+(r.state==='gate'?'#1c1305':'#210f0d')+';')
+              :('background:'+s.c+'22;color:'+s.c+';'))
+        +(r.state==='starting'?'animation:ddpulse 1.4s ease-in-out infinite;':'');
+      const byMark = r.by==='you'?'you' : r.by==='agent'?'agent' : 'sched';
+      const byStyle=(tier==='tile'?'display:none;':'')+'flex:0 0 auto;font-family:\'JetBrains Mono\',monospace;font-size:8.5px;font-weight:700;letter-spacing:.06em;'
+        +'text-transform:uppercase;padding:1px 4px;border-radius:3px;'
+        +(r.by==='you'?'color:#7c8693;background:#ffffff0d;border:1px solid #ffffff0d;'
+         :r.by==='agent'?'color:#9d93c9;background:#221f31;border:1px solid #3a3352;'
+         :'color:#6fa0a8;background:#122024;border:1px solid #234046;');
+      const meta = r.state==='gate'?('held '+this.fmtT(r.held))
+        : r.state==='starting'?'queued'
+        : r.state==='done'?(this.fmtT(r.sec)+' · logged')
+        : r.state==='failed'?'exit 1'
+        : (r.step+'/'+r.steps+' · '+this.fmtT(r.sec));
+      const action = r.state==='gate'?(this.gates[r.ticket]? this.gates[r.ticket].tool+' — '+this.gates[r.ticket].subject : 'awaiting a decision')
+        : r.state==='starting'?'worktree agent/'+r.ticket
+        : r.state==='done'?('logged to '+r.ticket+' ↗')
+        : r.state==='failed'?'ENOSPC — no space left'
+        : r.state==='turn'?'may want a reply'
+        : r.action;
+      const tipAction = r.state==='turn'?'ended its turn — done, or waiting on a reply; we can’t tell which. Last line: “…which persistence format do you want?”'
+        : r.state==='done'?'finished cleanly · activity entry written to '+r.ticket+' in Switchyard'
+        : r.state==='failed'?'exit 1 · Error: ENOSPC — no space left on device · continue-here comment posted to '+r.ticket
+        : action;
+      const fillPct = r.state==='done'?100 : Math.round(r.prog*100);
+      const fillBg = r.state==='running'
+        ? 'repeating-linear-gradient(90deg,'+s.c+' 0 11px,'+s.c+'99 11px 22px);animation:flow .9s linear infinite;'
+        : s.c+';';
+      return {
+        id:r.id, ticket:r.ticket, glyph:s.g, glyphStyle, byMark, byStyle,
+        byTip: r.by==='you'?'started by you':(r.by==='agent'?'started by '+(r.byName||'another agent'):'started by '+(r.byName||'a schedule')),
+        idColor: loud?'#e8eef5':'#5b9bd5',
+        showId: tier!=='tile' || true,
+        showMeta: tier==='full',
+        meta,
+        showLabel: !!s.label && tier!=='tile',
+        stateLabel: s.label||'',
+        labelStyle:'font-size:9.5px;font-weight:800;letter-spacing:.08em;color:'+s.c+';margin-right:6px',
+        showAction: tier==='full',
+        action,
+        actionStyle:'margin-top:6px;font-family:\'JetBrains Mono\',monospace;font-size:10.5px;line-height:1.35;'
+          +'color:'+(loud?'#b9a98c':'#7c8693')+';white-space:nowrap;overflow:hidden;text-overflow:ellipsis',
+        showAck: r.state==='done'||r.state==='failed',
+        ack:(e)=>{ e.stopPropagation(); this.dropRun(r.id); },
+        trackStyle:'position:absolute;left:0;right:0;bottom:0;height:2px;background:#ffffff0f',
+        fillStyle:'height:100%;width:'+fillPct+'%;background:'+fillBg
+          +(r.state==='turn'||r.state==='gate'?'opacity:.6;':''),
+        tip: r.ticket+' · '+(s.label||'running')+' · '+tipAction,
+        click:()=> r.state==='gate' ? this.openGate(r.id) : this.openChooser(r.id),
+      };
+    });
+
+    // loud items are never scrolled out of reach: loud repos first, loud runs first
+    const rank=(st)=> st==='gate'?0 : st==='failed'?1 : 9;
+    const seen=[]; runsAll.forEach(r=>{ if(!seen.includes(r.repo)) seen.push(r.repo); });
+    const repoRank={}; seen.forEach(rp=>{ repoRank[rp]=Math.min(...runsAll.filter(r=>r.repo===rp).map(r=>rank(r.state))); });
+    const repoGroups=seen.slice().sort((a,b)=>repoRank[a]-repoRank[b]).map(repo=>({ repo,
+      runs: runVals
+        .map((v,i)=>({v, r:runsAll[i]}))
+        .filter(p=>p.r.repo===repo)
+        .sort((a,b)=>rank(a.r.state)-rank(b.r.state))
+        .map(p=>p.v) }));
+
+    const ag=this.activeGate();
+    const gdef = ag ? (this.gates[ag.ticket]||this.gates['SWY-7']) : null;
+    const gateFull=S.gateFull;
+    const chooserRun = S.chooserId? runsAll.find(r=>r.id===S.chooserId):null;
+
+    const dockArrRail=S.windows.filter(w=>w.minimized);
+    const railVisible = runsAll.length>0 || dockArrRail.length>0;
+
+    // ----- quick launch -----
+    const q=S.query.trim().toLowerCase();
+    const matches=this.tickets.filter(t=> !q || t.id.toLowerCase().includes(q) || t.title.toLowerCase().includes(q) || t.repo.includes(q));
+    const quickResults=matches.map((t,i)=>{
+      const st=statusMap[t.status]||statusMap.backlog;
+      const active=i===Math.min(S.quickIdx,matches.length-1);
+      return { id:t.id, title:t.title, repo:'~/'+t.repo, statusColor:st.c, statusGlow:st.g, active,
+        rowStyle:'display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:9px;cursor:pointer;'
+          +'background:'+(active?'#1a2632':'transparent')+';border:1px solid '+(active?'#26425c':'transparent'),
+        hover:()=>this.setState({quickIdx:i}),
+        launch:()=>this.spawnTicket(t) };
+    });
+
+    return {
+      sidebarOpen:S.sidebarOpen,
+      ticketCount:this.tickets.length,
+      ticketGroups,
+      windows,
+      dockWindows, dockHasItems:dockArr.length>0,
+      dockCountLabel: dockArr.length+' parked',
+      // ---- rail ----
+      railVisible, hasRuns:runsAll.length>0, bothLanes: runsAll.length>0 && dockArr.length>0,
+      runCountLabel: runsAll.length+(runsAll.length===1?' run':' runs'),
+      repoGroups,
+      railBarStyle:'pointer-events:auto;display:flex;align-items:center;gap:12px;width:calc(100% - 20px);margin:0 10px 10px;'
+        +'padding:8px 11px;background:#0d1116F2;border:1px solid #ffffff16;border-radius:14px;'
+        +'backdrop-filter:blur(16px);box-shadow:0 14px 40px #00000077,0 0 0 1px #00000040;'
+        +'border-top:1px solid '+(gq.length?'#e0a33c66':'#ffffff1c')+';min-height:0',
+      // gate panel
+      gateOpen: !!(ag && S.gateId),
+      gateQueued: gq.length>1,
+      gateCounter: (Math.max(1,gq.findIndex(x=>x.id===(ag&&ag.id))+1))+' of '+gq.length,
+      gateTicket: ag?ag.ticket:'', gateRepo: ag?ag.repo:'',
+      gateAge: ag?this.fmtT(ag.held):'',
+      gateTool: gdef?gdef.tool:'', gateSubject: gdef?gdef.subject:'',
+      gateArgs: gdef?(gateFull?gdef.full:gdef.args):'',
+      gateBlobStyle:'font-family:\'JetBrains Mono\',monospace;font-size:11.5px;line-height:1.62;color:#cfd8e2;'
+        +'padding:10px 11px;white-space:pre-wrap;word-break:break-all;'
+        +(gateFull?'max-height:186px;overflow-y:auto;':'max-height:104px;overflow:hidden;'),
+      gateFaded: !gateFull,
+      gateTrunc: gdef?(gateFull?('full command · '+gdef.lines+' lines · '+gdef.bytes)
+        :('+'+Math.max(0,gdef.lines-5)+' more lines · '+gdef.bytes+' hidden')):'',
+      gateExpandLabel: gateFull?'Collapse':'Show all',
+      gateCwd: gdef?gdef.cwd:'',
+      toggleGateFull:()=>this.setState(s=>({gateFull:!s.gateFull})),
+      denyOpen:S.denyOpen, denyText:S.denyText,
+      denyRef:(el)=>{ this.denyEl=el; },
+      onDenyText:(e)=>this.setState({denyText:e.target.value}),
+      denyBtnLabel: S.denyOpen?'Send denial':'Deny…',
+      denyBtnStyle:'height:31px;padding:0 12px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;'
+        +(S.denyOpen?'background:#7a3833;border:1px solid #a04f46;color:#ffe6e0;':'background:#1a2028;border:1px solid #384352;color:#c3ccd6;'),
+      approveGate:()=>this.resolveGate('approve'),
+      allowAlways:()=>this.resolveGate('always'),
+      denyGate:()=>this.resolveGate('deny'),
+      openFromGate:()=>{ if(ag) this.expandRun(ag.id,'takeover'); this.setState({gateId:null}); },
+      // chooser
+      chooserOpen: !!chooserRun,
+      chooserTicket: chooserRun?chooserRun.ticket:'',
+      closeChooser:()=>this.setState({chooserId:null}),
+      doWatch:()=>this.expandRun(S.chooserId,'watch'),
+      doTakeOver:()=>this.expandRun(S.chooserId,'takeover'),
+      deskRef:(el)=>{ this.deskEl=el; },
+      deskStyle:'flex:1;position:relative;overflow:hidden;background:#0a0c0f;'
+        + (this.props.showGrid===false?'':'background-image:radial-gradient(#ffffff09 1px,transparent 1px);background-size:26px 26px;'),
+      // topbar
+      floatBtn:segBtn(S.layout==='float'), tileBtn:segBtn(S.layout==='tile'), focusBtn:segBtn(S.layout==='focus'),
+      setFloat:()=>this.setLayout('float'), setTile:()=>this.setLayout('tile'), setFocusL:()=>this.setLayout('focus'),
+      openQuick:()=>{ this.setState({quickOpen:true, query:'', quickIdx:0}); this.focusQuick(); },
+      spawnClaude:()=>this.spawnFresh('claude'),
+      spawnBash:()=>this.spawnFresh('bash'),
+      // quick
+      quickOpen:S.quickOpen, query:S.query,
+      quickResults, noResults:matches.length===0,
+      quickRef:(el)=>{ this.quickEl=el; },
+      onQuery:(e)=>this.setState({query:e.target.value, quickIdx:0}),
+      onQueryKey:(e)=>{
+        if(e.key==='ArrowDown'){ e.preventDefault(); this.setState(s=>({quickIdx:Math.min(s.quickIdx+1,matches.length-1)})); }
+        else if(e.key==='ArrowUp'){ e.preventDefault(); this.setState(s=>({quickIdx:Math.max(s.quickIdx-1,0)})); }
+        else if(e.key==='Enter'){ if(matches.length){ this.spawnTicket(matches[Math.min(S.quickIdx,matches.length-1)]); } else { this.spawnFresh('claude'); } }
+      },
+      closeQuick:()=>this.setState({quickOpen:false}),
+      stop:(e)=>e.stopPropagation(),
+    };
+  }
+
+  // ---------- mascot ----------
+  mascot(){ const h=this.h;
+    return h('svg',{width:26,height:26,viewBox:'0 0 13 13',style:{flex:'0 0 auto',marginTop:'1px'}},
+      h('rect',{x:2,y:3.4,width:9,height:7.2,rx:2.2,fill:'#d98c7a'}),
+      h('rect',{x:6.2,y:1,width:0.9,height:2.2,rx:.4,fill:'#d98c7a'}),
+      h('circle',{cx:6.6,cy:1,r:1,fill:'#d98c7a'}),
+      h('rect',{x:4,y:6,width:1.7,height:2.4,rx:.5,fill:'#2a211d'}),
+      h('rect',{x:7.4,y:6,width:1.7,height:2.4,rx:.5,fill:'#2a211d'}));
+  }
+
+  // ---------- terminal / browser body ----------
+  renderBody(w, focused){
+    const h=this.h;
+    const dense=this.props.denseTerminals===true;
+    if(w.type==='browser') return this.browserBody(w);
+    if(w.type==='bash') return this.bashBody(w);
+
+    const fs=dense?11.5:12.5, pad=dense?'9px 11px':'11px 13px';
+    const kids=[];
+    // header
+    kids.push(h('div',{key:'hd',style:{display:'flex',gap:'10px',alignItems:'flex-start',marginBottom:'9px'}},
+      this.mascot(),
+      h('div',{style:{lineHeight:1.45}},
+        h('div',null, h('b',{style:{color:'#e6ecf2',fontWeight:700}},'Claude Code'), h('span',{style:{color:'#5f6b78'}},' v2.1.187')),
+        h('div',{style:{color:'#7f8a98'}},'Opus 4.8 (1M context) \u00b7 Claude Max'),
+        h('div',{style:{color:'#5f86a8'}},'~/projects/'+w.repo))
+    ));
+    kids.push(h('div',{key:'dv',style:{borderTop:'1px dashed #ffffff14',margin:'8px 0 10px'}}));
+
+    const total = (this.props.streamingOn===false)? w.transcript.length : w.shown;
+    for(let i=0;i<w.transcript.length;i++){
+      const ln=w.transcript[i];
+      if(i<total){ kids.push(this.lineEl(ln,i,null)); }
+      else if(i===total && w.typing){ kids.push(this.lineEl(ln,i,w.typing)); }
+    }
+    const streaming = this.props.streamingOn!==false;
+    const stillTyping = streaming && w.shown<w.transcript.length;
+    // spinner for thinking
+    if(w.status==='thinking' && (!stillTyping)){
+      kids.push(h('div',{key:'sp',style:{color:'#d6a651',margin:'8px 0 2px',display:'flex',gap:'7px',alignItems:'center'}},
+        h('span',{style:{animation:'ddpulse 1.1s ease-in-out infinite'}},'\u273b'),
+        h('span',null,'Ebbing\u2026 ('+w.seconds+'s \u00b7 \u2193 '+w.tokens.toLocaleString()+' tokens)')));
+    }
+    // prompt
+    kids.push(h('div',{key:'pr',style:{display:'flex',alignItems:'center',gap:'8px',marginTop:'9px',paddingTop:'9px',borderTop:'1px solid #ffffff0d'}},
+      h('span',{style:{color:'#4a5662'}},'\u203a'),
+      h('span',{style:{display:'inline-block',width:'8px',height:Math.round(fs*1.05)+'px',background:focused?'#7aa6cc':'#3a4654',animation:focused?'ddblink 1.05s steps(1) infinite':'none'}})));
+    kids.push(h('div',{key:'ht',style:{color:'#4f5965',fontSize:'11px',marginTop:'6px'}},
+      w.status==='thinking'? 'auto mode on (shift+tab to cycle) \u00b7 esc to interrupt \u00b7 \u2190 for agents'
+      : '? for shortcuts \u00b7 \u2191 for history \u00b7 \u2190 for agents'));
+
+    return h('div',{style:{fontFamily:"'JetBrains Mono',ui-monospace,monospace",fontSize:fs+'px',lineHeight:1.55,color:'#c3ccd6',padding:pad,minHeight:'100%',background:'#0b0e12'}}, kids);
+  }
+
+  lineEl(ln,i,partial){
+    const h=this.h; const txt=partial!=null?partial:ln.t;
+    const cur = partial!=null? h('span',{style:{display:'inline-block',width:'7px',height:'13px',background:'#7aa6cc',marginLeft:'2px',verticalAlign:'-2px',animation:'ddblink 1.05s steps(1) infinite'}}):null;
+    if(ln.k==='user') return h('div',{key:i,style:{margin:'9px 0 7px',background:'#16202b',borderLeft:'2px solid #5b9bd5',padding:'4px 9px',color:'#d3dce5',fontWeight:600,borderRadius:'0 4px 4px 0'}},txt,cur);
+    if(ln.k==='tool') return h('div',{key:i,style:{paddingLeft:'15px',margin:'3px 0'}},h('span',{style:{color:'#6b7682'}},txt,cur));
+    if(ln.k==='success') return h('div',{key:i,style:{paddingLeft:'15px',color:'#5fb98a',margin:'4px 0'}},txt,cur);
+    if(ln.k==='plain') return h('div',{key:i,style:{color:'#9aa4b0',margin:'3px 0'}},txt,cur);
+    // assistant
+    return h('div',{key:i,style:{display:'flex',gap:'8px',margin:'6px 0',alignItems:'flex-start'}},
+      h('span',{style:{color:'#7aa6cc',fontSize:'8px',marginTop:'6px',flex:'0 0 auto'}},'\u25cf'),
+      h('span',{style:{color:'#c3ccd6',textWrap:'pretty'}},txt,cur));
+  }
+
+  bashBody(w){ const h=this.h;
+    const line=(p,c)=>h('div',{style:{margin:'2px 0',color:c||'#aab4c0'}},p);
+    return h('div',{style:{fontFamily:"'JetBrains Mono',ui-monospace,monospace",fontSize:'12.5px',lineHeight:1.55,color:'#aab4c0',padding:'11px 13px',minHeight:'100%',background:'#0b0e12'}},
+      line(h('span',null,h('span',{style:{color:'#5fb98a'}},'magos@drydock'),h('span',{style:{color:'#5f6b78'}},':'),h('span',{style:{color:'#5f86a8'}},'~/projects/argosy'),h('span',{style:{color:'#aab4c0'}},'$ git status'))),
+      line(h('span',{style:{color:'#7f8a98'}},'On branch '),'#7f8a98'),
+      h('div',{style:{color:'#d6a651',margin:'2px 0'}},'argy-89-auto-advance'),
+      line('Your branch is up to date with \u2018origin/argy-89-auto-advance\u2019.'),
+      h('div',{style:{height:'8px'}}),
+      line('Changes not staged for commit:'),
+      h('div',{style:{color:'#d57a6e',margin:'2px 0',paddingLeft:'16px'}},'modified:   web/src/player/PlayerView.vue'),
+      h('div',{style:{display:'flex',alignItems:'center',gap:'8px',marginTop:'8px'}},
+        h('span',null,h('span',{style:{color:'#5fb98a'}},'magos@drydock'),h('span',{style:{color:'#5f6b78'}},':'),h('span',{style:{color:'#5f86a8'}},'~'),h('span',{style:{color:'#aab4c0'}},'$ ')),
+        h('span',{style:{display:'inline-block',width:'8px',height:'14px',background:'#7aa6cc',animation:'ddblink 1.05s steps(1) infinite'}})));
+  }
+
+  browserBody(w){ const h=this.h;
+    const ctrl=(d)=>h('div',{style:{width:'26px',height:'26px',borderRadius:'6px',display:'flex',alignItems:'center',justifyContent:'center',color:'#6b7682'}},
+      h('svg',{width:13,height:13,viewBox:'0 0 16 16',fill:'none',stroke:'currentColor',strokeWidth:1.6},h('path',{d})));
+    return h('div',{style:{display:'flex',flexDirection:'column',height:'100%',background:'#0b0e12'}},
+      // toolbar
+      h('div',{style:{flex:'0 0 auto',display:'flex',alignItems:'center',gap:'6px',padding:'7px 9px',background:'#12161b',borderBottom:'1px solid #ffffff0d'}},
+        ctrl('M10 4L6 8l4 4'), ctrl('M6 4l4 4-4 4'),
+        h('div',{onClick:()=>this.setState(s=>({windows:s.windows.map(x=>x.id===w.id?{...x,count:(x.count%5)+1}:x)})),style:{width:'26px',height:'26px',borderRadius:'6px',display:'flex',alignItems:'center',justifyContent:'center',color:'#8a96a4',cursor:'pointer'}},
+          h('svg',{width:13,height:13,viewBox:'0 0 16 16',fill:'none',stroke:'currentColor',strokeWidth:1.5},h('path',{d:'M13 8a5 5 0 1 1-1.5-3.5M13 2v3h-3'}))),
+        h('div',{style:{flex:1,display:'flex',alignItems:'center',gap:'7px',background:'#0a0d11',border:'1px solid #ffffff12',borderRadius:'7px',padding:'5px 11px',fontFamily:"'JetBrains Mono',monospace",fontSize:'11.5px',color:'#8a9bab'}},
+          h('svg',{width:11,height:11,viewBox:'0 0 16 16',fill:'none',stroke:'#5fb98a',strokeWidth:1.6},h('rect',{x:3,y:7,width:10,height:7,rx:1.5}),h('path',{d:'M5 7V5a3 3 0 0 1 6 0v2'})),
+          'localhost:5173',h('span',{style:{color:'#4f5965'}},'/watch/s3e7')),
+        h('span',{style:{fontSize:'10.5px',color:'#5fb98a',fontFamily:"'JetBrains Mono',monospace",padding:'0 4px'}},'\u25cf live')),
+      // viewport
+      h('div',{style:{flex:1,position:'relative',overflow:'hidden',background:'radial-gradient(120% 90% at 30% 20%, #14202b 0%, #060a0e 70%)'}},
+        // big dim play
+        h('div',{style:{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center'}},
+          h('div',{style:{width:'54px',height:'54px',borderRadius:'50%',background:'#ffffff14',display:'flex',alignItems:'center',justifyContent:'center'}},
+            h('svg',{width:20,height:20,viewBox:'0 0 16 16',fill:'#dfe7ef'},h('path',{d:'M5 3l8 5-8 5z'})))),
+        // title bottom-left
+        h('div',{style:{position:'absolute',left:'16px',bottom:'14px'}},
+          h('div',{style:{fontSize:'10px',letterSpacing:'.12em',color:'#7fa8cf',fontWeight:700}},'ARGOSY'),
+          h('div',{style:{fontSize:'15px',color:'#eaf0f6',fontWeight:600,marginTop:'2px'}},'S3 E7 \u2014 \u201CThe Long Watch\u201D')),
+        // progress bar
+        h('div',{style:{position:'absolute',left:0,right:0,bottom:0,height:'3px',background:'#ffffff14'}},
+          h('div',{style:{width:'68%',height:'100%',background:'#7aa6cc'}})),
+        // UP NEXT card
+        h('div',{style:{position:'absolute',right:'16px',bottom:'24px',width:'232px',background:'#11161cF2',border:'1px solid #ffffff1c',borderRadius:'10px',padding:'12px',boxShadow:'0 12px 30px #000000aa'}},
+          h('div',{style:{fontSize:'9.5px',letterSpacing:'.1em',color:'#7c8693',fontWeight:700,marginBottom:'8px'}},'UP NEXT'),
+          h('div',{style:{display:'flex',gap:'10px'}},
+            h('div',{style:{width:'58px',height:'38px',borderRadius:'5px',flex:'0 0 auto',background:'linear-gradient(135deg,#28323d,#10161c)',border:'1px solid #ffffff14'}}),
+            h('div',null,
+              h('div',{style:{fontSize:'12.5px',color:'#e6edf4',fontWeight:600,lineHeight:1.25}},'S3 E8'),
+              h('div',{style:{fontSize:'11.5px',color:'#9aa6b2'}},'\u201CCrosswinds\u201D'))),
+          h('div',{style:{display:'flex',alignItems:'center',gap:'8px',margin:'10px 0 9px'}},
+            h('div',{style:{flex:1,height:'3px',borderRadius:'2px',background:'#ffffff14',overflow:'hidden'}},
+              h('div',{style:{width:((5-w.count)*25)+'%',height:'100%',background:'#5b9bd5'}})),
+            h('span',{style:{fontSize:'11px',color:'#9aa6b2',fontFamily:"'JetBrains Mono',monospace"}},'in '+w.count+'s')),
+          h('div',{style:{display:'flex',gap:'7px'}},
+            h('button',{style:{flex:1,padding:'6px',borderRadius:'7px',border:'1px solid #ffffff1c',background:'transparent',color:'#aeb8c4',fontSize:'12px',cursor:'pointer'}},'Cancel'),
+            h('button',{style:{flex:1,padding:'6px',borderRadius:'7px',border:'none',background:'#2a6db0',color:'#eef5fb',fontSize:'12px',fontWeight:600,cursor:'pointer'}},'Play now')))
+      ));
+  }
+}
+</script>
+</body>
+</html>
