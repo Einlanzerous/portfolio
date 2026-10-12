@@ -46,6 +46,8 @@ export const systems: System[] = [
     blurb: 'A credential vault daemon behind the ZGI services, with an admin console in the Switchyard theme.',
     lang: 'Go · SQLite', surfaces: 'Daemon · CLI · REST API · Admin console', design: 'Shares the Switchyard theme',
     features: [
+      { title: 'Blind by design', line: 'Agents mint, rotate and fan out secrets without the plaintext ever entering their transcript.', screen: { src: 'systems/switchyard/signet-credentials.html', t: 1 },
+        explainer: 'Agents run most of this estate, and anything an agent reads ends up in a transcript. Signet was built so a secret never has to be read to be operated: generate mints a value the agent never sees, set takes one on stdin, exec injects it into a child process and redacts what comes back, and sync fans it out to GitHub Actions. The verbs an agent is allowed are exactly the half of the CLI that never carries a value. Reading one back is a deliberate, audited reveal by a person.' },
       { title: 'Admin console', line: 'Credentials per project, as a blind mirror: metadata and version hash, never the value.', screen: { src: 'systems/switchyard/signet-credentials.html', t: 0 },
         explainer: 'Switchyard shows the vault without holding it. The console lists every credential a project owns with its version hash, scope and sync targets, and the plaintext is never returned to the browser. Rotate and add-target are requests to the Signet daemon, which seals the new version and pushes it out.' },
       { title: 'Secret detail', line: 'One secret: blind value, sync-target reconciliation, and its own hash chain.', screen: { src: 'systems/switchyard/signet-credentials.html', t: 1 },
