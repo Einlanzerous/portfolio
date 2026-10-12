@@ -11,7 +11,8 @@ function assetPaths() {
   for (const s of systems) {
     if (s.img) out.push(s.img)
     if (s.arch) out.push(s.arch)
-    for (const f of s.features ?? []) if (f.screen) out.push(f.screen.src)
+    // A query selects the design page's entry state; the file is what must exist.
+    for (const f of s.features ?? []) if (f.screen) out.push(f.screen.src.replace(/\?.*$/, ''))
   }
   return out
 }
