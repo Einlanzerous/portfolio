@@ -48,7 +48,7 @@ Edit the system's object in `systems` (create it if new; array order = rail orde
   img: 'systems/thumbs/switchyard.webp',               // optional fallback when features have no screens
   features: [
     { title: 'Feature title', line: 'Short line (≤ 16 words).',
-      screen: { src: 'systems/<slug>/page.html', t: 0 },
+      screen: { src: 'systems/<slug>/page.html', t: 0, at: '.gate' }, // `at`: selector the stage scrolls to; omit when the page top is the feature
       explainer: 'Optional, 3–5 sentences.' },
   ],
 }

@@ -5,6 +5,13 @@ export interface Screen {
   src: string
   /** Which `.sy` app shell of the page to show. Default 0. */
   t?: number
+  /**
+   * Focus point: a selector inside the shell that the stage scrolls to the
+   * top (clamped to the page's end). Design pages are full-length mockups,
+   * so without it a feature shows the page header and crops the thing it is
+   * about. Omit when the top of the page is the feature.
+   */
+  at?: string
 }
 
 export interface Feature {

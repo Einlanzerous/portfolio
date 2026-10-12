@@ -35,7 +35,7 @@ function pip(e: Event, i: number) { e.stopPropagation(); emit('go', i) }
         <div class="wedge" @click="emit('open')">
           <div v-if="!screen" class="soon">Screens · {{ hero.name }} · coming soon</div>
           <div class="shot">
-            <SysScreen :src="screen?.src ?? ''" :target="screen?.t ?? 0" :dir="dir" fit="cover" :preload="preload" />
+            <SysScreen :src="screen?.src ?? ''" :target="screen?.t ?? 0" :at="screen?.at ?? ''" :dir="dir" fit="cover" :preload="preload" />
           </div>
           <div class="explore">Explore {{ hero.name }} →</div>
         </div>
