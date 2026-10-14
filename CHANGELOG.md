@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/Einlanzerous/portfolio/compare/portfolio-v0.3.0...portfolio-v0.4.0) (2026-10-14)
+
+
+### Features
+
+* **slice:** Argosy (FOLIO-15) ([#21](https://github.com/Einlanzerous/portfolio/issues/21)) ([03c1ec1](https://github.com/Einlanzerous/portfolio/commit/03c1ec1b5b43c675f7823d48ae84e1bac4216aba))
+
 ## [0.3.0](https://github.com/Einlanzerous/portfolio/compare/portfolio-v0.2.2...portfolio-v0.3.0) (2026-10-12)
 
 
