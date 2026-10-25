@@ -26,7 +26,7 @@ defineExpose({ frame: () => cur?.ifr ?? null })
 const IMG = /\.(png|jpe?g|webp|gif|svg)(\?|#|$)/i
 const EASE = 'transform .5s cubic-bezier(.2,.7,.2,1), opacity .35s'
 
-interface Layer { el: HTMLDivElement; t: number; at: string; img: boolean; ready: boolean; ifr?: HTMLIFrameElement; hideT?: number }
+interface Layer { el: HTMLDivElement; t: number; at: string; fit: 'cover' | 'contain'; img: boolean; ready: boolean; ifr?: HTMLIFrameElement; hideT?: number }
 
 const host = ref<HTMLDivElement | null>(null)
 const layers: Record<string, Layer> = {}
@@ -40,9 +40,12 @@ const keyOf = (src: string, t: number) => src + '#' + t + '#' + props.fit
 function make(src: string, t: number, key: string): Layer {
   const el = document.createElement('div')
   Object.assign(el.style, { position: 'absolute', inset: '0', overflow: 'hidden', visibility: 'hidden', opacity: '0', boxSizing: 'border-box' })
-  const L: Layer = { el, t, at: props.at, img: IMG.test(src), ready: false }
+  // `fit` is fixed at creation: layers are keyed on it, and layout() also runs
+  // for layers that are off stage (ResizeObserver, delayed pass), when the
+  // prop may already name the other mode.
+  const L: Layer = { el, t, at: props.at, fit: props.fit, img: IMG.test(src), ready: false }
   if (L.img) {
-    const contain = props.fit === 'contain'
+    const contain = L.fit === 'contain'
     Object.assign(el.style, {
       backgroundImage: `url("${src}")`, backgroundRepeat: 'no-repeat',
       backgroundSize: contain ? 'contain' : 'cover', backgroundPosition: contain ? 'center' : 'top left',
@@ -75,7 +78,7 @@ function layout(L: Layer) {
   const el = els[L.t] || els[0] || doc.body
   doc.documentElement.style.overflow = 'hidden'
   const W = host.value.clientWidth || 1, H = host.value.clientHeight || 1
-  if (props.fit === 'contain') {
+  if (L.fit === 'contain') {
     // The frame keeps its natural size (archify's embed lays out from the
     // iframe width, so offsetWidth is the width we gave it) and is scaled
     // until both axes fit, then centred; the letterbox is painted to match.
@@ -85,6 +88,7 @@ function layout(L: Layer) {
     return
   }
   const w = el.offsetWidth || 1560, sc = W / w
+  L.ifr.style.left = '0'; L.ifr.style.top = '0'
   L.ifr.style.width = w + 'px'
   L.ifr.style.height = Math.ceil(H / sc) + 'px'
   L.ifr.style.transform = `scale(${sc})`
