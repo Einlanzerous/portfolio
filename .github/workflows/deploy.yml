@@ -5,10 +5,12 @@ name: deploy
 # what the footer shows (PRINCIPLES §4 — never package.json's version, never
 # `latest`). `main` is not deployed on push; a release is the unit.
 #
-# It is a workflow_call rather than a `push: tags` trigger for two reasons:
-# release-please names the tag `portfolio-v1.2.3` (component in the tag), and
-# a tag pushed with the workflow's GITHUB_TOKEN does not fire other
-# workflows at all — the first two releases never deployed because of this.
+# It is a workflow_call rather than a `push: tags` trigger because
+# release-please names the tag `portfolio-v1.2.3` (component in the tag) and
+# the chain keeps the version in one run. It was also the only way to deploy
+# while release-please ran on GITHUB_TOKEN, whose tag pushes fire no other
+# workflow (the first two releases never deployed); release.yml now uses the
+# release-bot App token (FOLIO-25), so that no longer applies.
 #
 # workflow_dispatch exists for a redeploy of whatever ref is chosen, and
 # reports `dev` as its version.
