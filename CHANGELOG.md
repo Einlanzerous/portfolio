@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.1](https://github.com/Einlanzerous/portfolio/compare/portfolio-v0.5.0...portfolio-v0.5.1) (2026-10-25)
+
+
+### Bug Fixes
+
+* share-link title and description (FOLIO-34) ([#32](https://github.com/Einlanzerous/portfolio/issues/32)) ([614b8b0](https://github.com/Einlanzerous/portfolio/commit/614b8b075d8aec42b875f419e1cb6406d5a2a5e4))
+
 ## [0.5.0](https://github.com/Einlanzerous/portfolio/compare/portfolio-v0.4.0...portfolio-v0.5.0) (2026-10-25)
 
 
