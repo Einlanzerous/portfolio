@@ -96,6 +96,7 @@ export const systems: System[] = [
   },
   {
     name: 'Catenary', group: 'Self-hosted', h: 45, img: 'systems/thumbs/catenary.webp',
+    arch: 'systems/catenary/archify.html',
     tag: 'One live conductor',
     blurb: 'A messaging client on overhead-wire logic: one copper accent carries every state — unread, active, playing — and nothing else competes for it.',
     lang: 'Vue 3 · TypeScript', surfaces: 'Web · Mobile', design: 'Flat planes, hairlines, no bubbles',
