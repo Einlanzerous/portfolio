@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.2](https://github.com/Einlanzerous/portfolio/compare/portfolio-v0.5.1...portfolio-v0.5.2) (2026-10-25)
+
+
+### Bug Fixes
+
+* screens drift after the Archify tab (FOLIO-35) ([#36](https://github.com/Einlanzerous/portfolio/issues/36)) ([59a4692](https://github.com/Einlanzerous/portfolio/commit/59a4692abbca21cd933bafd4274ae8836a52b308))
+
 ## [0.5.1](https://github.com/Einlanzerous/portfolio/compare/portfolio-v0.5.0...portfolio-v0.5.1) (2026-10-25)
 
 
