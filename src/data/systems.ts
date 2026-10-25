@@ -110,6 +110,7 @@ export const systems: System[] = [
   },
   {
     name: 'Chronicle', group: 'Self-hosted', h: 100, img: 'systems/thumbs/chronicle.webp',
+    arch: 'systems/chronicle/archify.html',
     tag: 'Writing, with a voice in it',
     blurb: 'A page where speech lands inside the writing. Monochrome vellum on near-black.',
     surfaces: 'Web', design: 'Vellum on near-black, mono',
