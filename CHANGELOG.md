@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.7.0](https://github.com/Einlanzerous/portfolio/compare/portfolio-v0.6.0...portfolio-v0.7.0) (2026-10-25)
+
+
+### Features
+
+* **slice:** CTA Watch (FOLIO-20) ([#38](https://github.com/Einlanzerous/portfolio/issues/38)) ([ec2a876](https://github.com/Einlanzerous/portfolio/commit/ec2a876c8edb87319d0f7565b828995d6ee1ba75))
+* **slice:** Lyceum (FOLIO-16) ([#39](https://github.com/Einlanzerous/portfolio/issues/39)) ([14db18d](https://github.com/Einlanzerous/portfolio/commit/14db18d36fba45b385c7ca2d9f20743e6c208ffc))
+
+
+### Maintenance
+
+* **main:** release portfolio 0.6.0 ([#37](https://github.com/Einlanzerous/portfolio/issues/37)) ([100ed6f](https://github.com/Einlanzerous/portfolio/commit/100ed6ff64c5f8351a705ead3e53a2e544160679))
+
 ## [0.6.0](https://github.com/Einlanzerous/portfolio/compare/portfolio-v0.5.2...portfolio-v0.6.0) (2026-10-25)
 
 
