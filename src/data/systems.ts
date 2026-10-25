@@ -125,6 +125,7 @@ export const systems: System[] = [
     tag: 'A branding microserver',
     blurb: 'Logos and icons for every ZGI service, served from one place.',
     surfaces: 'API',
+    arch: 'systems/placard/archify.html',
     features: [
       { title: 'Marks on demand', line: 'Every service fetches its logo and icon from one endpoint.' },
       { title: 'Sizes and formats', line: 'The right mark at the right size, without hand exports.' },
