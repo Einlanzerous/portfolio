@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.5.0](https://github.com/Einlanzerous/portfolio/compare/portfolio-v0.4.0...portfolio-v0.5.0) (2026-10-25)
+
+
+### Features
+
+* **slice:** Argosy archify map (FOLIO-27) ([#24](https://github.com/Einlanzerous/portfolio/issues/24)) ([c196b16](https://github.com/Einlanzerous/portfolio/commit/c196b16ef6e669e4179978753fee9907592831ff))
+* **slice:** Catenary archify map (FOLIO-31) ([#23](https://github.com/Einlanzerous/portfolio/issues/23)) ([2c3f760](https://github.com/Einlanzerous/portfolio/commit/2c3f7608afc7473e59c05a1bbd9414fbad367017))
+* **slice:** Chronicle archify map (FOLIO-30) ([#26](https://github.com/Einlanzerous/portfolio/issues/26)) ([7efcc90](https://github.com/Einlanzerous/portfolio/commit/7efcc900e1d374214c47f7c57972a0f79d1d291a))
+* **slice:** Drydock archify map (FOLIO-29) ([#25](https://github.com/Einlanzerous/portfolio/issues/25)) ([0a7df6b](https://github.com/Einlanzerous/portfolio/commit/0a7df6b573d352a02b02dc0820bf94e15c50ad5f))
+* **slice:** Lyceum archify map (FOLIO-28) ([#28](https://github.com/Einlanzerous/portfolio/issues/28)) ([326f9ae](https://github.com/Einlanzerous/portfolio/commit/326f9aefcf8fe229de91b4c6925a90267187c21d))
+* **slice:** Placard archify map (FOLIO-33) ([#27](https://github.com/Einlanzerous/portfolio/issues/27)) ([a5a2116](https://github.com/Einlanzerous/portfolio/commit/a5a21167474cc9064d92adf501784972bec44e6b))
+* **slice:** Signet archify map (FOLIO-32) ([#29](https://github.com/Einlanzerous/portfolio/issues/29)) ([818e2a6](https://github.com/Einlanzerous/portfolio/commit/818e2a6cd09b631190ba92266b81f5e8d182aed5))
+
+
+### Bug Fixes
+
+* **slice:** brand colors on the rail (FOLIO-26) ([#30](https://github.com/Einlanzerous/portfolio/issues/30)) ([c4a286d](https://github.com/Einlanzerous/portfolio/commit/c4a286d33900ecbd9f2da73b7272b2e83fc577dc))
+
 ## [0.4.0](https://github.com/Einlanzerous/portfolio/compare/portfolio-v0.3.0...portfolio-v0.4.0) (2026-10-14)
 
 
