@@ -6,7 +6,7 @@ export type Cat = (typeof CATS)[number]
 // Order = rail order. Copy is the design's; slices (FOLIO-4) refine it.
 export const systems: System[] = [
   {
-    name: 'Switchyard', group: 'Platform', h: 30,
+    name: 'Switchyard', group: 'Platform', h: 37,
     tag: 'Agent delivery, with a human at the gate',
     blurb: 'Tickets in, verified deploys out. Agents plan as pull requests, humans approve the plan and hold the promote gate.',
     lang: 'TypeScript · Bun · Hono · Vue',
@@ -30,7 +30,7 @@ export const systems: System[] = [
     ],
   },
   {
-    name: 'Drydock', group: 'Platform', h: 235, img: 'systems/thumbs/drydock.webp',
+    name: 'Drydock', group: 'Platform', h: 245, img: 'systems/thumbs/drydock.webp',
     tag: 'Agents run unattended; you answer the gates',
     blurb: 'A per-host daemon owns every agent\'s terminal; a web desk and a run rail let you watch, approve and step in. The daemon, not the browser, holds the session, so closing the tab costs nothing.',
     lang: 'TypeScript · Node · Vue 3 · xterm.js', surfaces: 'Web shell · Daemon (HTTP + WebSocket) · Claude Code hooks',
@@ -64,7 +64,7 @@ export const systems: System[] = [
   },
   { name: 'Construct Server', group: 'Platform', h: 180, pending: true },
   {
-    name: 'Argosy', group: 'Self-hosted', h: 75, img: 'systems/thumbs/argosy.webp',
+    name: 'Argosy', group: 'Self-hosted', h: 78, img: 'systems/thumbs/argosy.webp',
     tag: 'Your library, every screen in sync',
     blurb: 'Owned media on your own hardware. Start a film on the train, finish it on the big screen — the whole fleet stays on the same frame.',
     lang: 'Go · Postgres · Vue 3 · Flutter', surfaces: 'Web SPA · REST API · Android · TV', design: 'Brass on charcoal, mercantile',
@@ -85,7 +85,7 @@ export const systems: System[] = [
     ],
   },
   {
-    name: 'Lyceum', group: 'Self-hosted', h: 55, img: 'systems/thumbs/lyceum.webp',
+    name: 'Lyceum', group: 'Self-hosted', h: 83, img: 'systems/thumbs/lyceum.webp',
     tag: 'A quiet place to read',
     blurb: 'A self-hosted reading room. Argosy’s bones with the volume turned down — the cover is the hero, chrome stays out of the way.',
     surfaces: 'Web · Mobile', design: 'Ochre on charcoal, warm paper',
@@ -98,7 +98,7 @@ export const systems: System[] = [
     ],
   },
   {
-    name: 'Catenary', group: 'Self-hosted', h: 45, img: 'systems/thumbs/catenary.webp',
+    name: 'Catenary', group: 'Self-hosted', h: 72, img: 'systems/thumbs/catenary.webp',
     arch: 'systems/catenary/archify.html',
     tag: 'One live conductor',
     blurb: 'A messaging client on overhead-wire logic: one copper accent carries every state — unread, active, playing — and nothing else competes for it.',
@@ -110,7 +110,7 @@ export const systems: System[] = [
     ],
   },
   {
-    name: 'Chronicle', group: 'Self-hosted', h: 100, img: 'systems/thumbs/chronicle.webp',
+    name: 'Chronicle', group: 'Self-hosted', h: 86, c: 0.05, img: 'systems/thumbs/chronicle.webp',
     arch: 'systems/chronicle/archify.html',
     tag: 'Writing, with a voice in it',
     blurb: 'A page where speech lands inside the writing. Monochrome vellum on near-black.',
@@ -122,7 +122,7 @@ export const systems: System[] = [
     ],
   },
   {
-    name: 'Placard', group: 'Small service', h: 150,
+    name: 'Placard', group: 'Small service', h: 128,
     tag: 'A branding microserver',
     blurb: 'Logos and icons for every ZGI service, served from one place.',
     surfaces: 'API',
