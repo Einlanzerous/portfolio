@@ -149,7 +149,7 @@ export const systems: System[] = [
     features: [
       { title: 'On-time by line', line: 'On-time percentage for every L line, polled every five minutes in service hours.', screen: { src: 'systems/cta-watch/lines.webp' },
         explainer: 'The backend owns all fetching, storage and scheduling, and the client only displays what it polls. Readings are kept for up to a year, so the 30-day hourly trend charts have history to draw from. In mock mode the series carries rush-hour variance, so the charts look like a working system before a key arrives.' },
-      { title: 'Fleet composition', line: 'Per-series car counts and upgrade progress, such as 5000-series cars giving way to 7000.', screen: { src: 'systems/cta-watch/fleet.webp' } },
+      { title: 'Fleet composition', line: 'Per-series car counts and upgrade progress, such as older cars giving way to the 7000 series.', screen: { src: 'systems/cta-watch/fleet.webp' } },
       { title: 'Ridership', line: 'Daily totals per line and per station from the Chicago Open Data Portal.', screen: { src: 'systems/cta-watch/line.webp' } },
       { title: 'Station explorer', line: 'A filterable station list per line, each with a seven-day ridership sparkline.', screen: { src: 'systems/cta-watch/stations.webp' } },
     ],
