@@ -22,6 +22,7 @@ const SOURCES: Record<string, Source> = {
   switchyard: { repo: 'Einlanzerous/switchyard', path: 'docs/architecture.archify.json', local: '~/projects/switchyard' },
   signet: { repo: 'Einlanzerous/signet', path: 'docs/architecture.archify.json', local: '~/projects/signet' },
   catenary: { repo: 'Einlanzerous/catenary', path: 'docs/architecture.archify.json', local: '~/projects/catenary' },
+  argosy: { repo: 'Einlanzerous/argosy', path: 'docs/architecture.archify.json', local: '~/projects/argosy' },
 }
 
 const HOME = homedir()

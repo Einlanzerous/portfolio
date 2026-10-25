@@ -67,6 +67,7 @@ export const systems: System[] = [
     tag: 'Your library, every screen in sync',
     blurb: 'Owned media on your own hardware. Start a film on the train, finish it on the big screen — the whole fleet stays on the same frame.',
     lang: 'Go · Postgres · Vue 3 · Flutter', surfaces: 'Web SPA · REST API · Android · TV', design: 'Brass on charcoal, mercantile',
+    arch: 'systems/argosy/archify.html',
     features: [
       { title: 'Fleet resume', line: 'Open a title on any paired device and it offers the frame another device left it on.', screen: { src: 'systems/argosy/resume.webp' },
         explainer: 'Every device in an account shares one playhead, so the problem is not storing a position but moving it fast enough. Playback progress is written through Postgres and handed off with LISTEN/NOTIFY, so a phone that stops at the door is current on the TV before the remote is picked up. A plain Play asks, since the saved position may not be what you want; Continue Watching resumes silently, because there it is.' },
