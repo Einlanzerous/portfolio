@@ -20,6 +20,7 @@ interface Source { repo: string; path: string; local: string }
 // One line per system. `local` is where the repo is checked out on the box.
 const SOURCES: Record<string, Source> = {
   switchyard: { repo: 'Einlanzerous/switchyard', path: 'docs/architecture.archify.json', local: '~/projects/switchyard' },
+  signet: { repo: 'Einlanzerous/signet', path: 'docs/architecture.archify.json', local: '~/projects/signet' },
 }
 
 const HOME = homedir()

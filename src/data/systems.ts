@@ -48,6 +48,7 @@ export const systems: System[] = [
   },
   {
     name: 'Signet', group: 'Platform', h: 295,
+    arch: 'systems/signet/archify.html',
     tag: 'The credential vault for Zero Gravity Industries',
     blurb: 'A credential vault daemon behind the ZGI services, with an admin console in the Switchyard theme.',
     lang: 'Go · SQLite', surfaces: 'Daemon · CLI · REST API · Admin console', design: 'Shares the Switchyard theme',
