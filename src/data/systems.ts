@@ -89,6 +89,7 @@ export const systems: System[] = [
     tag: 'A quiet place to read',
     blurb: 'A self-hosted reading room. Argosy’s bones with the volume turned down — the cover is the hero, chrome stays out of the way.',
     surfaces: 'Web · Mobile', design: 'Ochre on charcoal, warm paper',
+    arch: 'systems/lyceum/archify.html',
     features: [
       { title: 'ISBN ingest', line: 'Scan or type an ISBN; the book arrives with its metadata.' },
       { title: 'Household accounts', line: 'Shared shelves, private progress.' },
