@@ -4,8 +4,8 @@ name: release
 # opens or updates the release PR; merging it cuts the release, and the
 # `deploy` job below ships it in the same run. `chore:` does not release
 # (PRINCIPLES §3). Deploy is chained here rather than triggered by the tag
-# because tags pushed with GITHUB_TOKEN do not start workflows — see
-# deploy.yml.
+# because it keeps the version in one run and does not depend on a tag push
+# starting a second workflow — see deploy.yml.
 
 on:
   push:
@@ -22,9 +22,21 @@ jobs:
       release_created: ${{ steps.release.outputs.release_created }}
       version: ${{ steps.release.outputs.version }}
     steps:
+      # The release PR must be authored by the release-bot App, not
+      # GITHUB_TOKEN: on this public repo GITHUB_TOKEN-authored PRs park their
+      # ci / PR Review runs as `action_required` and they end `failure` with
+      # no jobs (FOLIO-25). Same setup as amber, purser, switchyard, lyceum.
+      - name: Mint GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ secrets.RELEASE_BOT_APP_ID }}
+          private-key: ${{ secrets.RELEASE_BOT_PRIVATE_KEY }}
+
       - uses: googleapis/release-please-action@v4
         id: release
         with:
+          token: ${{ steps.app-token.outputs.token }}
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
 
