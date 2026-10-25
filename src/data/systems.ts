@@ -110,7 +110,7 @@ export const systems: System[] = [
     blurb: 'A self-hosted, DRM-free ebook reader that keeps your place across every device. Ownership of a title is tracked separately from having its EPUB, so a book can be recorded before the file exists.',
     lang: 'Go · Postgres · TypeScript · Flutter', surfaces: 'Web · Windows desktop · Android · REST API', design: 'Ochre on charcoal, warm paper',
     features: [
-      { title: 'Reading sync', line: 'Your place follows you between devices, stored as an EPUB CFI.',
+      { title: 'Reading sync', line: 'Your place follows you between devices, stored as an EPUB CFI.', screen: { src: 'systems/lyceum/shelf.webp' },
         explainer: 'Positions are keyed by book, person and device, so two people can read the same book on one shared tablet without overwriting each other. The web reader is epub.js; the Windows shell and the Android app talk to the same server.' },
       { title: 'ISBN ingest', line: 'Record a title by ISBN; it is matched to its EPUB when that arrives.',
         explainer: 'Any ISBN-10 or ISBN-13 form is normalized to ISBN-13. A folder watcher and the upload endpoint share one ingest path, so duplicates are caught by checksum across both.' },
