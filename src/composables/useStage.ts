@@ -34,6 +34,9 @@ const pad = (n: number) => String(n).padStart(2, '0')
 
 export function project(p: System, i: number): Projected {
   const H = p.h
+  // Scale every tile chroma with the accent's, so a quiet brand color stays quiet in the art too.
+  const k = (p.c ?? 0.17) / 0.17
+  const C = (v: number) => +(v * k).toFixed(3)
   const px = Math.min(210, Math.floor(1300 / Math.max(p.name.length, 1)))
   return {
     ...p,
@@ -45,13 +48,13 @@ export function project(p: System, i: number): Projected {
     lang: p.lang || 'TBD',
     surfaces: p.surfaces || 'TBD',
     design: p.design || 'TBD',
-    acc: `oklch(0.7 0.17 ${H})`,
+    acc: `oklch(0.7 ${C(0.17)} ${H})`,
     nameSize: `min(${px}px, ${(px / 14.4).toFixed(2)}vw)`,
     field: p.pending
-      ? `repeating-linear-gradient(135deg, rgba(0,0,0,.07) 0 1px, transparent 1px 12px), oklch(0.82 0.08 ${H})`
-      : `repeating-linear-gradient(135deg, rgba(0,0,0,.05) 0 1px, transparent 1px 13px), oklch(0.76 0.15 ${H})`,
-    tileArt: `radial-gradient(120% 130% at 100% 0%, oklch(0.62 0.19 ${H} / .75), transparent 62%), repeating-linear-gradient(135deg, oklch(0.72 0.15 ${H} / .12) 0 1px, transparent 1px 10px), var(--card)`,
-    stage: `repeating-linear-gradient(135deg, oklch(0.7 0.15 ${H} / .12) 0 1px, transparent 1px 12px), var(--card)`,
+      ? `repeating-linear-gradient(135deg, rgba(0,0,0,.07) 0 1px, transparent 1px 12px), oklch(0.82 ${C(0.08)} ${H})`
+      : `repeating-linear-gradient(135deg, rgba(0,0,0,.05) 0 1px, transparent 1px 13px), oklch(0.76 ${C(0.15)} ${H})`,
+    tileArt: `radial-gradient(120% 130% at 100% 0%, oklch(0.62 ${C(0.19)} ${H} / .75), transparent 62%), repeating-linear-gradient(135deg, oklch(0.72 ${C(0.15)} ${H} / .12) 0 1px, transparent 1px 10px), var(--card)`,
+    stage: `repeating-linear-gradient(135deg, oklch(0.7 ${C(0.15)} ${H} / .12) 0 1px, transparent 1px 12px), var(--card)`,
   }
 }
 

@@ -6,7 +6,7 @@ export type Cat = (typeof CATS)[number]
 // Order = rail order. Copy is the design's; slices (FOLIO-4) refine it.
 export const systems: System[] = [
   {
-    name: 'Switchyard', group: 'Platform', h: 30,
+    name: 'Switchyard', group: 'Platform', h: 37,
     tag: 'Agent delivery, with a human at the gate',
     blurb: 'Tickets in, verified deploys out. Agents plan as pull requests, humans approve the plan and hold the promote gate.',
     lang: 'TypeScript · Bun · Hono · Vue',
@@ -30,12 +30,12 @@ export const systems: System[] = [
     ],
   },
   {
-    name: 'Drydock', group: 'Platform', h: 235, img: 'systems/thumbs/drydock.webp',
+    name: 'Drydock', group: 'Platform', h: 245, img: 'systems/thumbs/drydock.webp',
+    arch: 'systems/drydock/archify.html',
     tag: 'Agents run unattended; you answer the gates',
     blurb: 'A per-host daemon owns every agent\'s terminal; a web desk and a run rail let you watch, approve and step in. The daemon, not the browser, holds the session, so closing the tab costs nothing.',
     lang: 'TypeScript · Node · Vue 3 · xterm.js', surfaces: 'Web shell · Daemon (HTTP + WebSocket) · Claude Code hooks',
     design: 'Steel-blue dock, one card size',
-    arch: 'systems/drydock/archify.html',
     features: [
       { title: 'The run rail', line: 'Every unattended run on one rail at one card size; state reads from glyph, word, motion and weight.', screen: { src: 'systems/drydock/drydock.html' },
         explainer: 'An agent running on its own has no window to look at, so it gets a card instead. The rail owns the bottom edge in two lanes separated by depth: underway runs are raised and change by themselves, docked windows are recessed and change only when you touch them. Every card is the same size, so a failed run reads at a squint instead of hiding among the busy ones.' },
@@ -64,11 +64,11 @@ export const systems: System[] = [
   },
   { name: 'Construct Server', group: 'Platform', h: 180, pending: true },
   {
-    name: 'Argosy', group: 'Self-hosted', h: 75, img: 'systems/thumbs/argosy.webp',
+    name: 'Argosy', group: 'Self-hosted', h: 78, img: 'systems/thumbs/argosy.webp',
+    arch: 'systems/argosy/archify.html',
     tag: 'Your library, every screen in sync',
     blurb: 'Owned media on your own hardware. Start a film on the train, finish it on the big screen — the whole fleet stays on the same frame.',
     lang: 'Go · Postgres · Vue 3 · Flutter', surfaces: 'Web SPA · REST API · Android · TV', design: 'Brass on charcoal, mercantile',
-    arch: 'systems/argosy/archify.html',
     features: [
       { title: 'Fleet resume', line: 'Open a title on any paired device and it offers the frame another device left it on.', screen: { src: 'systems/argosy/resume.webp' },
         explainer: 'Every device in an account shares one playhead, so the problem is not storing a position but moving it fast enough. Playback progress is written through Postgres and handed off with LISTEN/NOTIFY, so a phone that stops at the door is current on the TV before the remote is picked up. A plain Play asks, since the saved position may not be what you want; Continue Watching resumes silently, because there it is.' },
@@ -85,11 +85,22 @@ export const systems: System[] = [
     ],
   },
   {
-    name: 'Lyceum', group: 'Self-hosted', h: 55, img: 'systems/thumbs/lyceum.webp',
+    name: 'Placard', group: 'Small service', h: 128,
+    arch: 'systems/placard/archify.html',
+    tag: 'A branding microserver',
+    blurb: 'Logos and icons for every ZGI service, served from one place.',
+    surfaces: 'API',
+    features: [
+      { title: 'Marks on demand', line: 'Every service fetches its logo and icon from one endpoint.' },
+      { title: 'Sizes and formats', line: 'The right mark at the right size, without hand exports.' },
+    ],
+  },
+  {
+    name: 'Lyceum', group: 'Self-hosted', h: 83, img: 'systems/thumbs/lyceum.webp',
+    arch: 'systems/lyceum/archify.html',
     tag: 'A quiet place to read',
     blurb: 'A self-hosted reading room. Argosy’s bones with the volume turned down — the cover is the hero, chrome stays out of the way.',
     surfaces: 'Web · Mobile', design: 'Ochre on charcoal, warm paper',
-    arch: 'systems/lyceum/archify.html',
     features: [
       { title: 'ISBN ingest', line: 'Scan or type an ISBN; the book arrives with its metadata.' },
       { title: 'Household accounts', line: 'Shared shelves, private progress.' },
@@ -97,8 +108,9 @@ export const systems: System[] = [
       { title: 'Acquisition status', line: 'Know what is on its way and from where.' },
     ],
   },
+  { name: 'Project Eidolon', group: 'Experiment', h: 265, tag: 'AgentOS', pending: true },
   {
-    name: 'Catenary', group: 'Self-hosted', h: 45, img: 'systems/thumbs/catenary.webp',
+    name: 'Catenary', group: 'Self-hosted', h: 98, c: 0.19, img: 'systems/thumbs/catenary.webp',
     arch: 'systems/catenary/archify.html',
     tag: 'One live conductor',
     blurb: 'A messaging client on overhead-wire logic: one copper accent carries every state — unread, active, playing — and nothing else competes for it.',
@@ -110,7 +122,7 @@ export const systems: System[] = [
     ],
   },
   {
-    name: 'Chronicle', group: 'Self-hosted', h: 100, img: 'systems/thumbs/chronicle.webp',
+    name: 'Chronicle', group: 'Self-hosted', h: 86, c: 0.02, img: 'systems/thumbs/chronicle.webp',
     arch: 'systems/chronicle/archify.html',
     tag: 'Writing, with a voice in it',
     blurb: 'A page where speech lands inside the writing. Monochrome vellum on near-black.',
@@ -119,17 +131,6 @@ export const systems: System[] = [
       { title: 'Voice into page', line: 'Speak, and it lands on the ruled line.' },
       { title: 'The ledger', line: 'Entries read like a commonplace book.' },
       { title: 'Annotate', line: 'Margins for the second pass.' },
-    ],
-  },
-  {
-    name: 'Placard', group: 'Small service', h: 150,
-    tag: 'A branding microserver',
-    blurb: 'Logos and icons for every ZGI service, served from one place.',
-    surfaces: 'API',
-    arch: 'systems/placard/archify.html',
-    features: [
-      { title: 'Marks on demand', line: 'Every service fetches its logo and icon from one endpoint.' },
-      { title: 'Sizes and formats', line: 'The right mark at the right size, without hand exports.' },
     ],
   },
   {
@@ -142,7 +143,6 @@ export const systems: System[] = [
     ],
   },
   { name: 'Centrifuge', group: 'Small service', h: 330, tag: 'Newsletter curator', pending: true },
-  { name: 'Project Eidolon', group: 'Experiment', h: 265, tag: 'AgentOS', pending: true },
 ]
 
 export function slugOf(name: string): string {

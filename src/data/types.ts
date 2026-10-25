@@ -29,6 +29,8 @@ export interface System {
   group: Group
   /** OKLCH hue, 0–360. Unique per system. */
   h: number
+  /** OKLCH chroma for the accent (default 0.17). Only for a brand color too quiet for the default, e.g. vellum. */
+  c?: number
   /** ≤ 7 words, a claim not a category. */
   tag?: string
   /** Two sentences. */
