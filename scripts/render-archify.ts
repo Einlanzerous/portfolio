@@ -24,6 +24,7 @@ const SOURCES: Record<string, Source> = {
   catenary: { repo: 'Einlanzerous/catenary', path: 'docs/architecture.archify.json', local: '~/projects/catenary' },
   argosy: { repo: 'Einlanzerous/argosy', path: 'docs/architecture.archify.json', local: '~/projects/argosy' },
   drydock: { repo: 'Einlanzerous/drydock', path: 'docs/architecture.archify.json', local: '~/projects/drydock' },
+  chronicle: { repo: 'Einlanzerous/chronicle', path: 'docs/architecture.archify.json', local: '~/projects/chronicle' },
 }
 
 const HOME = homedir()
