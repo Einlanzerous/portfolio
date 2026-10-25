@@ -35,6 +35,7 @@ export const systems: System[] = [
     blurb: 'A per-host daemon owns every agent\'s terminal; a web desk and a run rail let you watch, approve and step in. The daemon, not the browser, holds the session, so closing the tab costs nothing.',
     lang: 'TypeScript · Node · Vue 3 · xterm.js', surfaces: 'Web shell · Daemon (HTTP + WebSocket) · Claude Code hooks',
     design: 'Steel-blue dock, one card size',
+    arch: 'systems/drydock/archify.html',
     features: [
       { title: 'The run rail', line: 'Every unattended run on one rail at one card size; state reads from glyph, word, motion and weight.', screen: { src: 'systems/drydock/drydock.html' },
         explainer: 'An agent running on its own has no window to look at, so it gets a card instead. The rail owns the bottom edge in two lanes separated by depth: underway runs are raised and change by themselves, docked windows are recessed and change only when you touch them. Every card is the same size, so a failed run reads at a squint instead of hiding among the busy ones.' },
