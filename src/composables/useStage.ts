@@ -146,7 +146,13 @@ export function useStage(opts: { heroSeconds?: number; serviceSeconds?: number }
   function showFeat() { s.arch = false; s.dir = 0; s.driving = true }
   function showArch() { s.arch = true; s.dir = 0; s.driving = true }
   function cycleTheme() { s.theme = ({ system: 'light', light: 'dark', dark: 'system' } as const)[s.theme] }
-  function toggleRotation() { touch(); s.rotPaused = !s.rotPaused }
+  // What the pause button shows. In the dossier, a manual step (`driving`) also
+  // stops the rotation, so that counts as paused and Play clears it.
+  const rotationPaused = computed(() => s.rotPaused || (s.open && s.driving))
+  function toggleRotation() {
+    touch()
+    if (rotationPaused.value) { s.rotPaused = false; s.driving = false } else s.rotPaused = true
+  }
   function heroPause() { s.heroPaused = true }
   function heroResume() { touch(); s.heroPaused = false }
   function setFilter(c: Cat) { s.filter = c }
@@ -251,6 +257,6 @@ export function useStage(opts: { heroSeconds?: number; serviceSeconds?: number }
     s, stageEl, railEl,
     cur, feats, slide, feature, screen, featureScreen, archSrc, preload, dark, tiles, filters,
     step, goSlide, select, openAt, close, showFeat, showArch, cycleTheme,
-    toggleRotation, heroPause, heroResume, setFilter, railBy, railWheel, touchStart, touchEnd,
+    rotationPaused, toggleRotation, heroPause, heroResume, setFilter, railBy, railWheel, touchStart, touchEnd,
   }
 }

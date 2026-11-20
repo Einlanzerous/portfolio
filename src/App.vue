@@ -24,9 +24,9 @@ const vars = computed(() => st.dark.value ? {} : light)
     <AppHeader :theme="s.theme" @cycle-theme="st.cycleTheme" />
 
     <main id="work" :ref="el => (st.stageEl.value = el as HTMLElement | null)">
-      <HeroStage v-if="!s.open" :hero="st.cur.value" :feats="st.feats.value" :slide="st.slide.value" :screen="st.screen.value" :preload="st.preload.value" :dir="s.dir" :paused="s.rotPaused"
+      <HeroStage v-if="!s.open" :hero="st.cur.value" :feats="st.feats.value" :slide="st.slide.value" :screen="st.screen.value" :preload="st.preload.value" :dir="s.dir" :paused="st.rotationPaused.value"
         @toggle-rotation="st.toggleRotation" @open="st.openAt(false)" @open-arch="st.openAt(true)" @go="st.goSlide" @pause="st.heroPause" @resume="st.heroResume" @touch-start="st.touchStart" @touch-end="st.touchEnd" />
-      <Dossier v-else :d="st.cur.value" :feats="st.feats.value" :slide="st.slide.value" :screen="st.screen.value" :preload="st.preload.value" :dir="s.dir" :arch="s.arch" :arch-src="st.archSrc.value" :dark="st.dark.value" :paused="s.rotPaused"
+      <Dossier v-else :d="st.cur.value" :feats="st.feats.value" :slide="st.slide.value" :screen="st.screen.value" :preload="st.preload.value" :dir="s.dir" :arch="s.arch" :arch-src="st.archSrc.value" :dark="st.dark.value" :paused="st.rotationPaused.value"
         @toggle-rotation="st.toggleRotation" @close="st.close" @show-feat="st.showFeat" @show-arch="st.showArch" @go="st.goSlide" @step="st.step" @touch-start="st.touchStart" @touch-end="st.touchEnd" />
     </main>
 
