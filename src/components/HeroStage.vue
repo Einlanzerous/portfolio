@@ -10,8 +10,9 @@ defineProps<{
   screen: Screen | null
   preload: string
   dir: number
+  paused: boolean
 }>()
-const emit = defineEmits<{ open: []; openArch: []; go: [i: number]; pause: []; resume: []; touchStart: [e: TouchEvent]; touchEnd: [e: TouchEvent] }>()
+const emit = defineEmits<{ toggleRotation: []; open: []; openArch: []; go: [i: number]; pause: []; resume: []; touchStart: [e: TouchEvent]; touchEnd: [e: TouchEvent] }>()
 const pad = (n: number) => String(n).padStart(2, '0')
 function pip(e: Event, i: number) { e.stopPropagation(); emit('go', i) }
 </script>
@@ -35,7 +36,7 @@ function pip(e: Event, i: number) { e.stopPropagation(); emit('go', i) }
         <div class="wedge" @click="emit('open')">
           <div v-if="!screen" class="soon">Screens · {{ hero.name }} · coming soon</div>
           <div class="shot">
-            <SysScreen :src="screen?.src ?? ''" :target="screen?.t ?? 0" :at="screen?.at ?? ''" :dir="dir" fit="cover" :preload="preload" />
+            <SysScreen :src="screen?.src ?? ''" :target="screen?.t ?? 0" :at="screen?.at ?? ''" :dir="dir" fit="cover" :title="`${hero.name} screen`" :preload="preload" />
           </div>
           <div class="explore">Explore {{ hero.name }} →</div>
         </div>
@@ -49,6 +50,7 @@ function pip(e: Event, i: number) { e.stopPropagation(); emit('go', i) }
         <button v-for="(f, i) in feats" :key="f.title" type="button" :aria-label="f.title"
           :style="{ width: i === slide ? '22px' : '6px', background: i === slide ? '#141311' : 'rgba(20,19,17,.3)' }" @click="pip($event, i)"></button>
       </div>
+      <button type="button" class="pp" :aria-label="paused ? 'Play slideshow' : 'Pause slideshow'" @click="emit('toggleRotation')">{{ paused ? '▶ Play' : '❚❚ Pause' }}</button>
     </div>
     <div class="nameRow">
       <div class="bigName" :style="{ fontSize: hero.nameSize }">{{ hero.name }}</div>
@@ -57,7 +59,7 @@ function pip(e: Event, i: number) { e.stopPropagation(); emit('go', i) }
 </template>
 
 <style scoped>
-.hero { position: relative; display: flex; flex-direction: column; height: 730px; overflow: hidden; color: #141311; transition: background .45s; }
+.hero { position: relative; display: flex; flex-direction: column; height: 730px; height: clamp(560px, 90vh, 730px); height: clamp(560px, 90dvh, 730px); overflow: hidden; color: #141311; transition: background .45s; }
 .top { display: grid; grid-template-columns: minmax(0, 1fr); padding: clamp(28px, 3.4vw, 48px) clamp(20px, 4vw, 56px) 0; align-items: start; }
 .copy { position: relative; z-index: 2; min-width: 0; max-width: min(520px, 36vw); display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
 .serial { font: 500 12px 'Geist Mono'; letter-spacing: .14em; text-transform: uppercase; }
@@ -77,6 +79,7 @@ function pip(e: Event, i: number) { e.stopPropagation(); emit('go', i) }
 .num { font: 500 12px 'Geist Mono'; letter-spacing: .06em; white-space: nowrap; }
 .cap { font: 600 16px 'Geist'; white-space: nowrap; }
 .dots { display: flex; gap: 6px; }
+.pp { padding: 5px 10px; border-radius: 3px; border: 1.5px solid #141311; background: transparent; color: #141311; font: 600 12px 'Geist'; cursor: pointer; }
 .dots button { height: 6px; border-radius: 2px; border: none; padding: 0; cursor: pointer; transition: width .3s, background .3s; }
 .nameRow { position: relative; z-index: 2; flex: none; height: min(226px, 15.7vw); display: flex; align-items: flex-end; pointer-events: none; padding: 0 clamp(16px, 3.4vw, 48px) 8px; overflow: hidden; }
 .bigName { font-family: 'Bricolage Grotesque'; font-weight: 800; line-height: 1; letter-spacing: -.05em; white-space: nowrap; }
@@ -92,5 +95,8 @@ function pip(e: Event, i: number) { e.stopPropagation(); emit('go', i) }
   .grow { min-height: 24px; }
   .nameRow { height: auto; padding-top: 16px; }
   .bigName { font-size: clamp(44px, 14vw, 96px) !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero, .wedge, .dots button { transition: none; }
 }
 </style>

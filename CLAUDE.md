@@ -46,6 +46,14 @@ login.
   is a `feat:`; copy or screen polish on a shipped dossier is a `fix:`.
 - Comments say why, not what. No premature abstractions.
 
+## Browser target
+
+Firefox is the primary browser. Target Baseline Widely available plus
+current Firefox ESR; anything newer ships as progressive enhancement behind
+`@supports` or feature detection. `build.target` in `vite.config.ts` carries
+the floor. Motion is gated on `prefers-reduced-motion`, and the hero
+rotation has a visible pause/play button (WCAG 2.2.2).
+
 ## Invariants
 
 1. **Screens are public.** Every file under `public/systems/` is served to

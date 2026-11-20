@@ -38,6 +38,19 @@ reading, below.
 6. **Visible change without an image.** A PR that changes anything on the
    page carries a Trestle screenshot (PRINCIPLES §5). Nit.
 
+## Frontend
+
+Applied to diffs that touch `.vue` or `.css` files.
+
+- Motion (transitions, animations, auto-advance, smooth scroll) is gated on
+  `prefers-reduced-motion`.
+- Modals use `<dialog>` / `showModal()`.
+- Enter-key handlers guard `isComposing`.
+- No `outline: none` without a `:focus-visible` ring.
+- New CSS features are in Firefox (the primary browser) or sit behind
+  `@supports`.
+- No `::-webkit-` rule without its standard property.
+
 ## Reviewing a plan
 
 A FOLIO ticket's plan is read by Switchyard's adversarial plan pass before a

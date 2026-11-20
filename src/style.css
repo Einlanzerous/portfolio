@@ -5,3 +5,5 @@ body { font-family: 'Geist', system-ui, sans-serif; -webkit-font-smoothing: anti
 a { color: inherit; text-decoration: none; }
 a:hover { opacity: .75; }
 button { font: inherit; }
+/* Keyboard focus ring. Components that hide the default outline must still show this. */
+:focus-visible { outline: 2px solid var(--acc, oklch(0.68 0.21 30)); outline-offset: 2px; }

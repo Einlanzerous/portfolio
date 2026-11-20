@@ -21,7 +21,7 @@ function bringSelectedFirst() {
   const tile = rail?.children[idx] as HTMLElement | undefined
   if (!rail || !tile) return
   const pad = parseFloat(getComputedStyle(rail).paddingLeft) || 0
-  rail.scrollTo({ left: tile.getBoundingClientRect().left - rail.getBoundingClientRect().left + rail.scrollLeft - pad, behavior: 'smooth' })
+  rail.scrollTo({ left: tile.getBoundingClientRect().left - rail.getBoundingClientRect().left + rail.scrollLeft - pad, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' })
 }
 watch(() => [props.sel, props.open], () => { void nextTick(bringSelectedFirst); setTimeout(bringSelectedFirst, 420) }, { immediate: true })
 </script>
@@ -42,14 +42,14 @@ watch(() => [props.sel, props.open], () => { void nextTick(bringSelectedFirst); 
       </div>
     </div>
     <div :ref="el => (railEl = el as HTMLElement | null)" class="tiles" @wheel="emit('wheel', $event)">
-      <div v-for="t in tiles" :key="t.slug" class="tile" :style="{ background: t.tileArt, outlineColor: t.index === sel ? t.acc : 'transparent', opacity: t.pending ? .62 : 1 }" @click="emit('select', t.index)">
-        <div class="serial">{{ t.serial }}</div>
-        <div v-if="t.pending" class="dev">In dev</div>
-        <div class="foot">
-          <div class="nm">{{ t.name }}</div>
-          <div v-if="!open" class="tg">{{ t.tag }}</div>
-        </div>
-      </div>
+      <button v-for="t in tiles" :key="t.slug" type="button" class="tile" :aria-current="t.index === sel ? 'true' : undefined" :style="{ background: t.tileArt, outlineColor: t.index === sel ? t.acc : 'transparent', opacity: t.pending ? .62 : 1 }" @click="emit('select', t.index)">
+        <span class="serial">{{ t.serial }}</span>
+        <span v-if="t.pending" class="dev">In dev</span>
+        <span class="foot">
+          <span class="nm">{{ t.name }}</span>
+          <span v-if="!open" class="tg">{{ t.tag }}</span>
+        </span>
+      </button>
     </div>
     <slot />
   </section>
@@ -67,15 +67,20 @@ watch(() => [props.sel, props.open], () => { void nextTick(bringSelectedFirst); 
 .arrows { display: flex; gap: 6px; }
 .arrows button { width: 34px; height: 34px; border-radius: 3px; border: 1px solid var(--line); background: transparent; color: var(--fg); font: 500 17px 'Geist'; cursor: pointer; }
 .tiles { margin-top: 14px; display: flex; gap: 14px; overflow-x: auto; scroll-behavior: smooth; padding: 6px clamp(20px, 4vw, 56px) 26px; }
-.tile { flex: none; width: 300px; height: 170px; border-radius: 6px; position: relative; cursor: pointer; outline: 2px solid transparent; outline-offset: 3px; transition: filter .2s, outline-color .3s, width .35s, height .35s; }
+.tile { display: block; padding: 0; border: 0; color: inherit; font: inherit; text-align: left; flex: none; width: 300px; height: 170px; border-radius: 6px; position: relative; cursor: pointer; outline: 2px solid transparent; outline-offset: 3px; transition: filter .2s, outline-color .3s, width .35s, height .35s; }
 .tile:hover { filter: brightness(1.18); }
 .open .tile { width: 210px; height: 118px; }
 .serial { position: absolute; top: 10px; left: 12px; font: 500 10px 'Geist Mono'; letter-spacing: .1em; color: var(--mut); }
 .dev { position: absolute; top: 8px; right: 8px; padding: 3px 7px; border-radius: 3px; background: var(--chip); font: 500 10px 'Geist Mono'; letter-spacing: .1em; text-transform: uppercase; color: var(--mut); }
 .foot { position: absolute; left: 14px; right: 14px; bottom: 12px; }
-.nm { font-family: 'Bricolage Grotesque'; font-weight: 800; font-size: 26px; line-height: 1; letter-spacing: -.02em; transition: font-size .35s; }
+.nm { display: block; font-family: 'Bricolage Grotesque'; font-weight: 800; font-size: 26px; line-height: 1; letter-spacing: -.02em; transition: font-size .35s; }
 .open .nm { font-size: 19px; }
-.tg { margin-top: 6px; font: 400 13px 'Geist'; color: var(--mut); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tg { display: block; margin-top: 6px; font: 400 13px 'Geist'; color: var(--mut); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tile:focus-visible { outline-color: var(--acc) !important; }
+@media (prefers-reduced-motion: reduce) {
+  .tile, .nm { transition: none; }
+  .tiles { scroll-behavior: auto; }
+}
 /* Narrow: the title and the arrows share the first row; the chips take the second. */
 @media (max-width: 900px) {
   .bar { display: grid; grid-template-columns: 1fr auto; row-gap: 12px; }
