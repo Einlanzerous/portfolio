@@ -5,6 +5,10 @@ import vue from '@vitejs/plugin-vue'
 // release-please's bare version to deploy.yml). Anything else is `dev` —
 // never package.json's version, which is release-please's to bump.
 export default defineConfig({
+  // Browser target (CLAUDE.md): Baseline Widely available plus a Firefox ESR floor.
+  // Rolldown takes explicit versions, not the `baseline-widely-available` keyword,
+  // so these are that keyword's engines (Vite 8) with Firefox raised to ESR 140.
+  build: { target: ['chrome111', 'edge111', 'firefox140', 'safari16.4'] },
   plugins: [vue()],
   define: { __APP_VERSION__: JSON.stringify(process.env.APP_VERSION ?? 'dev') },
   // `bun run dev --host` is how a change is checked from another machine on

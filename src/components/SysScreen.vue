@@ -17,14 +17,17 @@ const props = withDefaults(defineProps<{
   bg?: string
   preload?: string
   interactive?: boolean
-}>(), { src: '', target: 0, at: '', dir: 0, fit: 'cover', bg: '#0b0f17', preload: '', interactive: false })
+  title?: string
+}>(), { title: 'System screen', src: '', target: 0, at: '', dir: 0, fit: 'cover', bg: '#0b0f17', preload: '', interactive: false })
 
 // The iframe currently on stage, for a parent that drives the framed page's
 // own API (same origin: the Archify tab's zoom buttons).
 defineExpose({ frame: () => cur?.ifr ?? null })
 
 const IMG = /\.(png|jpe?g|webp|gif|svg)(\?|#|$)/i
-const EASE = 'transform .5s cubic-bezier(.2,.7,.2,1), opacity .35s'
+const EASE_FULL = 'transform .5s cubic-bezier(.2,.7,.2,1), opacity .35s'
+// Read per transition so an OS change mid-session applies; `none` makes screens swap, not slide.
+const easing = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'none' : EASE_FULL
 
 interface Layer { el: HTMLDivElement; t: number; at: string; fit: 'cover' | 'contain'; img: boolean; ready: boolean; ifr?: HTMLIFrameElement; hideT?: number }
 
@@ -37,7 +40,7 @@ let queued = false
 
 const keyOf = (src: string, t: number) => src + '#' + t + '#' + props.fit
 
-function make(src: string, t: number, key: string): Layer {
+function make(src: string, t: number, key: string, eager = false): Layer {
   const el = document.createElement('div')
   Object.assign(el.style, { position: 'absolute', inset: '0', overflow: 'hidden', visibility: 'hidden', opacity: '0', boxSizing: 'border-box' })
   // `fit` is fixed at creation: layers are keyed on it, and layout() also runs
@@ -54,6 +57,8 @@ function make(src: string, t: number, key: string): Layer {
     L.ready = true
   } else {
     const ifr = document.createElement('iframe')
+    ifr.title = props.title
+    ifr.loading = eager ? 'eager' : 'lazy'
     ifr.setAttribute('scrolling', 'no'); ifr.tabIndex = -1; ifr.setAttribute('aria-hidden', 'true')
     Object.assign(ifr.style, {
       position: 'absolute', left: '0', top: '0', border: '0', width: '1560px', height: '1000px',
@@ -115,7 +120,7 @@ function show() {
   // instead of loading the page again (keeps `preload` layers reusable).
   if (key === curKey) { if (cur && cur.at !== props.at) { cur.at = props.at; layout(cur) } return }
   const prev = cur, dir = props.dir
-  const L = key ? (layers[key] ?? make(src, t, key)) : null
+  const L = key ? (layers[key] ?? make(src, t, key, true)) : null
   if (L) L.at = props.at
   cur = L; curKey = key
   for (const o of Object.values(layers)) if (o !== L && o !== prev) { o.el.style.transition = 'none'; o.el.style.visibility = 'hidden' }
@@ -127,11 +132,11 @@ function show() {
     el.style.transform = prev && dir ? `translateX(${dir * 100}%)` : 'none'
     el.style.opacity = prev && dir ? (L.ready ? '1' : '0') : '0'
     void el.offsetWidth
-    el.style.transition = EASE; el.style.transform = 'translateX(0)'; el.style.opacity = L.ready ? '1' : '0'
+    el.style.transition = easing(); el.style.transform = 'translateX(0)'; el.style.opacity = L.ready ? '1' : '0'
   }
   if (prev && prev !== L) {
     const el = prev.el
-    el.style.zIndex = '1'; el.style.transition = EASE
+    el.style.zIndex = '1'; el.style.transition = easing()
     if (dir && L) el.style.transform = `translateX(${-dir * 100}%)`; else el.style.opacity = '0'
     clearTimeout(prev.hideT)
     prev.hideT = window.setTimeout(() => { if (cur !== prev) el.style.visibility = 'hidden' }, 540)

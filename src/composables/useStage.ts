@@ -91,6 +91,9 @@ export function useStage(opts: { heroSeconds?: number; serviceSeconds?: number }
     sel: 0, slide: 0, dir: 0, open: false, arch: false,
     theme: readTheme() as Theme, sysDark: true,
     filter: 'All' as Cat, heroPaused: false, driving: false,
+    // WCAG 2.2.2: the visitor's own pause. Starts on under prefers-reduced-motion, so
+    // nothing moves until they press play.
+    rotPaused: false,
   })
   const stageEl = ref<HTMLElement | null>(null)
   const railEl = ref<HTMLElement | null>(null)
@@ -143,6 +146,7 @@ export function useStage(opts: { heroSeconds?: number; serviceSeconds?: number }
   function showFeat() { s.arch = false; s.dir = 0; s.driving = true }
   function showArch() { s.arch = true; s.dir = 0; s.driving = true }
   function cycleTheme() { s.theme = ({ system: 'light', light: 'dark', dark: 'system' } as const)[s.theme] }
+  function toggleRotation() { touch(); s.rotPaused = !s.rotPaused }
   function heroPause() { s.heroPaused = true }
   function heroResume() { touch(); s.heroPaused = false }
   function setFilter(c: Cat) { s.filter = c }
@@ -185,6 +189,8 @@ export function useStage(opts: { heroSeconds?: number; serviceSeconds?: number }
   let tick = 0
   let mq: MediaQueryList | null = null
   const onMq = (e: MediaQueryListEvent) => { s.sysDark = e.matches }
+  let rm: MediaQueryList | null = null
+  const onRm = (e: MediaQueryListEvent) => { s.rotPaused = e.matches }
   const onKey = (e: KeyboardEvent) => {
     if (/input|textarea/i.test((e.target as HTMLElement | null)?.tagName ?? '')) return
     if (e.key === 'Escape' && s.open) close()
@@ -207,12 +213,16 @@ export function useStage(opts: { heroSeconds?: number; serviceSeconds?: number }
   onMounted(() => {
     mq = window.matchMedia('(prefers-color-scheme: dark)')
     s.sysDark = mq.matches
+    rm = window.matchMedia('(prefers-reduced-motion: reduce)')
+    s.rotPaused = rm.matches
+    rm.addEventListener('change', onRm)
     mq.addEventListener('change', onMq)
     window.addEventListener('keydown', onKey)
     window.addEventListener('hashchange', onHash)
     onHash()
     heroLast = Date.now()
     tick = window.setInterval(() => {
+      if (s.rotPaused) return
       if (s.open ? (s.driving || s.arch) : s.heroPaused) return
       if (Date.now() - heroLast < (s.open ? serviceSeconds : heroSeconds) * 1000) return
       if (feats.value.length < 2) return
@@ -224,6 +234,7 @@ export function useStage(opts: { heroSeconds?: number; serviceSeconds?: number }
     window.removeEventListener('keydown', onKey)
     window.removeEventListener('hashchange', onHash)
     mq?.removeEventListener('change', onMq)
+    rm?.removeEventListener('change', onRm)
   })
 
   watch(() => s.theme, writeTheme)
@@ -240,6 +251,6 @@ export function useStage(opts: { heroSeconds?: number; serviceSeconds?: number }
     s, stageEl, railEl,
     cur, feats, slide, feature, screen, featureScreen, archSrc, preload, dark, tiles, filters,
     step, goSlide, select, openAt, close, showFeat, showArch, cycleTheme,
-    heroPause, heroResume, setFilter, railBy, railWheel, touchStart, touchEnd,
+    toggleRotation, heroPause, heroResume, setFilter, railBy, railWheel, touchStart, touchEnd,
   }
 }

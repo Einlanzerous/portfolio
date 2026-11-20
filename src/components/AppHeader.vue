@@ -21,7 +21,7 @@ const labels: Record<Theme, string> = { system: '◐ System', light: '○ Light'
     <div class="sp"></div>
     <div class="ctl">
       <a v-if="site.ssoUrl" :href="site.ssoUrl" class="sso"><span class="dot"></span>Sign in with ZGI</a>
-      <button type="button" class="theme" title="Theme" @click="emit('cycleTheme')">{{ labels[theme] }}</button>
+      <button type="button" class="theme" title="Theme" aria-label="Change theme" @click="emit('cycleTheme')">{{ labels[theme] }}</button>
     </div>
   </header>
 </template>

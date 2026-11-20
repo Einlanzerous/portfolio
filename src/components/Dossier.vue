@@ -14,8 +14,9 @@ const props = defineProps<{
   arch: boolean
   archSrc: string
   dark: boolean
+  paused: boolean
 }>()
-const emit = defineEmits<{ close: []; showFeat: []; showArch: []; go: [i: number]; step: [d: number]; touchStart: [e: TouchEvent]; touchEnd: [e: TouchEvent] }>()
+const emit = defineEmits<{ toggleRotation: []; close: []; showFeat: []; showArch: []; go: [i: number]; step: [d: number]; touchStart: [e: TouchEvent]; touchEnd: [e: TouchEvent] }>()
 const pad = (n: number) => String(n).padStart(2, '0')
 
 const cur = computed(() => props.feats[props.slide]!)
@@ -75,7 +76,7 @@ function zoom(op: 'zoomIn' | 'zoomOut' | 'reset') {
       <div class="stage" :style="{ background: stageBg }" @touchstart.passive="emit('touchStart', $event)" @touchend.passive="emit('touchEnd', $event)">
         <div class="label">{{ label }}</div>
         <div class="shot">
-          <SysScreen ref="shot" :src="src" :target="target" :at="arch ? '' : (screen?.at ?? '')" :dir="dir" :fit="arch ? 'contain' : 'cover'" :bg="archBg" :preload="arch ? '' : preload" :interactive="arch" />
+          <SysScreen ref="shot" :src="src" :target="target" :at="arch ? '' : (screen?.at ?? '')" :dir="dir" :fit="arch ? 'contain' : 'cover'" :bg="archBg" :preload="arch ? '' : preload" :interactive="arch" :title="arch ? `${d.name} architecture map` : `${d.name} screen`" />
         </div>
         <div v-if="arch && archSrc" class="zoom">
           <button type="button" aria-label="Zoom out" @click="zoom('zoomOut')">−</button>
@@ -94,6 +95,7 @@ function zoom(op: 'zoomIn' | 'zoomOut' | 'reset') {
             :style="{ width: i === slide ? '28px' : '8px', background: i === slide ? d.acc : 'var(--line)' }" @click="emit('go', i)"></button>
         </div>
         <button type="button" aria-label="Next" @click="emit('step', 1)">›</button>
+        <button type="button" class="pp" :aria-label="paused ? 'Play slideshow' : 'Pause slideshow'" @click="emit('toggleRotation')">{{ paused ? '▶' : '❚❚' }}</button>
       </div>
     </div>
 
@@ -138,6 +140,7 @@ function zoom(op: 'zoomIn' | 'zoomOut' | 'reset') {
 .full { position: absolute; right: 12px; bottom: 12px; padding: 6px 11px; border-radius: 3px; background: var(--card); border: 1px solid var(--line); font: 500 12px 'Geist'; color: var(--fg); }
 .ctrls { display: flex; align-items: center; gap: 14px; }
 .ctrls > button { width: 38px; height: 38px; border-radius: 3px; border: 1px solid var(--line); background: transparent; color: var(--fg); font: 500 18px 'Geist'; cursor: pointer; }
+.ctrls > .pp { font-size: 12px; }
 .dots { flex: 1; display: flex; justify-content: center; gap: 8px; }
 .dots button { height: 6px; border-radius: 2px; border: none; padding: 0; cursor: pointer; transition: width .3s, background .3s; }
 .meta { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
@@ -150,5 +153,8 @@ function zoom(op: 'zoomIn' | 'zoomOut' | 'reset') {
   .side { overflow: visible; mask-image: none; -webkit-mask-image: none; }
   .stage { aspect-ratio: 16 / 10; flex: none; }
   .meta { grid-template-columns: minmax(0, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .item, .dots button { transition: none; }
 }
 </style>
