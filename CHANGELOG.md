@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.1](https://github.com/Einlanzerous/portfolio/compare/portfolio-v0.7.0...portfolio-v0.7.1) (2026-11-20)
+
+
+### Bug Fixes
+
+* **web:** reduced motion, pause control, keyboard rail, focus ring (FOLIO-36) ([#42](https://github.com/Einlanzerous/portfolio/issues/42)) ([e72f0cb](https://github.com/Einlanzerous/portfolio/commit/e72f0cb489296d56211954b1998bc3620dd2316b))
+
 ## [0.7.0](https://github.com/Einlanzerous/portfolio/compare/portfolio-v0.6.0...portfolio-v0.7.0) (2026-10-25)
 
 
