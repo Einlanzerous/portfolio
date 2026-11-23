@@ -47,7 +47,7 @@ Applied to diffs that touch `.vue` or `.css` files.
 - Modals use `<dialog>` / `showModal()`.
 - Enter-key handlers guard `isComposing`.
 - No `outline: none` without a `:focus-visible` ring.
-- New CSS features are in Firefox (the primary browser) or sit behind
+- New CSS features are in Firefox 160 (the primary browser) or sit behind
   `@supports`.
 - No `::-webkit-` rule without its standard property.
 

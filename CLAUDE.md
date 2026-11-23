@@ -48,9 +48,9 @@ login.
 
 ## Browser target
 
-Firefox is the primary browser. Target Baseline Widely available plus
-current Firefox ESR; anything newer ships as progressive enhancement behind
-`@supports` or feature detection. `build.target` in `vite.config.ts` carries
+Firefox is the primary browser. Floor: Firefox 160 (the Firefox release when
+this was set; the quarterly `frontend-audit` run raises it). Anything newer is
+progressive enhancement behind `@supports` or feature detection. `build.target` in `vite.config.ts` carries
 the floor. Motion is gated on `prefers-reduced-motion`, and the hero
 rotation has a visible pause/play button (WCAG 2.2.2).
 
