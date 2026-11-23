@@ -5,7 +5,7 @@ import vue from '@vitejs/plugin-vue'
 // release-please's bare version to deploy.yml). Anything else is `dev` —
 // never package.json's version, which is release-please's to bump.
 export default defineConfig({
-  // Browser target (CLAUDE.md): Baseline Widely available plus a Firefox 160 floor.
+  // Browser target (CLAUDE.md): a Firefox 160 floor. The other engines are Baseline Widely available.
   // Rolldown takes explicit versions, not the `baseline-widely-available` keyword,
   // so these are that keyword's engines (Vite 8) with Firefox raised to 160.
   build: { target: ['chrome111', 'edge111', 'firefox160', 'safari16.4'] },
