@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.2](https://github.com/Einlanzerous/portfolio/compare/portfolio-v0.7.1...portfolio-v0.7.2) (2026-11-23)
+
+
+### Bug Fixes
+
+* **web:** raise the browser floor to Firefox 160 (FOLIO-37) ([#44](https://github.com/Einlanzerous/portfolio/issues/44)) ([dd86d87](https://github.com/Einlanzerous/portfolio/commit/dd86d8769bd773deff3e088650b5b67ca2cdb6e0))
+
 ## [0.7.1](https://github.com/Einlanzerous/portfolio/compare/portfolio-v0.7.0...portfolio-v0.7.1) (2026-11-20)
 
 
